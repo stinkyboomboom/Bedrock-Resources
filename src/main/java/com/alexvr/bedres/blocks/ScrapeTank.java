@@ -1,6 +1,5 @@
 package com.alexvr.bedres.blocks;
 
-import com.alexvr.bedres.particles.BedrockDust;
 import com.alexvr.bedres.registry.ModParticles;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.block.Block;
