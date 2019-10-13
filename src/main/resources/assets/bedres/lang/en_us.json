@@ -3,7 +3,10 @@
   "item.bedrockscrapes.name": "Bedrock Scrapes",
 
   "_comment": "Blocks",
-  "block.bedres.scrape_tank": "Scrape Tank"
+  "block.bedres.scrape_tank": "Scrape Tank",
+
+  "_comment": "Creative Tab",
+  "itemGroup.bedres": "Bedrock Resources"
 }
 
 

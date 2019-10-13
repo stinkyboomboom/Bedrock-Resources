@@ -4,6 +4,7 @@ import com.alexvr.bedres.blocks.ScrapeTank;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
+import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
@@ -28,6 +29,8 @@ public class BedrockResources {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    public static ModSetup setup = new ModSetup();
+
     public BedrockResources() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -36,7 +39,8 @@ public class BedrockResources {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-
+        setup.init();
+        proxy.init();
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
@@ -50,7 +54,9 @@ public class BedrockResources {
 
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, new Item.Properties()).setRegistryName("scrape_tank"));
+            Item.Properties properties = new Item.Properties()
+                    .group(setup.itemgroup);
+            event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName("scrape_tank"));
         }
     }
 
