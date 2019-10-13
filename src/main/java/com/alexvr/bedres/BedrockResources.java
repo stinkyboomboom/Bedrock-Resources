@@ -1,6 +1,7 @@
 package com.alexvr.bedres;
 
 import com.alexvr.bedres.blocks.ScrapeTank;
+import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
@@ -57,6 +58,8 @@ public class BedrockResources {
             Item.Properties properties = new Item.Properties()
                     .group(setup.itemgroup);
             event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName("scrape_tank"));
+            event.getRegistry().register(new BedrockScrape());
+
         }
     }
 

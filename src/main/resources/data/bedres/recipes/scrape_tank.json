@@ -3,14 +3,14 @@
     "item": "bedres:scrape_tank"
   },
   "pattern": [
-    "iri",
+    "ili",
     "ere",
     "ili"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
     "i": {
-      "tag": "forge:ingots/gold"
+      "tag": "forge:ingots/iron"
     },
     "r": {
       "tag": "forge:dusts/redstone"
@@ -19,7 +19,7 @@
       "tag": "forge:gems/lapis"
     },
     "e": {
-      "tag": "forge:gems/diamond"
+      "item": "bedres:bedrock_scrapes"
     }
   }
 }

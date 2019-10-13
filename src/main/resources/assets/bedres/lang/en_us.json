@@ -1,6 +1,6 @@
 {
   "_comment": "Items",
-  "item.bedrockscrapes.name": "Bedrock Scrapes",
+  "item.bedres.bedrock_scrapes": "Bedrock Scrapes",
 
   "_comment": "Blocks",
   "block.bedres.scrape_tank": "Scrape Tank",
