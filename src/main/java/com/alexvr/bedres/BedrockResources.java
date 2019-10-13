@@ -1,6 +1,7 @@
 package com.alexvr.bedres;
 
 import com.alexvr.bedres.blocks.ScrapeTank;
+import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.setup.ClientProxy;
@@ -9,9 +10,11 @@ import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -67,6 +70,14 @@ public class BedrockResources {
         @SubscribeEvent
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
             event.getRegistry().register(TileEntityType.Builder.create(ScrapeTankTile::new, ModBlocks.scrapeTank).build(null).setRegistryName("scrape_tank"));
+
+        }
+
+        @SubscribeEvent
+        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                return new ScrapeTankContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer());
+            }).setRegistryName("scrape_tank"));
 
         }
     }
