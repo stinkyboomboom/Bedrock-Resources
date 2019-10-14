@@ -1,12 +1,19 @@
 {
   "_comment": "Items",
   "item.bedres.bedrock_scrapes": "Bedrock Scrapes",
+  "item.bedres.scrape_knife": "Scraping Knife",
 
   "_comment": "Blocks",
   "block.bedres.scrape_tank": "Scrape Tank",
 
   "_comment": "Creative Tab",
-  "itemGroup.bedres": "Bedrock Resources"
+  "itemGroup.bedres": "Bedrock Resources",
+
+  "_comment": "Messeges",
+  "message.bedres.invalidblock": "Only Bedrock can be scraped",
+  "message.bedres.validblock": "That is indeed bedrock",
+  "scrape_tank": "Scrape Tank"
+
 }
 
 
