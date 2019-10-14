@@ -1,8 +1,6 @@
 package com.alexvr.bedres;
 
 import com.alexvr.bedres.blocks.ScrapeTank;
-import com.alexvr.bedres.capability.BedrockFluxProvider;
-import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.registry.ModBlocks;
@@ -12,23 +10,12 @@ import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -93,9 +80,6 @@ public class BedrockResources {
             }).setRegistryName("scrape_tank"));
 
         }
-
-
-
     }
 
 
