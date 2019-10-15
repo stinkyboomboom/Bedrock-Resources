@@ -89,4 +89,24 @@ public class WorldEventHandler {
         });
 
     }
+
+    /**
+     * Copy data from dead player to the new player
+     */
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event)
+    {
+        PlayerEntity player = event.getEntityPlayer();
+        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+        LazyOptional<IBedrockFlux> oldbedrockFlux =  event.getOriginal().getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+
+        bedrockFlux.ifPresent(h -> {
+            oldbedrockFlux.ifPresent(o -> {
+
+                h.set(o.getBedrockFlux());
+
+            });
+
+        });
+    }
 }
