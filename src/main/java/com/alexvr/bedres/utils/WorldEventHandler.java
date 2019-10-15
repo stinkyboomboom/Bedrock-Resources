@@ -3,18 +3,18 @@ package com.alexvr.bedres.utils;
 import com.alexvr.bedres.capability.BedrockFluxProvider;
 import com.alexvr.bedres.capability.IBedrockFlux;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-import javax.annotation.Nonnull;
 import java.text.DecimalFormat;
 
 @EventBusSubscriber
@@ -27,9 +27,8 @@ public class WorldEventHandler {
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
         bedrockFlux.ifPresent(h -> {
-            DecimalFormat decimalFormat = new DecimalFormat("#.00");
-            String numberAsString = decimalFormat.format((h).getBedrockFlux());
-            String message = String.format("Hello there, you have %s flux.",numberAsString);
+
+            String message = String.format("Hello there, you have %s flux.",h.getBedrockFluxString());
             player.sendStatusMessage(new StringTextComponent(message),false);
 
         });
@@ -38,7 +37,7 @@ public class WorldEventHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerSleep(PlayerSleepInBedEvent event)
+    public static void PlayerWakeUpEvent(PlayerSleepInBedEvent event)
     {
         PlayerEntity player = event.getEntityPlayer();
 
@@ -47,20 +46,14 @@ public class WorldEventHandler {
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
         bedrockFlux.ifPresent(h -> {
-            float y = h.fill(50);
-            DecimalFormat decimalFormat = new DecimalFormat("#.00");
-            String numberAsString = decimalFormat.format((h).getBedrockFlux());
-            String message;
-            if (y==0){
-               float x=50-y;
-                String number2AsString = decimalFormat.format(x);
-                message = String.format("You refreshed yourself in the bed. You received %s flux, you have %s flux left.",number2AsString, numberAsString);
 
-            }else{
-                message = String.format("You refreshed yourself in the bed. You received 50 flux, you have %s flux left.", numberAsString);
+            String message = ("You hear whispers as you wake up from bed.");;
 
-            }
-            player.sendStatusMessage(new StringTextComponent(message),false);
+
+            player.sendStatusMessage(new StringTextComponent(message),true);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + new TranslationTextComponent("message.bedres.whispers").getUnformattedComponentText()), false);
+            player.world.addEntity(new LightningBoltEntity(player.world,player.posX,player.posY,player.posZ,true));
+
 
         });
 
@@ -86,12 +79,9 @@ public class WorldEventHandler {
 
                 h.consume(cost);
 
-                DecimalFormat decimalFormat = new DecimalFormat("#.00");
-                String numberAsString = decimalFormat.format((h).getBedrockFlux());
-                String number2AsString = decimalFormat.format(cost);
-                String message = String.format("You absorbed fall damage. It costed %s mana, you have %s mana left.", number2AsString, numberAsString);
-                player.sendStatusMessage(new StringTextComponent(message),false);
-
+                String number2AsString = new DecimalFormat("#.00").format(cost);
+                String message = String.format("You absorbed fall damage. It costed %s mana, you have %s mana left.", number2AsString, h.getBedrockFluxString());
+                player.sendStatusMessage(new StringTextComponent(message),true);
 
                 event.setCanceled(true);
             }

@@ -1,5 +1,6 @@
 package com.alexvr.bedres.capability;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.Callable;
 
 /**
@@ -7,7 +8,7 @@ import java.util.concurrent.Callable;
  */
 public class BedrockFlux implements IBedrockFlux
 {
-    private float bedrockflux = 250.0F;
+    private float bedrockflux = 0.0f;
     private float maxbedrockflux = 2500.0F;
 
     public void consume(float points)
@@ -36,6 +37,12 @@ public class BedrockFlux implements IBedrockFlux
     public float getBedrockFlux()
     {
         return this.bedrockflux;
+    }
+
+    @Override
+    public String getBedrockFluxString() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        return decimalFormat.format(getBedrockFlux());
     }
 
     private static class Factory implements Callable<IBedrockFlux> {
