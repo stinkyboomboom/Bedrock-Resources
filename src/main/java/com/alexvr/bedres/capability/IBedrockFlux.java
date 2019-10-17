@@ -1,13 +1,14 @@
 package com.alexvr.bedres.capability;
 
-import java.text.DecimalFormat;
 
 public interface IBedrockFlux {
-    public void consume(float points);
-    public float fill(float points);
-    public void set(float points);
+    void consume(float points);
+    float fill(float points);
+    void set(float points);
 
-    public float getBedrockFlux();
+    float getBedrockFlux();
+    float getMaxBedrockFlux();
 
-    public String getBedrockFluxString();
+
+    String getBedrockFluxString();
 }

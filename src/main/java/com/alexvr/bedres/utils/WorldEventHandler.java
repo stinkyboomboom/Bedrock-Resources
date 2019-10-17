@@ -1,13 +1,19 @@
 package com.alexvr.bedres.utils;
 
+import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.capability.BedrockFluxProvider;
 import com.alexvr.bedres.capability.IBedrockFlux;
+import com.alexvr.bedres.gui.FluxOracleScreen;
+import com.alexvr.bedres.items.FluxOracle;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -17,12 +23,25 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 import java.text.DecimalFormat;
 
-@EventBusSubscriber
+@EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
+
+    public static FluxOracleScreen fx = new FluxOracleScreen(new StringTextComponent("fluxScreen"));
+    static Minecraft mc = Minecraft.getInstance();
+
+    @SubscribeEvent
+    static void renderWorldLastEvent(RenderWorldLastEvent evt) {
+        if(mc.player.getHeldItemMainhand().getItem() instanceof FluxOracle && ((FluxOracle)mc.player.getHeldItemMainhand().getItem()).beingUsed) {
+            mc.displayGuiScreen(fx);
+
+        }
+
+    }
 
     @SubscribeEvent
     public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
     {
+
         PlayerEntity player = event.getPlayer();
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
@@ -47,9 +66,9 @@ public class WorldEventHandler {
 
         bedrockFlux.ifPresent(h -> {
 
-            String message = ("You hear whispers as you wake up from bed.");;
+            String message = ("You hear whispers as you wake up from bed.");
 
-
+            h.fill(100);
             player.sendStatusMessage(new StringTextComponent(message),true);
             player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + new TranslationTextComponent("message.bedres.whispers").getUnformattedComponentText()), false);
             player.world.addEntity(new LightningBoltEntity(player.world,player.posX,player.posY,player.posZ,true));
@@ -100,13 +119,6 @@ public class WorldEventHandler {
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
         LazyOptional<IBedrockFlux> oldbedrockFlux =  event.getOriginal().getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
-        bedrockFlux.ifPresent(h -> {
-            oldbedrockFlux.ifPresent(o -> {
-
-                h.set(o.getBedrockFlux());
-
-            });
-
-        });
+        bedrockFlux.ifPresent(h -> oldbedrockFlux.ifPresent(o -> h.set(o.getBedrockFlux())));
     }
 }

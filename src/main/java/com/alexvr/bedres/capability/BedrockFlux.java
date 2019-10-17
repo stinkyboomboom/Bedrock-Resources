@@ -40,6 +40,11 @@ public class BedrockFlux implements IBedrockFlux
     }
 
     @Override
+    public float getMaxBedrockFlux() {
+        return maxbedrockflux;
+    }
+
+    @Override
     public String getBedrockFluxString() {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         return decimalFormat.format(getBedrockFlux());

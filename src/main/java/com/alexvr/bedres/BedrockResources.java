@@ -3,6 +3,7 @@ package com.alexvr.bedres;
 import com.alexvr.bedres.blocks.ScrapeTank;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.BedrockScrape;
+import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.items.ScrapeKnife;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.setup.ClientProxy;
@@ -48,6 +49,8 @@ public class BedrockResources {
     private void setup(final FMLCommonSetupEvent event) {
         setup.init();
         proxy.init();
+
+
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
@@ -66,6 +69,8 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName("scrape_tank"));
             event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
+            event.getRegistry().register(new FluxOracle());
+
 
         }
 
@@ -82,6 +87,7 @@ public class BedrockResources {
             }).setRegistryName("scrape_tank"));
 
         }
+
     }
 
 

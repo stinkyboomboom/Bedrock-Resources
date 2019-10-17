@@ -21,5 +21,4 @@ public class ServerProxy implements IProxy {
         throw new IllegalStateException("Only run this on client!");
     }
 
-
 }
