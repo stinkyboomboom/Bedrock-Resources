@@ -1,6 +1,8 @@
 package com.alexvr.bedres.capability;
 
 
+import com.alexvr.bedres.gui.FluxOracleScreen;
+
 public interface IBedrockFlux {
     void consume(float points);
     float fill(float points);
@@ -9,6 +11,11 @@ public interface IBedrockFlux {
     float getBedrockFlux();
     float getMaxBedrockFlux();
 
+    boolean getCrafterFlux();
+    void setCrafterFlux();
+
+    FluxOracleScreen getScreen();
+    void setScreen(FluxOracleScreen fx);
 
     String getBedrockFluxString();
 }

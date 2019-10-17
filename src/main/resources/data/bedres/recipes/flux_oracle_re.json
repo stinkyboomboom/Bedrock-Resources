@@ -1,0 +1,10 @@
+{
+  "result": {
+    "item": "bedres:flux_oracle"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+      "item": "bedres:flux_oracle"
+    }]
+}
+

@@ -2,6 +2,8 @@
   "_comment": "Items",
   "item.bedres.bedrock_scrapes": "Bedrock Scrapes",
   "item.bedres.scrape_knife": "Scraping Knife",
+  "item.bedres.flux_oracle": "Flux Oracle",
+
 
   "_comment": "Blocks",
   "block.bedres.scrape_tank": "Scrape Tank",

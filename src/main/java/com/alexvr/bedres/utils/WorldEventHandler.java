@@ -4,6 +4,7 @@ import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.capability.BedrockFluxProvider;
 import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.gui.FluxOracleScreen;
+import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -26,13 +27,13 @@ import java.text.DecimalFormat;
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
 
-    public static FluxOracleScreen fx = new FluxOracleScreen(new StringTextComponent("fluxScreen"));
+    public static FluxOracleScreenGui fxG = new FluxOracleScreenGui();
     static Minecraft mc = Minecraft.getInstance();
 
     @SubscribeEvent
     static void renderWorldLastEvent(RenderWorldLastEvent evt) {
         if(mc.player.getHeldItemMainhand().getItem() instanceof FluxOracle && ((FluxOracle)mc.player.getHeldItemMainhand().getItem()).beingUsed) {
-            mc.displayGuiScreen(fx);
+            mc.displayGuiScreen(fxG);
 
         }
 
@@ -49,10 +50,33 @@ public class WorldEventHandler {
 
             String message = String.format("Hello there, you have %s flux.",h.getBedrockFluxString());
             player.sendStatusMessage(new StringTextComponent(message),false);
+            if (h.getCrafterFlux()){
+                h.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                h.getScreen().flux = h;
+                BedrockResources.proxy.getMinecraft().ingameGUI=h.getScreen();
+            }
 
         });
 
 
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCraft(PlayerEvent.ItemCraftedEvent event){
+        if (event.getCrafting().getItem() instanceof FluxOracle && !event.getPlayer().world.isRemote){
+            PlayerEntity player = event.getPlayer();
+            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+            FluxOracleScreen fx = new FluxOracleScreen();
+            bedrockFlux.ifPresent(h -> {
+                h.setCrafterFlux();
+                fx.flux = h;
+                h.setScreen(fx);
+                BedrockResources.proxy.getMinecraft().ingameGUI=fx;
+                String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
+                player.sendStatusMessage(new StringTextComponent(message),true);
+
+            });
+        }
     }
 
     @SubscribeEvent
@@ -67,8 +91,11 @@ public class WorldEventHandler {
         bedrockFlux.ifPresent(h -> {
 
             String message = ("You hear whispers as you wake up from bed.");
-
             h.fill(100);
+            if(BedrockResources.proxy.getMinecraft().ingameGUI instanceof FluxOracleScreen){
+                h.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                h.getScreen().flux = h;
+            }
             player.sendStatusMessage(new StringTextComponent(message),true);
             player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + new TranslationTextComponent("message.bedres.whispers").getUnformattedComponentText()), false);
             player.world.addEntity(new LightningBoltEntity(player.world,player.posX,player.posY,player.posZ,true));

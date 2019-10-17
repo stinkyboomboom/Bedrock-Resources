@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "bedres:flux_oracle"
+  },
+  "pattern": [
+    "iei",
+    "ese",
+    "iei"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "e": {
+      "item": "bedres:bedrock_scrapes"
+    },
+    "s": {
+      "item": "minecraft:ender_eye"
+    }
+  }
+}

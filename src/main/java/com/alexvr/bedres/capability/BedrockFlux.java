@@ -1,5 +1,7 @@
 package com.alexvr.bedres.capability;
 
+import com.alexvr.bedres.gui.FluxOracleScreen;
+
 import java.text.DecimalFormat;
 import java.util.concurrent.Callable;
 
@@ -10,12 +12,17 @@ public class BedrockFlux implements IBedrockFlux
 {
     private float bedrockflux = 0.0f;
     private float maxbedrockflux = 2500.0F;
+    private boolean crafted = false;
+    private FluxOracleScreen screen = null;
 
     public void consume(float points)
     {
         this.bedrockflux -= points;
 
         if (this.bedrockflux < 0.0F) this.bedrockflux = 0.0F;
+        if (crafted){
+            screen.flux = this;
+        }
     }
 
     public float fill(float points)
@@ -26,12 +33,18 @@ public class BedrockFlux implements IBedrockFlux
             residue = bedrockflux-maxbedrockflux;
             bedrockflux= maxbedrockflux;
         }
+        if (crafted){
+            screen.flux = this;
+        }
         return residue;
     }
 
     public void set(float points)
     {
         this.bedrockflux = points;
+        if (crafted){
+            screen.flux = this;
+        }
     }
 
     public float getBedrockFlux()
@@ -42,6 +55,27 @@ public class BedrockFlux implements IBedrockFlux
     @Override
     public float getMaxBedrockFlux() {
         return maxbedrockflux;
+    }
+
+    @Override
+    public boolean getCrafterFlux() {
+        return crafted;
+    }
+
+    @Override
+    public void setCrafterFlux() {
+        crafted = true;
+
+    }
+
+    @Override
+    public FluxOracleScreen getScreen() {
+        return screen;
+    }
+
+    @Override
+    public void setScreen(FluxOracleScreen fx) {
+        screen=fx;
     }
 
     @Override

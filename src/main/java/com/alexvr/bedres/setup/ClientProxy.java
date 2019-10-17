@@ -31,5 +31,10 @@ public class ClientProxy implements IProxy{
         return Minecraft.getInstance().player;
     }
 
+    @Override
+    public Minecraft getMinecraft() {
+        return Minecraft.getInstance();
+    }
+
 
 }

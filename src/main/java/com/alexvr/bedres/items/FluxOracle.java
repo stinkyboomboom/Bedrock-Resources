@@ -13,7 +13,7 @@ public class FluxOracle extends Item {
     public boolean beingUsed = false;
     public FluxOracle() {
         super(new Item.Properties()
-                .group(BedrockResources.setup.itemgroup));
+                .group(BedrockResources.setup.itemgroup).maxStackSize(1));
         setRegistryName("flux_oracle");
     }
 
