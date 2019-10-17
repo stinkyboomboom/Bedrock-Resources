@@ -24,17 +24,6 @@ public class FluxOracleScreenGui extends Screen {
     }
 
     @Override
-    public boolean isMouseOver(double p_isMouseOver_1_, double p_isMouseOver_3_) {
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public IGuiEventListener getFocused() {
-        return super.getFocused();
-    }
-
-    @Override
     public boolean isPauseScreen() {
         return false;
     }
@@ -68,7 +57,7 @@ public class FluxOracleScreenGui extends Screen {
     @Override
     public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
 
-        drawModalRectWithCustomSizedTexture(0,0,Minecraft.getInstance().mainWindow.getScaledHeight(),Minecraft.getInstance().mainWindow.getScaledHeight()-64,new ResourceLocation("bedres","textures/gui/flux_oracle_gui.png"));
+        drawModalRectWithCustomSizedTexture(0,Minecraft.getInstance().mainWindow.getScaledWidth(),Minecraft.getInstance().mainWindow.getScaledHeight(),Minecraft.getInstance().mainWindow.getScaledHeight()-64,new ResourceLocation("bedres","textures/gui/flux_oracle_gui.png"));
 
     }
 }
