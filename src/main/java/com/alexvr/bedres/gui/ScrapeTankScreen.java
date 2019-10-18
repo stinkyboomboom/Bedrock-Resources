@@ -2,6 +2,7 @@ package com.alexvr.bedres.gui;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
+import com.alexvr.bedres.utils.RenderHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -15,9 +16,12 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class ScrapeTankScreen extends ContainerScreen<ScrapeTankContainer> implements IHasContainer<ScrapeTankContainer> {
     private static final ResourceLocation SCRAPE_TANK_GUI_TEXTURE = new ResourceLocation(BedrockResources.MODID,"textures/gui/scrape_tank_gui.png");
 
+    public ScrapeTankContainer scrapeTankContainer;
+
     public ScrapeTankScreen(ScrapeTankContainer scrapeTankContainer, PlayerInventory playerInventory, ITextComponent name) {
         super(scrapeTankContainer, playerInventory, name);
         this.passEvents = false;
+        this.scrapeTankContainer = scrapeTankContainer;
 
     }
 
