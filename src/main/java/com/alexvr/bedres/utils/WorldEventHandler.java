@@ -7,13 +7,17 @@ import com.alexvr.bedres.gui.FluxOracleScreen;
 import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -37,6 +41,15 @@ public class WorldEventHandler {
 
         }
 
+    }
+
+
+    @SubscribeEvent
+    public static void onInitGuiEvent(final InitGuiEvent event) {
+        final Screen gui = event.getGui();
+        if (gui instanceof FluxOracleScreenGui) {
+
+        }
     }
 
     @SubscribeEvent
