@@ -4,6 +4,7 @@ import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.capability.BedrockFluxProvider;
 import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.registry.ModItems;
+import com.alexvr.bedres.registry.ModParticles;
 import com.alexvr.bedres.utils.VectorHelper;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.*;
@@ -68,7 +69,6 @@ public class ScrapeKnife extends SwordItem {
                     playerIn.addPotionEffect(new EffectInstance(Effects.NAUSEA,20 *15,2,true,true));
                     playerIn.addPotionEffect(new EffectInstance(Effects.HUNGER,20 *25,2,true,true));
                     playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS,20 *15,1,true,true));
-
 
                 });
 
