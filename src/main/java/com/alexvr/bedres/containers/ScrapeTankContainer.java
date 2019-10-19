@@ -19,7 +19,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class ScrapeTankContainer extends Container {
 
-    private TileEntity tileEntity;
+    public TileEntity tileEntity;
     private PlayerEntity player;
 
     private InvWrapper playerInventory;

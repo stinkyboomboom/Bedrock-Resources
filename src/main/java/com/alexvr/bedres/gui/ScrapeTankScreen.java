@@ -2,7 +2,6 @@ package com.alexvr.bedres.gui;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
-import com.alexvr.bedres.utils.RenderHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -12,9 +11,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class ScrapeTankScreen extends ContainerScreen<ScrapeTankContainer> implements IHasContainer<ScrapeTankContainer> {
-    private static final ResourceLocation SCRAPE_TANK_GUI_TEXTURE = new ResourceLocation(BedrockResources.MODID,"textures/gui/scrape_tank_gui.png");
+    public static final ResourceLocation SCRAPE_TANK_GUI_TEXTURE = new ResourceLocation(BedrockResources.MODID,"textures/gui/scrape_tank_gui.png");
 
     public ScrapeTankContainer scrapeTankContainer;
 
@@ -48,5 +48,10 @@ public class ScrapeTankScreen extends ContainerScreen<ScrapeTankContainer> imple
         int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
         this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
+        scrapeTankContainer.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            this.blit(relX+(int)(176*0.8068181819), relY+(int)(166*0.0843373493975904), 179, 14, 16, (int)(52*(h.getStackInSlot(0).getCount()/64.0)));
+
+        });
+
     }
 }

@@ -3,10 +3,15 @@
   "item.bedres.bedrock_scrapes": "Bedrock Scrapes",
   "item.bedres.scrape_knife": "Scraping Knife",
   "item.bedres.flux_oracle": "Flux Oracle",
+  "item.bedres.enderian_ingot": "Enderian Ingot",
+
 
 
   "_comment": "Blocks",
   "block.bedres.scrape_tank": "Scrape Tank",
+  "block.bedres.enderian_block": "Enderian Block",
+  "block.bedres.enderian_ore": "Enderian Ore",
+
 
   "_comment": "Creative Tab",
   "itemGroup.bedres": "Bedrock Resources",

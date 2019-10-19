@@ -1,8 +1,11 @@
 package com.alexvr.bedres;
 
+import com.alexvr.bedres.blocks.EnderianBlock;
+import com.alexvr.bedres.blocks.EnderianOre;
 import com.alexvr.bedres.blocks.ScrapeTank;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.BedrockScrape;
+import com.alexvr.bedres.items.EnderianIngot;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.items.ScrapeKnife;
 import com.alexvr.bedres.registry.ModBlocks;
@@ -60,6 +63,9 @@ public class BedrockResources {
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
             event.getRegistry().register(new ScrapeTank());
+            event.getRegistry().register(new EnderianBlock());
+            event.getRegistry().register(new EnderianOre());
+
         }
 
         @SubscribeEvent
@@ -67,9 +73,13 @@ public class BedrockResources {
             Item.Properties properties = new Item.Properties()
                     .group(setup.itemgroup);
             event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName("scrape_tank"));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderianBlock, properties).setRegistryName("enderian_block"));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderianOre, properties).setRegistryName("enderian_ore"));
             event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
+            event.getRegistry().register(new EnderianIngot());
+
 
 
         }

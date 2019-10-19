@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "bedres:enderian_ingot",
+    "count": 9
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+      "item": "bedres:enderian_block"
+    }]
+}
+

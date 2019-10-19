@@ -12,11 +12,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.*;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.state.IProperty;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -47,9 +50,7 @@ public class ScrapeKnife extends SwordItem {
                 playerIn.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_AQUA + new TranslationTextComponent("message.bedres.validblock").getUnformattedComponentText()), true);
                 ItemStack stack = new ItemStack(ModItems.bedrockScrapes);
                 InventoryHelper.spawnItemStack(worldIn,  bs.getPos().getX(), bs.getPos().getY()+1, bs.getPos().getZ(),stack);
-                playerIn.getHeldItemMainhand().damageItem(2, playerIn, (p_220044_0_) -> {
-                    p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-                });
+                playerIn.getHeldItemMainhand().damageItem(2, playerIn, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                 LazyOptional<IBedrockFlux> bedrockFlux = playerIn.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
                 bedrockFlux.ifPresent(h -> {
@@ -64,10 +65,18 @@ public class ScrapeKnife extends SwordItem {
                         playerIn.sendStatusMessage(new StringTextComponent("You were careful and only inhaled over 15 particles"),true);
 
                     }
+                    playerIn.addPotionEffect(new EffectInstance(Effects.NAUSEA,20 *15,2,true,true));
+                    playerIn.addPotionEffect(new EffectInstance(Effects.HUNGER,20 *25,2,true,true));
+                    playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS,20 *15,1,true,true));
 
 
                 });
 
+            }
+            else if(playerIn.isSneaking()){
+                LazyOptional<IBedrockFlux> bedrockFlux = playerIn.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+
+                bedrockFlux.ifPresent(h -> h.consume(100));
             }
         }
 

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "bedres:enderian_block"
+  },
+  "pattern": [
+    "iii",
+    "iii",
+    "iii"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "i": {
+      "item": "bedres:enderian_ingot"
+    }
+  }
+}

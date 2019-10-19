@@ -16,4 +16,7 @@ public class ModItems {
     @ObjectHolder("bedres:flux_oracle")
     public static FluxOracle oracleFlux;
 
+    @ObjectHolder("bedres:enderian_ingot")
+    public static FluxOracle enderianIngot;
+
 }
