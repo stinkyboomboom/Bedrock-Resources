@@ -8,18 +8,27 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class BedrockScraperControllerTile extends TileEntity implements IRestorableTileEntity , INamedContainerProvider {
+
+    BlockPos pos1,pos2,pos3;
+
 
 
     public BedrockScraperControllerTile() {
         super(ModBlocks.bedrockScraperControllerTile);
+        pos1= new BlockPos(0,0,0);
+        pos2= new BlockPos(0,0,0);
+        pos3= new BlockPos(0,0,0);
+
     }
 
     @Override
@@ -50,12 +59,31 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     public void readRestorableFromNBT(CompoundNBT compound) {
         if (compound.contains("items")) {
             itemHandler.deserializeNBT((CompoundNBT) compound.getCompound("items"));
+
+        }
+        if(compound.contains("pos1")){
+            long[] list = compound.getLongArray("pos1");
+            pos1 = new BlockPos(list[0],list[1],list[2]);
+        }
+        if(compound.contains("pos2")){
+            long[] list = compound.getLongArray("pos2");
+            pos2 = new BlockPos(list[0],list[1],list[2]);
+        }
+        if(compound.contains("pos3")){
+            long[] list = compound.getLongArray("pos3");
+            pos3 = new BlockPos(list[0],list[1],list[2]);
         }
     }
 
     @Override
     public void writeRestorableToNBT(CompoundNBT compound) {
         compound.put("items", itemHandler.serializeNBT());
+        long[] position1 = {pos1.getX(),pos1.getY(),pos1.getZ()};
+        compound.putLongArray("pos1",position1);
+        long[] position2 = {pos2.getX(),pos2.getY(),pos2.getZ()};
+        compound.putLongArray("pos2",position2);
+        long[] position3 = {pos3.getX(),pos3.getY(),pos3.getZ()};
+        compound.putLongArray("pos3",position3);
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -72,6 +100,13 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
             BedrockScraperControllerTile.this.markDirty();
         }
     };
+
+    public void setExpecctedBlockPositions(BlockPos pos1,BlockPos pos2,BlockPos pos3){
+        this.pos1=pos1;
+        this.pos2=pos2;
+        this.pos3=pos3;
+        markDirty();
+    }
 
 
 }
