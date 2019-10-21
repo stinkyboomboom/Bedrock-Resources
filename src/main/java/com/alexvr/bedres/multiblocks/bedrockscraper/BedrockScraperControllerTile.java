@@ -145,10 +145,6 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     public boolean checkSlaves(){
         n=false;s=false;e=false;w=false;
         setDirection(dir);
-        System.out.println(dir);
-        System.out.println(String.valueOf(world.getBlockState(pos1).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
-        System.out.println(String.valueOf(world.getBlockState(pos2).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
-        System.out.println(String.valueOf(world.getBlockState(pos3).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         setDirection(String.valueOf(world.getBlockState(pos1).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         setDirection(String.valueOf(world.getBlockState(pos2).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         setDirection(String.valueOf(world.getBlockState(pos3).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
