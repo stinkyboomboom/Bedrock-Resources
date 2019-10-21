@@ -4,13 +4,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-public class EnderianOre extends Block {
-    public EnderianOre() {
-        super(Properties.create(Material.IRON)
-                .sound(SoundType.STONE)
-                .hardnessAndResistance(54.0f)
-                .lightValue(3));
-        setRegistryName("enderian_ore");
+public class EnderianOre extends Block{
+
+    public EnderianOre(Material m, SoundType s, float hardness, int lightVal, String regName) {
+        super(Properties.create(m)
+                .sound(s)
+                .hardnessAndResistance(hardness)
+                .lightValue(lightVal));
+        setRegistryName(regName);
 
     }
+
 }

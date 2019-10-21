@@ -1,6 +1,7 @@
 package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.items.BedrockScrape;
+import com.alexvr.bedres.items.EnderianIngot;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.items.ScrapeKnife;
 import net.minecraftforge.registries.ObjectHolder;
@@ -17,6 +18,6 @@ public class ModItems {
     public static FluxOracle oracleFlux;
 
     @ObjectHolder("bedres:enderian_ingot")
-    public static FluxOracle enderianIngot;
+    public static EnderianIngot enderianIngot;
 
 }
