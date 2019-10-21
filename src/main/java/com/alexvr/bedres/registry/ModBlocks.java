@@ -42,8 +42,6 @@ public class ModBlocks {
     @ObjectHolder("bedres:bedrock_scraper_slave")
     public static BedrockScrapperSlaveBlock bedrockScraperSlaveBlock;
 
-    @ObjectHolder("bedres:bedrock_scraper_slave")
-    public static ContainerType<BedrockScraperContainer> bedrockScraperSlaveContainer;
 
 
 }

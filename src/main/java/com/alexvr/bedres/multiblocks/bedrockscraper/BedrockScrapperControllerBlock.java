@@ -30,8 +30,6 @@ public class BedrockScrapperControllerBlock extends Block {
 
     public static final DirectionProperty FACING_HORIZ = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-    BlockPos topRight,topLeft,bottomRight;
-
     public BedrockScrapperControllerBlock() {
         super(Block.Properties.create(Material.IRON)
                 .sound(SoundType.ANVIL)
@@ -73,7 +71,7 @@ public class BedrockScrapperControllerBlock extends Block {
                         pos3 = pos.offset(Direction.EAST);
                         break;
                 }
-                ((BedrockScraperControllerTile) worldIn.getTileEntity(pos)).setExpecctedBlockPositions(pos1, pos2, pos3);
+                ((BedrockScraperControllerTile) worldIn.getTileEntity(pos)).setExpecctedBlockPositions(pos1, pos2, pos3,String.valueOf(placer.getHorizontalFacing().getOpposite().toString().charAt(0)));
 
             }
         }
@@ -92,7 +90,7 @@ public class BedrockScrapperControllerBlock extends Block {
                 BlockPos pos1 = ((BedrockScraperControllerTile) worldIn.getTileEntity(pos)).pos1;
                 BlockPos pos2 = ((BedrockScraperControllerTile) worldIn.getTileEntity(pos)).pos2;
                 BlockPos pos3 = ((BedrockScraperControllerTile) worldIn.getTileEntity(pos)).pos3;
-                if (worldIn.getBlockState(pos1).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName()) && worldIn.getBlockState(pos2).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName()) && worldIn.getBlockState(pos3).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName())) {
+                if (((BedrockScraperControllerTile)worldIn.getTileEntity(pos)).checkSlaves()&&worldIn.getBlockState(pos1).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName()) && worldIn.getBlockState(pos2).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName()) && worldIn.getBlockState(pos3).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName())) {
                     TileEntity tileEntity = worldIn.getTileEntity(pos);
                     if (tileEntity instanceof INamedContainerProvider) {
                         NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());

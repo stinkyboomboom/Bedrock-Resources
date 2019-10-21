@@ -5,7 +5,6 @@ import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,8 +25,8 @@ public class BedrockScraperContainer extends Container {
 
     private int sizeInventory;
 
-    public BedrockScraperContainer(ContainerType<BedrockScraperContainer> ss,int id, World world, BlockPos pos, PlayerInventory pi, PlayerEntity player) {
-        super(ss,id);
+    public BedrockScraperContainer(int id, World world, BlockPos pos, PlayerInventory pi, PlayerEntity player) {
+        super(ModBlocks.bedrockScraperControllerContainer,id);
         TileEntity e = world.getTileEntity(pos);
         this.player=player;
         this.tileEntity=e;
@@ -103,6 +102,6 @@ public class BedrockScraperContainer extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(),tileEntity.getPos()),player,ModBlocks.scrapeTank);
+        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(),tileEntity.getPos()),player,ModBlocks.bedrockScraperControllerBlock);
     }
 }

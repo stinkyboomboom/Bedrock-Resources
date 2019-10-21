@@ -15,11 +15,12 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 
 public class BedrockScraperControllerTile extends TileEntity implements IRestorableTileEntity , INamedContainerProvider {
 
     BlockPos pos1,pos2,pos3;
+    Boolean n,s,e,w;
+    String dir;
 
 
 
@@ -40,7 +41,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     @Override
     public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
 
-        return new BedrockScraperContainer(ModBlocks.bedrockScraperControllerContainer,p_createMenu_1_,world,pos,p_createMenu_2_,p_createMenu_3_);
+        return new BedrockScraperContainer(p_createMenu_1_,world,pos,p_createMenu_2_,p_createMenu_3_);
     }
 
     @Override
@@ -73,6 +74,11 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
             long[] list = compound.getLongArray("pos3");
             pos3 = new BlockPos(list[0],list[1],list[2]);
         }
+        if(compound.contains("dir")){
+            String direction = compound.getString("dir");
+            setBaseDirection(direction);
+            setDirection(direction);
+        }
     }
 
     @Override
@@ -84,6 +90,8 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         compound.putLongArray("pos2",position2);
         long[] position3 = {pos3.getX(),pos3.getY(),pos3.getZ()};
         compound.putLongArray("pos3",position3);
+        compound.putString("dir",dir);
+
     }
 
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -101,12 +109,51 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         }
     };
 
-    public void setExpecctedBlockPositions(BlockPos pos1,BlockPos pos2,BlockPos pos3){
+    public void setExpecctedBlockPositions(BlockPos pos1,BlockPos pos2,BlockPos pos3,String direction){
         this.pos1=pos1;
         this.pos2=pos2;
         this.pos3=pos3;
+        setDirection(direction);
+        setBaseDirection(direction);
         markDirty();
     }
 
+    private void setBaseDirection(String direction){
+        dir = direction;
+
+    }
+
+
+    private void setDirection(String direction){
+        switch (direction){
+            case "n":
+                n=true;
+                break;
+            case "s":
+                s=true;
+                break;
+            case "e":
+                e=true;
+                break;
+            case "w":
+                w=true;
+                break;
+        }
+
+    }
+
+    public boolean checkSlaves(){
+        n=false;s=false;e=false;w=false;
+        setDirection(dir);
+        System.out.println(dir);
+        System.out.println(String.valueOf(world.getBlockState(pos1).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
+        System.out.println(String.valueOf(world.getBlockState(pos2).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
+        System.out.println(String.valueOf(world.getBlockState(pos3).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
+        setDirection(String.valueOf(world.getBlockState(pos1).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
+        setDirection(String.valueOf(world.getBlockState(pos2).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
+        setDirection(String.valueOf(world.getBlockState(pos3).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
+
+        return n&&s&&e&&w;
+    }
 
 }

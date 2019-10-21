@@ -10,10 +10,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 public class BedrockScraperScreen extends ContainerScreen<BedrockScraperContainer> implements IHasContainer<BedrockScraperContainer> {
-    public static final ResourceLocation SCRAPE_TANK_GUI_TEXTURE = new ResourceLocation(BedrockResources.MODID,"textures/gui/scrape_tank_gui.png");
+    public static final ResourceLocation BEDROCK_SCRAPER_GUI_TEXTURE = new ResourceLocation(BedrockResources.MODID,"textures/gui/bedrock_scraper_gui.png");
 
     public BedrockScraperContainer scraperContainer;
 
@@ -43,14 +42,10 @@ public class BedrockScraperScreen extends ContainerScreen<BedrockScraperContaine
      */
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(SCRAPE_TANK_GUI_TEXTURE);
+        this.minecraft.getTextureManager().bindTexture(BEDROCK_SCRAPER_GUI_TEXTURE);
         int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
         this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
-        scraperContainer.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            this.blit(relX+(int)(176*0.8068181819), relY+(int)(166*0.0843373493975904), 179, 14, 16, (int)(52*(h.getStackInSlot(0).getCount()/64.0)));
-
-        });
 
     }
 }

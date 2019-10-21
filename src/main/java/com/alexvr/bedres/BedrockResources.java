@@ -107,12 +107,9 @@ public class BedrockResources {
             }).setRegistryName("scrape_tank"));
 
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-                return new BedrockScraperContainer(ModBlocks.bedrockScraperControllerContainer,windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer());
+                return new BedrockScraperContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer());
             }).setRegistryName("bedrock_scraper_controller"));
 
-            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-                return new BedrockScraperContainer(ModBlocks.bedrockScraperSlaveContainer,windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer());
-            }).setRegistryName("bedrock_scraper_slave"));
 
         }
 

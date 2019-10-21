@@ -4,6 +4,7 @@ import com.alexvr.bedres.capability.BedrockFlux;
 import com.alexvr.bedres.capability.BedrockFluxStorage;
 import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.gui.ScrapeTankScreen;
+import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperScreen;
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -24,6 +25,7 @@ public class ClientProxy implements IProxy{
     @Override
     public void init() {
         ScreenManager.registerFactory(ModBlocks.scrapeTankContainerType, ScrapeTankScreen::new);
+        ScreenManager.registerFactory(ModBlocks.bedrockScraperControllerContainer, BedrockScraperScreen::new);
         CapabilityManager.INSTANCE.register(IBedrockFlux.class, new BedrockFluxStorage(), BedrockFlux::new);
 
         for (BiomeManager.BiomeType btype : BiomeManager.BiomeType.values()) {
