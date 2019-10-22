@@ -20,7 +20,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
 
     BlockPos pos1,pos2,pos3;
     Boolean n,s,e,w;
-    String dir;
+    String dir="";
 
 
 

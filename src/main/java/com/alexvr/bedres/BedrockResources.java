@@ -25,6 +25,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -59,7 +60,9 @@ public class BedrockResources {
         setup.init();
         proxy.init();
 
-
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            ModBlocks.registerRenderers();
+        });
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD

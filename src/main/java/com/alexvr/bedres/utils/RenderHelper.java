@@ -1,12 +1,23 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.registry.ModBlocks;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 public class RenderHelper {
     public static void drawModalRectWithCustomSizedTexture(double leftSideX, double rightSideX, double bottomY, double topY, ResourceLocation texture) {
@@ -37,51 +48,32 @@ public class RenderHelper {
         GlStateManager.disableBlend();
     }
 
-    public static void drawCuboidAt(final double x, final double y, final double z, final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double z_size, final double scale) {
+    public static void drawCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,int xrotation,int yrotation, int zrotation, int rotationSpeed) {
 
         GlStateManager.pushMatrix();
-        GlStateManager.scaled(scale, scale, scale);
 
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        GlStateManager.translated(xtranslate,ytranslate,ztranslate);
+        GlStateManager.scaled(xScale,yScale,zScale);
+        if(rotate) {
+            long angle = (System.currentTimeMillis() / rotationSpeed) % 360;
+            GlStateManager.rotated(angle, xrotation, yrotation, zrotation);
+        }
+        GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+        
 
-        // UP
-        bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
-        bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
-        bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
-        bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+        World world = te.getWorld();
+        // Translate back to local view coordinates so that we can do the acual rendering here
+        GlStateManager.translated(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
 
-        // DOWN
-        bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
-        bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
-        bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
-        bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-        // LEFT
-        bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
-        bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
-        bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
-        bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
-
-        // RIGHT
-        bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
-        bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
-        bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
-        bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
-
-        // BACK
-        bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
-        bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(minU, minV).endVertex();
-        bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(maxU, minV).endVertex();
-        bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
-
-        // FRONT
-        bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
-        bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(maxU, maxV).endVertex();
-        bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(minU, maxV).endVertex();
-        bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
-
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        IBakedModel model = dispatcher.getModelForState(blockTexture);
+        net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
+        long i = blockTexture.getPositionRandom(te.getPos());
+        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(), bufferBuilder, true,new Random(),i);
         tessellator.draw();
 
         GlStateManager.popMatrix();
