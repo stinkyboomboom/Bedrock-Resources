@@ -22,7 +22,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
 
     BlockPos pos1,pos2,pos3;
     Boolean n,s,e,w;
-    String dir="";
+    public String dir="";
     public boolean multiBlock=false;
 
 
@@ -82,7 +82,6 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
             setBaseDirection(direction);
             setDirection(direction);
         }
-        checkSlaves();
     }
 
     @Override
@@ -140,6 +139,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         }
 
     }
+
 
     @Override
     public double getMaxRenderDistanceSquared() {
