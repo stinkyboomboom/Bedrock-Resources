@@ -43,7 +43,6 @@ public class BedrockScrapperControllerBlock extends Block {
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        System.out.println(placer.getHorizontalFacing().toString());
         if(!worldIn.isRemote) {
             if (worldIn.getTileEntity(pos) instanceof BedrockScraperControllerTile) {
                 BlockPos pos1 = new BlockPos(0, 0, 0);
@@ -94,6 +93,7 @@ public class BedrockScrapperControllerBlock extends Block {
                     TileEntity tileEntity = worldIn.getTileEntity(pos);
                     if (tileEntity instanceof INamedContainerProvider) {
                         NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
+                        return true;
                     }
                 } else {
                     if (!worldIn.getBlockState(pos1).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName())) {

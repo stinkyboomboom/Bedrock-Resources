@@ -49,6 +49,7 @@ public class ScrapeTank extends Block{
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if(tileEntity instanceof INamedContainerProvider){
                 NetworkHooks.openGui((ServerPlayerEntity) player,(INamedContainerProvider)tileEntity,tileEntity.getPos());
+                return true;
             }
         }
 

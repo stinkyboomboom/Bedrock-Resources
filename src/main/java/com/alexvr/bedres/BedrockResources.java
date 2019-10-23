@@ -60,9 +60,7 @@ public class BedrockResources {
         setup.init();
         proxy.init();
 
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            ModBlocks.registerRenderers();
-        });
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> ModBlocks::registerRenderers);
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
@@ -99,7 +97,7 @@ public class BedrockResources {
         @SubscribeEvent
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
             event.getRegistry().register(TileEntityType.Builder.create(ScrapeTankTile::new, ModBlocks.scrapeTank).build(null).setRegistryName("scrape_tank"));
-            event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new).build(null).setRegistryName("bedrock_scraper_controller"));
+            event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new, ModBlocks.bedrockScraperControllerBlock).build(null).setRegistryName("bedrock_scraper_controller"));
 
         }
 

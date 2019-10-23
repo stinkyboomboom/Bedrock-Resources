@@ -7,20 +7,23 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class BedrockScraperControllerTile extends TileEntity implements IRestorableTileEntity , INamedContainerProvider {
+public class BedrockScraperControllerTile extends TileEntity implements IRestorableTileEntity , INamedContainerProvider, ITickableTileEntity {
 
     BlockPos pos1,pos2,pos3;
     Boolean n,s,e,w;
     String dir="";
+    public boolean multiBlock=false;
 
 
 
@@ -79,6 +82,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
             setBaseDirection(direction);
             setDirection(direction);
         }
+        checkSlaves();
     }
 
     @Override
@@ -92,11 +96,6 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         compound.putLongArray("pos3",position3);
         compound.putString("dir",dir);
 
-    }
-
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        // If we are too far away from this tile entity you cannot use it
-        return playerIn.getDistanceSq(new Vec3d(pos.add(0.5D, 0.5D, 0.5D))) <= 64D;
     }
 
     private ItemStackHandler itemHandler = new ItemStackHandler(3*9) {
@@ -142,14 +141,69 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
 
     }
 
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return 4096.0D;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return super.getRenderBoundingBox();
+    }
+
+
     public boolean checkSlaves(){
+        if ((!world.getBlockState(pos1).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName())|| !world.getBlockState(pos2).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName())|| !world.getBlockState(pos3).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName()))){
+            multiBlock = false;
+            return false;
+        }
         n=false;s=false;e=false;w=false;
         setDirection(dir);
         setDirection(String.valueOf(world.getBlockState(pos1).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         setDirection(String.valueOf(world.getBlockState(pos2).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         setDirection(String.valueOf(world.getBlockState(pos3).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
-
-        return n&&s&&e&&w;
+        multiBlock = n&&s&&e&&w;
+        return multiBlock;
     }
 
+    @Override
+    public void tick() {
+        if(!world.isRemote){
+            if(world.isPlayerWithin(pos1.getX(),pos1.getY(),pos1.getZ(),1)){
+                world.getClosestPlayer(pos1.getX(),pos1.getY(),pos1.getZ(),1,false).attackEntityFrom(DamageSource.CACTUS,1.5f);
+            }
+            if(world.isPlayerWithin(pos2.getX(),pos2.getY(),pos2.getZ(),1)){
+                world.getClosestPlayer(pos2.getX(),pos2.getY(),pos2.getZ(),1,false).attackEntityFrom(DamageSource.CACTUS,1.5f);
+            }
+            if(world.isPlayerWithin(pos3.getX(),pos3.getY(),pos3.getZ(),1)){
+                world.getClosestPlayer(pos3.getX(),pos3.getY(),pos3.getZ(),1,false).attackEntityFrom(DamageSource.CACTUS,1.5f);
+            }
+        }
+    }
+
+    private final long INVALID_TIME = 0;
+    private long lastTime = INVALID_TIME;  // used for animation
+    private double lastAngularPosition; // used for animation
+    public double getNextAngularPosition(double revsPerSecond)
+    {
+        // we calculate the next position as the angular speed multiplied by the elapsed time since the last position.
+        // Elapsed time is calculated using the system clock, which means the animations continue to
+        //  run while the game is paused.
+        // Alternatively, the elapsed time can be calculated as
+        //  time_in_seconds = (number_of_ticks_elapsed + partialTick) / 20.0;
+        //  where your tileEntity's update() method increments number_of_ticks_elapsed, and partialTick is passed by vanilla
+        //   to your TESR renderTileEntityAt() method.
+        long timeNow = System.nanoTime();
+        if (lastTime == INVALID_TIME) {   // automatically initialise to 0 if not set yet
+            lastTime = timeNow;
+            lastAngularPosition = 0.0;
+        }
+        final double DEGREES_PER_REV = 360.0;
+        final double NANOSECONDS_PER_SECOND = 1e9;
+        double nextAngularPosition = lastAngularPosition + (timeNow - lastTime) * revsPerSecond * DEGREES_PER_REV / NANOSECONDS_PER_SECOND;
+        nextAngularPosition = nextAngularPosition % DEGREES_PER_REV;
+        lastAngularPosition = nextAngularPosition;
+        lastTime = timeNow;
+        return nextAngularPosition;
+    }
 }

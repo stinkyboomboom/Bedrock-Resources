@@ -1,7 +1,6 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.registry.ModBlocks;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -9,7 +8,6 @@ import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -48,18 +46,17 @@ public class RenderHelper {
         GlStateManager.disableBlend();
     }
 
-    public static void drawCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,int xrotation,int yrotation, int zrotation, int rotationSpeed) {
+    public static void drawCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,double xrotation,double yrotation, double zrotation, int rotationSpeed) {
 
         GlStateManager.pushMatrix();
-
         GlStateManager.translated(xtranslate,ytranslate,ztranslate);
         GlStateManager.scaled(xScale,yScale,zScale);
         if(rotate) {
-            long angle = (System.currentTimeMillis() / rotationSpeed) % 360;
+
+            long angle = (System.currentTimeMillis() / rotationSpeed) %360;
             GlStateManager.rotated(angle, xrotation, yrotation, zrotation);
         }
         GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
-        
 
         World world = te.getWorld();
         // Translate back to local view coordinates so that we can do the acual rendering here
@@ -75,6 +72,46 @@ public class RenderHelper {
         long i = blockTexture.getPositionRandom(te.getPos());
         dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(), bufferBuilder, true,new Random(),i);
         tessellator.draw();
+
+        GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+
+        GlStateManager.popMatrix();
+    }
+
+
+
+        public static void drawAngleCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,double xrotation,double yrotation, double zrotation, int rotationSpeed) {
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scaled(xScale,yScale,zScale);
+        if(rotate) {
+
+            double angle = ((System.currentTimeMillis() / rotationSpeed) %720 )*(2*Math.PI);
+            GlStateManager.rotated(angle, xrotation, 1, zrotation);
+
+
+        }
+        GlStateManager.translated(xtranslate,ytranslate,ztranslate);
+
+        GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+
+        World world = te.getWorld();
+        // Translate back to local view coordinates so that we can do the acual rendering here
+        GlStateManager.translated(-(te.getPos().getX()), -(te.getPos().getY()), -(te.getPos().getZ()));
+
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        IBakedModel model = dispatcher.getModelForState(blockTexture);
+        net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
+        long i = blockTexture.getPositionRandom(te.getPos());
+        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(), bufferBuilder, true,new Random(),i);
+        tessellator.draw();
+
+        GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
 
         GlStateManager.popMatrix();
     }

@@ -11,6 +11,7 @@ import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.renderer.ScrapeTankTER;
+import com.alexvr.bedres.renderer.ScraperControllerTER;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
@@ -54,7 +55,9 @@ public class ModBlocks {
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {
-            ClientRegistry.bindTileEntitySpecialRenderer(ScrapeTankTile.class, new ScrapeTankTER());
+           ClientRegistry.bindTileEntitySpecialRenderer(ScrapeTankTile.class, new ScrapeTankTER());
+
+            ClientRegistry.bindTileEntitySpecialRenderer(BedrockScraperControllerTile.class, new ScraperControllerTER());
         });
     }
 }

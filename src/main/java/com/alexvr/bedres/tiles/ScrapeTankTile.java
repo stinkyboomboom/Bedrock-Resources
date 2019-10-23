@@ -41,12 +41,12 @@ public class ScrapeTankTile extends TileEntity implements ITickableTileEntity, I
 
     @Override
     public double getMaxRenderDistanceSquared() {
-        return Math.pow(3, 2);
+        return 4096.0D;
     }
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(getPos());
+        return super.getRenderBoundingBox();
     }
 
 
@@ -54,6 +54,7 @@ public class ScrapeTankTile extends TileEntity implements ITickableTileEntity, I
     public void tick() {
 
     }
+
 
     @Override
     public void read(CompoundNBT tag) {
@@ -94,28 +95,6 @@ public class ScrapeTankTile extends TileEntity implements ITickableTileEntity, I
 
     }
 
-    public double getNextAngularPosition(double revsPerSecond)
-    {
-        // we calculate the next position as the angular speed multiplied by the elapsed time since the last position.
-        // Elapsed time is calculated using the system clock, which means the animations continue to
-        //  run while the game is paused.
-        // Alternatively, the elapsed time can be calculated as
-        //  time_in_seconds = (number_of_ticks_elapsed + partialTick) / 20.0;
-        //  where your tileEntity's update() method increments number_of_ticks_elapsed, and partialTick is passed by vanilla
-        //   to your TESR renderTileEntityAt() method.
-        long timeNow = System.nanoTime();
-        if (lastTime == INVALID_TIME) {   // automatically initialise to 0 if not set yet
-            lastTime = timeNow;
-            lastAngularPosition = 0.0;
-        }
-        final double DEGREES_PER_REV = 360.0;
-        final double NANOSECONDS_PER_SECOND = 1e9;
-        double nextAngularPosition = lastAngularPosition + (timeNow - lastTime) * revsPerSecond * DEGREES_PER_REV / NANOSECONDS_PER_SECOND;
-        nextAngularPosition = nextAngularPosition % DEGREES_PER_REV;
-        lastAngularPosition = nextAngularPosition;
-        lastTime = timeNow;
-        return nextAngularPosition;
-    }
 
     public int getTotalItems(){
         int total =0 ;
