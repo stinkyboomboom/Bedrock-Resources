@@ -11,6 +11,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,10 +22,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BedrockScrapperControllerBlock extends Block {
 
@@ -39,6 +42,35 @@ public class BedrockScrapperControllerBlock extends Block {
 
         setDefaultState(getStateContainer().getBaseState().with(FACING_HORIZ, Direction.NORTH));
 
+    }
+
+    @Override
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        if ((worldIn.getTileEntity(pos)) instanceof BedrockScraperControllerTile){
+            switch (worldIn.getTileEntity(pos).getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ).toString()){
+                case "north":
+                    worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX(),pos.getY(),pos.getZ()+1,0,0.2,0);
+                    break;
+                case "east":
+                    worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0.2,0);
+                    break;
+                case "west":
+                    worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX()+1,pos.getY(),pos.getZ()+1,0,0.2,0);
+                    worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX()+1,pos.getY(),pos.getZ()+1,0,0.2,0);
+                    break;
+                case "south":
+                    worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX()+1,pos.getY(),pos.getZ(),0,0.2,0);
+                    break;
+            }
+        }
+        super.animateTick(stateIn, worldIn, pos, rand);
+    }
+
+    @Override
+    public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
+        if (!world.isRemote() && world.getTileEntity(pos) instanceof BedrockScraperControllerTile) {
+            ((BedrockScraperControllerTile) world.getTileEntity(pos)).checkSlaves();
+        }
     }
 
     @Override

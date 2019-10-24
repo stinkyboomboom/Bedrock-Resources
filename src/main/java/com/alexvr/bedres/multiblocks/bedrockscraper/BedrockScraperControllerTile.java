@@ -1,12 +1,19 @@
 package com.alexvr.bedres.multiblocks.bedrockscraper;
 
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.utils.IRestorableTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -24,6 +31,8 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     Boolean n,s,e,w;
     public String dir="";
     public boolean multiBlock=false;
+    double distanceDamage = 0.65;
+    int progress;
 
 
 
@@ -32,6 +41,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         pos1= new BlockPos(0,0,0);
         pos2= new BlockPos(0,0,0);
         pos3= new BlockPos(0,0,0);
+        progress=0;
 
     }
 
@@ -82,6 +92,10 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
             setBaseDirection(direction);
             setDirection(direction);
         }
+
+        if(compound.contains("tick")){
+            progress = compound.getInt("tick");
+        }
     }
 
     @Override
@@ -94,6 +108,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         long[] position3 = {pos3.getX(),pos3.getY(),pos3.getZ()};
         compound.putLongArray("pos3",position3);
         compound.putString("dir",dir);
+        compound.putInt("tick",progress);
 
     }
 
@@ -169,14 +184,47 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     @Override
     public void tick() {
         if(!world.isRemote){
-            if(world.isPlayerWithin(pos1.getX(),pos1.getY(),pos1.getZ(),1)){
-                world.getClosestPlayer(pos1.getX(),pos1.getY(),pos1.getZ(),1,false).attackEntityFrom(DamageSource.CACTUS,1.5f);
+            if(!multiBlock) {
+                if(progress>0){
+                    progress=0;
+                    markDirty();
+
+                }
+                if (world.isPlayerWithin(pos1.getX(), pos1.getY(), pos1.getZ(), distanceDamage)) {
+                    world.getClosestPlayer(pos1.getX(), pos1.getY(), pos1.getZ(), distanceDamage, false).attackEntityFrom(DamageSource.DROWN, 1.5f);
+                }
+                if (world.isPlayerWithin(pos2.getX(), pos2.getY(), pos2.getZ(), distanceDamage)) {
+                    world.getClosestPlayer(pos2.getX(), pos2.getY(), pos2.getZ(), distanceDamage, false).attackEntityFrom(DamageSource.CACTUS, 1.5f);
+                }
+                if (world.isPlayerWithin(pos3.getX(), pos3.getY(), pos3.getZ(), distanceDamage)) {
+                    world.getClosestPlayer(pos3.getX(), pos3.getY(), pos3.getZ(), distanceDamage, false).attackEntityFrom(DamageSource.CACTUS, 1.5f);
+                }
             }
-            if(world.isPlayerWithin(pos2.getX(),pos2.getY(),pos2.getZ(),1)){
-                world.getClosestPlayer(pos2.getX(),pos2.getY(),pos2.getZ(),1,false).attackEntityFrom(DamageSource.CACTUS,1.5f);
-            }
-            if(world.isPlayerWithin(pos3.getX(),pos3.getY(),pos3.getZ(),1)){
-                world.getClosestPlayer(pos3.getX(),pos3.getY(),pos3.getZ(),1,false).attackEntityFrom(DamageSource.CACTUS,1.5f);
+            else{
+                progress++;
+                System.out.println(progress%20);
+                if (progress%20==0){
+                    markDirty();
+                }
+                if(progress>= 20*60){
+                    progress=0;
+                    ItemStack stack = new ItemStack(ModItems.bedrockScrapes,1);
+                    TileEntity block = (world.getTileEntity(getPos().offset(getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ))));
+                    if (block instanceof IInventory){
+                        for (int i =0;i<((IInventory)block).getSizeInventory();i++){
+                            if(((IInventory)block).getStackInSlot(i).getItem() == ModItems.bedrockScrapes && ((IInventory)block).getStackInSlot(i).getCount()<64){
+                                ((IInventory)block).getStackInSlot(i).setCount(((IInventory)block).getStackInSlot(i).getCount()+1);
+                                return;
+                            }else if(((IInventory)block).getStackInSlot(i) == ItemStack.EMPTY){
+                                ((IInventory)block).setInventorySlotContents(i,stack);
+                                return;
+                            }
+                        }
+                    }else{
+                        InventoryHelper.spawnItemStack(world,  getPos().getX(), getPos().getY()+0.5, getPos().getZ(),stack);
+                        return;
+                    }
+                }
             }
         }
     }
