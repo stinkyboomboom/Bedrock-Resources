@@ -6,24 +6,27 @@ import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.gui.ScrapeTankScreen;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperScreen;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.world.ModFlowerFeature;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.biome.NetherBiome;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.CountRangeConfig;
+import net.minecraft.world.gen.placement.FrequencyConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class ClientProxy implements IProxy{
 
-
     @Override
     public void init() {
+        FlowersFeature MODFLOWER_FEATURE = new ModFlowerFeature(NoFeatureConfig::deserialize);
         ScreenManager.registerFactory(ModBlocks.scrapeTankContainerType, ScrapeTankScreen::new);
         ScreenManager.registerFactory(ModBlocks.bedrockScraperControllerContainer, BedrockScraperScreen::new);
         CapabilityManager.INSTANCE.register(IBedrockFlux.class, new BedrockFluxStorage(), BedrockFlux::new);
@@ -32,9 +35,14 @@ public class ClientProxy implements IProxy{
             for (BiomeManager.BiomeEntry biomeEntry : BiomeManager.getBiomes(btype)) {
                 biomeEntry.biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
                         ModBlocks.enderianOre.getDefaultState(), 6), Placement.COUNT_RANGE, new CountRangeConfig(2,0,0,16)));
+                biomeEntry.biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(MODFLOWER_FEATURE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
 
             }
         }
+
+        Biomes.NETHER.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION,NetherBiome.createDecoratedFeature(MODFLOWER_FEATURE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(5)));
+
+
     }
 
     @Override

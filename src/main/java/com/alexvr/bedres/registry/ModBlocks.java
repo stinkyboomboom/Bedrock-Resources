@@ -2,9 +2,7 @@ package com.alexvr.bedres.registry;
 
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.blocks.EnderianBlock;
-import com.alexvr.bedres.blocks.EnderianOre;
-import com.alexvr.bedres.blocks.ScrapeTank;
+import com.alexvr.bedres.blocks.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperContainer;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
@@ -51,12 +49,19 @@ public class ModBlocks {
     @ObjectHolder("bedres:bedrock_scraper_slave")
     public static BedrockScrapperSlaveBlock bedrockScraperSlaveBlock;
 
+    @ObjectHolder("bedres:blazium")
+    public static Blazium blazium;
+
+    @ObjectHolder("bedres:ender_hush")
+    public static EnderHush enderHush;
+
+    @ObjectHolder("bedres:sun_daize")
+    public static SunDaize sunDaize;
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {
            ClientRegistry.bindTileEntitySpecialRenderer(ScrapeTankTile.class, new ScrapeTankTER());
-
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockScraperControllerTile.class, new ScraperControllerTER());
         });
     }

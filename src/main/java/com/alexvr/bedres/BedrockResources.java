@@ -1,8 +1,6 @@
 package com.alexvr.bedres;
 
-import com.alexvr.bedres.blocks.EnderianBlock;
-import com.alexvr.bedres.blocks.EnderianOre;
-import com.alexvr.bedres.blocks.ScrapeTank;
+import com.alexvr.bedres.blocks.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.items.EnderianIngot;
@@ -25,6 +23,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -33,6 +32,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,6 +74,9 @@ public class BedrockResources {
             event.getRegistry().register(new EnderianOre(Material.IRON, SoundType.STONE,54,3,"enderian_ore"));
             event.getRegistry().register(new BedrockScrapperControllerBlock());
             event.getRegistry().register(new BedrockScrapperSlaveBlock());
+            event.getRegistry().register(new Blazium());
+            event.getRegistry().register(new EnderHush());
+            event.getRegistry().register(new SunDaize());
         }
 
         @SubscribeEvent
@@ -85,6 +88,9 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.enderianOre, properties).setRegistryName("enderian_ore"));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperControllerBlock, properties).setRegistryName("bedrock_scraper_controller"));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperSlaveBlock, properties).setRegistryName("bedrock_scraper_slave"));
+            event.getRegistry().register(new BlockItem(ModBlocks.blazium, properties).setRegistryName("blazium"));
+            event.getRegistry().register(new BlockItem(ModBlocks.sunDaize, properties).setRegistryName("sun_daize"));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderHush, properties).setRegistryName("ender_hush"));
             event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
@@ -113,6 +119,15 @@ public class BedrockResources {
 
 
         }
+
+        @SubscribeEvent
+        public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
+            IForgeRegistry<Feature<?>> r = event.getRegistry();
+
+
+
+        }
+
 
     }
 
