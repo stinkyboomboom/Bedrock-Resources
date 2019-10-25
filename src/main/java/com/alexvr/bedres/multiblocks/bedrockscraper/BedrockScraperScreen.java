@@ -1,6 +1,7 @@
 package com.alexvr.bedres.multiblocks.bedrockscraper;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.utils.GeneralHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gui.IHasContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -21,7 +22,11 @@ public class BedrockScraperScreen extends ContainerScreen<BedrockScraperContaine
         this.passEvents = false;
         this.scraperContainer = scraperContainer;
 
+
     }
+
+
+
 
     public void render(int mouseX, int mouseY, float partialTicks) {
         this.renderBackground();
@@ -34,6 +39,7 @@ public class BedrockScraperScreen extends ContainerScreen<BedrockScraperContaine
      */
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.font.drawString(new StringTextComponent(TextFormatting.DARK_GRAY + new TranslationTextComponent(this.title.getFormattedText()).getUnformattedComponentText()).getText(), 8.0F, 6.0F, 4210752);
+        this.font.drawString("Progress: " + String.valueOf(GeneralHelper.get2DEcimalPointString((scraperContainer.tileEntity.getUpdateTag().getInt("tick")/(20.0*60.0))*100))+ "%", 8.0F, (float)(this.ySize - 120), 4210752);
         this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float)(this.ySize - 96 + 2), 4210752);
     }
 
@@ -46,6 +52,9 @@ public class BedrockScraperScreen extends ContainerScreen<BedrockScraperContaine
         int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
         this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
+
+        this.blit(relX+(int)(176*0.55681819)+30, relY+(int)(166*0.216867470)+3, 178, 1, 16, (int)(16*((scraperContainer.tileEntity.getUpdateTag().getInt("tick")/(20.0*60.0)))));
+
 
     }
 }

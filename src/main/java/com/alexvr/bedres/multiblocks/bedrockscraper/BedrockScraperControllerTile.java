@@ -3,6 +3,7 @@ package com.alexvr.bedres.multiblocks.bedrockscraper;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.utils.IRestorableTileEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -11,12 +12,12 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.HopperTileEntity;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -32,7 +33,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     public String dir="";
     public boolean multiBlock=false;
     double distanceDamage = 0.65;
-    int progress;
+    public int progress;
 
 
 
@@ -54,7 +55,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     @Override
     public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
 
-        return new BedrockScraperContainer(p_createMenu_1_,world,pos,p_createMenu_2_,p_createMenu_3_);
+        return new BedrockScraperContainer(this,p_createMenu_1_,world,pos,p_createMenu_2_,p_createMenu_3_);
     }
 
     @Override
@@ -182,16 +183,40 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
     }
 
     @Override
+    @Nullable
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.pos, 3, this.getUpdateTag());
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        super.onDataPacket(net, pkt);
+        handleUpdateTag(pkt.getNbtCompound());
+    }
+
+    private void sendUpdates() {
+        world.notifyBlockUpdate(pos, this.getBlockState(), getBlockState(), 3);
+        markDirty();
+    }
+
+
+    @Override
     public void tick() {
         if(!world.isRemote){
             if(!multiBlock) {
                 if(progress>0){
                     progress=0;
                     markDirty();
+                    sendUpdates();
 
                 }
                 if (world.isPlayerWithin(pos1.getX(), pos1.getY(), pos1.getZ(), distanceDamage)) {
-                    world.getClosestPlayer(pos1.getX(), pos1.getY(), pos1.getZ(), distanceDamage, false).attackEntityFrom(DamageSource.DROWN, 1.5f);
+                    world.getClosestPlayer(pos1.getX(), pos1.getY(), pos1.getZ(), distanceDamage, false).attackEntityFrom(DamageSource.CACTUS, 1.5f);
                 }
                 if (world.isPlayerWithin(pos2.getX(), pos2.getY(), pos2.getZ(), distanceDamage)) {
                     world.getClosestPlayer(pos2.getX(), pos2.getY(), pos2.getZ(), distanceDamage, false).attackEntityFrom(DamageSource.CACTUS, 1.5f);
@@ -201,28 +226,34 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
                 }
             }
             else{
-                progress++;
-                System.out.println(progress%20);
-                if (progress%20==0){
-                    markDirty();
-                }
-                if(progress>= 20*60){
-                    progress=0;
-                    ItemStack stack = new ItemStack(ModItems.bedrockScrapes,1);
-                    TileEntity block = (world.getTileEntity(getPos().offset(getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ))));
-                    if (block instanceof IInventory){
-                        for (int i =0;i<((IInventory)block).getSizeInventory();i++){
-                            if(((IInventory)block).getStackInSlot(i).getItem() == ModItems.bedrockScrapes && ((IInventory)block).getStackInSlot(i).getCount()<64){
-                                ((IInventory)block).getStackInSlot(i).setCount(((IInventory)block).getStackInSlot(i).getCount()+1);
-                                return;
-                            }else if(((IInventory)block).getStackInSlot(i) == ItemStack.EMPTY){
-                                ((IInventory)block).setInventorySlotContents(i,stack);
-                                return;
+                if(world.getBlockState(getPos().offset(Direction.DOWN)).getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())
+                && world.getBlockState(pos1.offset(Direction.DOWN)).getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())
+                && world.getBlockState(pos2.offset(Direction.DOWN)).getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())
+                && world.getBlockState(pos3.offset(Direction.DOWN)).getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())) {
+                    progress++;
+                    sendUpdates();
+                    if (progress % 20 == 0) {
+                        markDirty();
+
+                    }
+                    if (progress >= 20 * 60) {
+                        progress = 0;
+                        ItemStack stack = new ItemStack(ModItems.bedrockScrapes, 1);
+                        TileEntity block = (world.getTileEntity(getPos().offset(getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ))));
+                        if (block instanceof IInventory) {
+                            for (int i = 0; i < ((IInventory) block).getSizeInventory(); i++) {
+                                if (((IInventory) block).getStackInSlot(i).getItem() == ModItems.bedrockScrapes && ((IInventory) block).getStackInSlot(i).getCount() < 64) {
+                                    ((IInventory) block).getStackInSlot(i).setCount(((IInventory) block).getStackInSlot(i).getCount() + 1);
+                                    return;
+                                } else if (((IInventory) block).getStackInSlot(i) == ItemStack.EMPTY) {
+                                    ((IInventory) block).setInventorySlotContents(i, stack);
+                                    return;
+                                }
                             }
+                        } else {
+                            InventoryHelper.spawnItemStack(world, getPos().getX(), getPos().getY() + 0.5, getPos().getZ(), stack);
+                            return;
                         }
-                    }else{
-                        InventoryHelper.spawnItemStack(world,  getPos().getX(), getPos().getY()+0.5, getPos().getZ(),stack);
-                        return;
                     }
                 }
             }

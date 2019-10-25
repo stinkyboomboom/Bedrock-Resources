@@ -59,7 +59,6 @@ public class BedrockResources {
     private void setup(final FMLCommonSetupEvent event) {
         setup.init();
         proxy.init();
-
         DistExecutor.runWhenOn(Dist.CLIENT, () -> ModBlocks::registerRenderers);
     }
 

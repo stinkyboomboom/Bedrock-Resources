@@ -41,6 +41,21 @@ public class BedrockScraperContainer extends Container {
 
     }
 
+    public BedrockScraperContainer(BedrockScraperControllerTile te,int id, World world, BlockPos pos, PlayerInventory pi, PlayerEntity player) {
+        super(ModBlocks.bedrockScraperControllerContainer,id);
+        this.player=player;
+        this.tileEntity= te;
+        this.playerInventory=new InvWrapper(player.inventory);
+
+        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            addSlot(new SlotItemHandler(h,0,80,33));
+            sizeInventory = ((ScrapeTankTile)tileEntity).getTotalItems();
+        });
+
+        layoutPlayerInventorySlots(8,84);
+
+    }
+
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int slotIndex) {
         ItemStack itemStack1 = ItemStack.EMPTY;

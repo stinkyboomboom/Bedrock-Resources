@@ -26,7 +26,8 @@
   "message.bedres.invalidblock": "Only Bedrock can be scraped",
   "message.bedres.validblock": "That is indeed bedrock",
   "message.bedres.whispers": "HahaHahHAHHa the darknes is near, the darknes is comming.",
-  "scrape_tank": "Scrape Tank"
+  "scrape_tank": "Scrape Tank",
+  "bedrock_scraper_controller": "Bedrock Scraper"
 
 }
 
