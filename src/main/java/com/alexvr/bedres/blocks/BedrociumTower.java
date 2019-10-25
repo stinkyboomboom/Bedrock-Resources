@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 public class BedrociumTower extends Block {
 
 
+
     public BedrociumTower() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
@@ -24,6 +25,9 @@ public class BedrociumTower extends Block {
         setRegistryName("base_spike");
 
     }
+
+
+
     @Override
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.TRANSLUCENT;
