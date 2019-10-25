@@ -58,6 +58,12 @@ public class ModBlocks {
     @ObjectHolder("bedres:sun_daize")
     public static SunDaize sunDaize;
 
+    @ObjectHolder("bedres:spike")
+    public static BedrociumSpike bedrociumSpike;
+
+    @ObjectHolder("bedres:base_spike")
+    public static BedrociumTower bedrociumTower;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {

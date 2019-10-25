@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "blocks/bedrock",
+		"2": "block/bedrock",
 		"3": "bedres:blocks/enderian_block",
-		"particle": "blocks/bedrock"
+		"particle": "block/bedrock"
 	},
 	"elements": [
 		{

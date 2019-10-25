@@ -76,6 +76,8 @@ public class BedrockResources {
             event.getRegistry().register(new Blazium());
             event.getRegistry().register(new EnderHush());
             event.getRegistry().register(new SunDaize());
+            event.getRegistry().register(new BedrociumSpike());
+            event.getRegistry().register(new BedrociumTower());
         }
 
         @SubscribeEvent
@@ -90,6 +92,8 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.blazium, properties).setRegistryName("blazium"));
             event.getRegistry().register(new BlockItem(ModBlocks.sunDaize, properties).setRegistryName("sun_daize"));
             event.getRegistry().register(new BlockItem(ModBlocks.enderHush, properties).setRegistryName("ender_hush"));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName("spike"));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName("base_spike"));
             event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
