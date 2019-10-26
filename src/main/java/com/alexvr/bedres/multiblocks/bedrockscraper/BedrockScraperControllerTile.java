@@ -248,7 +248,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
                         progress = 0;
                         ItemStack stack = new ItemStack(ModItems.bedrockScrapes, 1);
                         TileEntity block = (world.getTileEntity(getPos().offset(getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ))));
-                        if (block instanceof IInventory) {
+                        if (block instanceof IInventory || block instanceof INamedContainerProvider) {
                             for (int i = 0; i < ((IInventory) block).getSizeInventory(); i++) {
                                 if (((IInventory) block).getStackInSlot(i).getItem() == ModItems.bedrockScrapes && ((IInventory) block).getStackInSlot(i).getCount() < 64) {
                                     ((IInventory) block).getStackInSlot(i).setCount(((IInventory) block).getStackInSlot(i).getCount() + 1);
@@ -258,10 +258,11 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
                                     return;
                                 }
                             }
-                        } else {
-                            InventoryHelper.spawnItemStack(world, getPos().getX(), getPos().getY() + 0.5, getPos().getZ(), stack);
-                            return;
                         }
+
+                        InventoryHelper.spawnItemStack(world, getPos().getX(), getPos().getY() + 0.5, getPos().getZ(), stack);
+                        return;
+
                     }
                 }
             }

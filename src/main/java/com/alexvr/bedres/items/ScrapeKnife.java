@@ -4,7 +4,7 @@ import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.capability.BedrockFluxProvider;
 import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.registry.ModItems;
-import com.alexvr.bedres.registry.ModParticles;
+import com.alexvr.bedres.utils.References;
 import com.alexvr.bedres.utils.VectorHelper;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.*;
@@ -36,7 +36,7 @@ public class ScrapeKnife extends SwordItem {
     public ScrapeKnife() {
         super(ItemTier.STONE,1, -2.4F, new Item.Properties()
                 .group(BedrockResources.setup.itemgroup).maxDamage(128).setNoRepair());
-        setRegistryName("scrape_knife");
+        setRegistryName(References.SCRAPE_KNIFE_REGNAME);
 
 
     }
@@ -84,7 +84,7 @@ public class ScrapeKnife extends SwordItem {
     }
 
 
-    public static BlockRayTraceResult selectBlock(ItemStack stack, PlayerEntity player) {
+    private static BlockRayTraceResult selectBlock(ItemStack stack, PlayerEntity player) {
         // Used to find which block the player is looking at, and store it in NBT on the tool.
         World world = player.world;
         BlockRayTraceResult lookingAt = VectorHelper.getLookingAt(player, RayTraceContext.FluidMode.NONE);
@@ -104,7 +104,7 @@ public class ScrapeKnife extends SwordItem {
     private static final Set<IProperty> SAFE_PROPERTIES =
             ImmutableSet.of(SlabBlock.TYPE, StairsBlock.HALF, LogBlock.AXIS, AXIS, DirectionalBlock.FACING, StairsBlock.FACING, TrapDoorBlock.HALF, TrapDoorBlock.OPEN, StairsBlock.SHAPE, LeverBlock.POWERED, RepeaterBlock.DELAY, PaneBlock.EAST, PaneBlock.WEST, PaneBlock.NORTH, PaneBlock.SOUTH);
 
-    public static BlockState getSpecificStates(BlockState originalState, World world, PlayerEntity player, BlockPos pos, ItemStack tool) {
+    private static BlockState getSpecificStates(BlockState originalState, World world, PlayerEntity player, BlockPos pos, ItemStack tool) {
         BlockState placeState;
 
         try {

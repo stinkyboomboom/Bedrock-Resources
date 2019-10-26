@@ -1,5 +1,6 @@
 package com.alexvr.bedres.blocks;
 
+import com.alexvr.bedres.utils.References;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.potion.Effects;
@@ -10,7 +11,7 @@ public class Blazium extends FlowerBlock {
 
     public Blazium() {
         super(Effects.NIGHT_VISION, 5, Block.Properties.create(Material.PLANTS).doesNotBlockMovement().sound(SoundType.PLANT).hardnessAndResistance(0));
-        setRegistryName("blazium");
+        setRegistryName(References.BLAZIUM_REGNAME);
     }
 
     @Override

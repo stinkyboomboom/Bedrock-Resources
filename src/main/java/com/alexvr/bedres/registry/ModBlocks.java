@@ -13,6 +13,7 @@ import com.alexvr.bedres.renderer.ScrapeTankTER;
 import com.alexvr.bedres.renderer.ScraperControllerTER;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,49 +25,49 @@ import net.minecraftforge.registries.ObjectHolder;
 
 @Mod.EventBusSubscriber(modid = BedrockResources.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
-    @ObjectHolder("bedres:scrape_tank")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPE_TANK_REGNAME)
     public static ScrapeTank scrapeTank;
 
-    @ObjectHolder("bedres:scrape_tank")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPE_TANK_REGNAME)
     public static TileEntityType<ScrapeTankTile> scrapeTankType;
 
-    @ObjectHolder("bedres:scrape_tank")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPE_TANK_REGNAME)
     public static ContainerType<ScrapeTankContainer> scrapeTankContainerType;
 
-    @ObjectHolder("bedres:enderian_block")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_BLOCK_REGNAME)
     public static EnderianBlock enderianBlock;
 
-    @ObjectHolder("bedres:enderian_ore")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_ORE_REGNAME)
     public static EnderianOre enderianOre;
 
-    @ObjectHolder("bedres:bedrock_scraper_controller")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPER_CONTROLLER_REGNAME)
     public static BedrockScrapperControllerBlock bedrockScraperControllerBlock;
 
-    @ObjectHolder("bedres:bedrock_scraper_controller")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPER_CONTROLLER_REGNAME)
     public static TileEntityType<BedrockScraperControllerTile> bedrockScraperControllerTile;
 
-    @ObjectHolder("bedres:bedrock_scraper_controller")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPER_CONTROLLER_REGNAME)
     public static ContainerType<BedrockScraperContainer> bedrockScraperControllerContainer;
 
-    @ObjectHolder("bedres:bedrock_scraper_slave")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPER_SLAVE_REGNAME)
     public static BedrockScrapperSlaveBlock bedrockScraperSlaveBlock;
 
-    @ObjectHolder("bedres:blazium")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BLAZIUM_REGNAME)
     public static Blazium blazium;
 
-    @ObjectHolder("bedres:ender_hush")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDER_HUSH_REGNAME)
     public static EnderHush enderHush;
 
-    @ObjectHolder("bedres:sun_daize")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SUN_DAIZE_REGNAME)
     public static SunDaize sunDaize;
 
-    @ObjectHolder("bedres:spike")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SPIKE_REGNAME)
     public static BedrociumSpike bedrociumSpike;
 
-    @ObjectHolder("bedres:base_spike")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BASE_SPIKE_REGNAME)
     public static BedrociumTower bedrociumTower;
 
-    @ObjectHolder("bedres:base_spike")
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BASE_SPIKE_REGNAME)
     public static TileEntityType<BedrockiumTowerTile> bedrockiumTowerType;
 
     @OnlyIn(Dist.CLIENT)

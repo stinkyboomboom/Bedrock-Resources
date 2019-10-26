@@ -1,20 +1,15 @@
 package com.alexvr.bedres.items;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BedrockScrape extends Item {
 
     public BedrockScrape() {
         super(new Item.Properties()
                 .group(BedrockResources.setup.itemgroup));
-        setRegistryName("bedrock_scrapes");
+        setRegistryName(References.BEDROCK_SCRAPE_REGNAME);
     }
 
-    @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-
-        return 0;
-    }
 }

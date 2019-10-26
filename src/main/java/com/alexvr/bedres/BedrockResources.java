@@ -17,6 +17,7 @@ import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -70,8 +71,8 @@ public class BedrockResources {
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
             event.getRegistry().register(new ScrapeTank());
-            event.getRegistry().register(new EnderianBlock(Material.IRON, SoundType.METAL,32,2,"enderian_block"));
-            event.getRegistry().register(new EnderianOre(Material.IRON, SoundType.STONE,54,3,"enderian_ore"));
+            event.getRegistry().register(new EnderianBlock(Material.IRON, SoundType.METAL,32,2, References.ENDERIAN_BLOCK_REGNAME));
+            event.getRegistry().register(new EnderianOre(Material.IRON, SoundType.STONE,54,3,References.ENDERIAN_ORE_REGNAME));
             event.getRegistry().register(new BedrockScrapperControllerBlock());
             event.getRegistry().register(new BedrockScrapperSlaveBlock());
             event.getRegistry().register(new Blazium());
@@ -85,16 +86,16 @@ public class BedrockResources {
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
             Item.Properties properties = new Item.Properties()
                     .group(setup.itemgroup);
-            event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName("scrape_tank"));
-            event.getRegistry().register(new BlockItem(ModBlocks.enderianBlock, properties).setRegistryName("enderian_block"));
-            event.getRegistry().register(new BlockItem(ModBlocks.enderianOre, properties).setRegistryName("enderian_ore"));
-            event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperControllerBlock, properties).setRegistryName("bedrock_scraper_controller"));
-            event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperSlaveBlock, properties).setRegistryName("bedrock_scraper_slave"));
-            event.getRegistry().register(new BlockItem(ModBlocks.blazium, properties).setRegistryName("blazium"));
-            event.getRegistry().register(new BlockItem(ModBlocks.sunDaize, properties).setRegistryName("sun_daize"));
-            event.getRegistry().register(new BlockItem(ModBlocks.enderHush, properties).setRegistryName("ender_hush"));
-            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName("spike"));
-            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName("base_spike"));
+            event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName(References.SCRAPE_TANK_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderianBlock, properties).setRegistryName(References.ENDERIAN_BLOCK_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderianOre, properties).setRegistryName(References.ENDERIAN_ORE_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperControllerBlock, properties).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperSlaveBlock, properties).setRegistryName(References.BEDROCK_SCRAPER_SLAVE_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.blazium, properties).setRegistryName(References.BLAZIUM_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.sunDaize, properties).setRegistryName(References.SUN_DAIZE_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderHush, properties).setRegistryName(References.ENDER_HUSH_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName(References.SPIKE_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
@@ -106,21 +107,17 @@ public class BedrockResources {
 
         @SubscribeEvent
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
-            event.getRegistry().register(TileEntityType.Builder.create(ScrapeTankTile::new, ModBlocks.scrapeTank).build(null).setRegistryName("scrape_tank"));
-            event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new, ModBlocks.bedrockScraperControllerBlock).build(null).setRegistryName("bedrock_scraper_controller"));
-            event.getRegistry().register(TileEntityType.Builder.create(BedrockiumTowerTile::new, ModBlocks.bedrociumTower).build(null).setRegistryName("base_spike"));
+            event.getRegistry().register(TileEntityType.Builder.create(ScrapeTankTile::new, ModBlocks.scrapeTank).build(null).setRegistryName(References.SCRAPE_TANK_REGNAME));
+            event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new, ModBlocks.bedrockScraperControllerBlock).build(null).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
+            event.getRegistry().register(TileEntityType.Builder.create(BedrockiumTowerTile::new, ModBlocks.bedrociumTower).build(null).setRegistryName(References.BASE_SPIKE_REGNAME));
 
         }
 
         @SubscribeEvent
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-                return new ScrapeTankContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer());
-            }).setRegistryName("scrape_tank"));
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ScrapeTankContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer())).setRegistryName(References.SCRAPE_TANK_REGNAME));
 
-            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
-                return new BedrockScraperContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer());
-            }).setRegistryName("bedrock_scraper_controller"));
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BedrockScraperContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer())).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
 
 
         }

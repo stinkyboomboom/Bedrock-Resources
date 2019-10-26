@@ -1,5 +1,6 @@
 package com.alexvr.bedres.multiblocks.bedrockscraper;
 
+import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -21,7 +22,7 @@ public class BedrockScrapperSlaveBlock extends Block {
                     .sound(SoundType.ANVIL)
                     .hardnessAndResistance(24.0f)
                     .lightValue(0).variableOpacity());
-            setRegistryName("bedrock_scraper_slave");
+            setRegistryName(References.BEDROCK_SCRAPER_SLAVE_REGNAME);
 
         setDefaultState(getStateContainer().getBaseState().with(FACING_HORIZ, Direction.NORTH));
 

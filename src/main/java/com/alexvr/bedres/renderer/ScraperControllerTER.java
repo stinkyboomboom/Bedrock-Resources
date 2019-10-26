@@ -3,6 +3,7 @@ package com.alexvr.bedres.renderer;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.utils.References;
 import com.alexvr.bedres.utils.RendererHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -17,17 +18,17 @@ public class ScraperControllerTER extends TileEntityRenderer<BedrockScraperContr
          double CentreOffsetY = .18;
          double CentreOffsetZ = 0.95;
         switch (te.getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ).toString()){
-            case "north":
+            case References.NORTH:
 
                 break;
-            case "south":
+            case References.SOUTH:
                 CentreOffsetX+=1;
                 CentreOffsetZ-=1;
                 break;
-            case "east":
+            case References.EAST:
                 CentreOffsetZ-=1;
                 break;
-            case "west":
+            case References.WEST:
                 CentreOffsetX+=1;
                 break;
         }

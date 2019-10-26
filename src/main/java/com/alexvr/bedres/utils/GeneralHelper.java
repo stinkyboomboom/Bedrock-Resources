@@ -8,6 +8,8 @@ public class GeneralHelper{
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         return decimalFormat.format(i);
     }
+
+
     public static String get2DEcimalPointString(double i) {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         return decimalFormat.format(i);

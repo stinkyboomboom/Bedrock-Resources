@@ -1,6 +1,7 @@
 package com.alexvr.bedres.multiblocks.bedrockscraper;
 
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -38,7 +39,7 @@ public class BedrockScrapperControllerBlock extends Block {
                 .sound(SoundType.ANVIL)
                 .hardnessAndResistance(24.0f)
                 .lightValue(0).variableOpacity());
-        setRegistryName("bedrock_scraper_controller");
+        setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME);
 
         setDefaultState(getStateContainer().getBaseState().with(FACING_HORIZ, Direction.NORTH));
 
@@ -49,17 +50,17 @@ public class BedrockScrapperControllerBlock extends Block {
         if ((worldIn.getTileEntity(pos)) instanceof BedrockScraperControllerTile && (worldIn.getTileEntity(pos)).getUpdateTag().getBoolean("multi")){
 
             switch (worldIn.getTileEntity(pos).getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ).toString()){
-                case "north":
+                case References.NORTH:
                     worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX(),pos.getY(),pos.getZ()+1,0,0.2,0);
                     break;
-                case "east":
+                case References.EAST:
                     worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0.2,0);
                     break;
-                case "west":
+                case References.WEST:
                     worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX()+1,pos.getY(),pos.getZ()+1,0,0.2,0);
                     worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX()+1,pos.getY(),pos.getZ()+1,0,0.2,0);
                     break;
-                case "south":
+                case References.SOUTH:
                     worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX()+1,pos.getY(),pos.getZ(),0,0.2,0);
                     break;
             }
@@ -82,22 +83,22 @@ public class BedrockScrapperControllerBlock extends Block {
                 BlockPos pos2 = new BlockPos(0, 0, 0);
                 BlockPos pos3 = new BlockPos(0, 0, 0);
                 switch (placer.getHorizontalFacing().toString()) {
-                    case "west"://expects in neg Z, neg X
+                    case References.WEST://expects in neg Z, neg X
                         pos1 = pos.offset(Direction.WEST);
                         pos2 = pos.offset(Direction.WEST).offset(Direction.NORTH);
                         pos3 = pos.offset(Direction.NORTH);
                         break;
-                    case "south"://expects in pos Z, neg X
+                    case References.SOUTH://expects in pos Z, neg X
                         pos1 = pos.offset(Direction.SOUTH);
                         pos2 =  pos.offset(Direction.WEST).offset(Direction.SOUTH);
                         pos3 = pos.offset(Direction.WEST);
                         break;
-                    case "east"://expects in pos Z, pos X
+                    case References.EAST://expects in pos Z, pos X
                         pos1 = pos.offset(Direction.EAST);
                         pos2 = pos.offset(Direction.EAST).offset(Direction.SOUTH);
                         pos3 = pos.offset(Direction.SOUTH);
                         break;
-                    case "north"://expects in neg Z, pos X
+                    case References.NORTH://expects in neg Z, pos X
                         pos1 = pos.offset(Direction.NORTH);
                         pos2 = pos.offset(Direction.EAST).offset(Direction.NORTH);
                         pos3 = pos.offset(Direction.EAST);

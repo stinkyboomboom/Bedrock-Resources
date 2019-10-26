@@ -2,6 +2,7 @@ package com.alexvr.bedres.blocks;
 
 import com.alexvr.bedres.registry.ModParticles;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -30,7 +31,7 @@ public class ScrapeTank extends Block{
                 .sound(SoundType.METAL)
         .hardnessAndResistance(2.0f)
         .lightValue(13).variableOpacity());
-        setRegistryName("scrape_tank");
+        setRegistryName(References.SCRAPE_TANK_REGNAME);
 
     }
 

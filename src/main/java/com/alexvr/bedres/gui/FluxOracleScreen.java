@@ -28,7 +28,6 @@ public class FluxOracleScreen extends ForgeIngameGui {
         drawModalRectWithCustomSizedTexture(0,32,Minecraft.getInstance().mainWindow.getScaledHeight(),Minecraft.getInstance().mainWindow.getScaledHeight()-64,new ResourceLocation("bedres","textures/gui/flux_oracle_gui.png"));
         drawString(BedrockResources.proxy.getMinecraft().fontRenderer,flux.getBedrockFluxString(),1,Minecraft.getInstance().mainWindow.getScaledHeight()-72,16777215);
         float ratio = flux.getBedrockFlux()/flux.getMaxBedrockFlux();
-        //drawModalRectWithCustomSizedTexture(5,27,Minecraft.getInstance().mainWindow.getScaledHeight()-5,(Minecraft.getInstance().mainWindow.getScaledHeight()-(54* ratio))  ,new ResourceLocation("bedres","textures/gui/flux_oracle_fill_gui.png"));
         mc.getTextureManager().bindTexture(ScrapeTankScreen.SCRAPE_TANK_GUI_TEXTURE);
         this.blit(5, (Minecraft.getInstance().mainWindow.getScaledHeight()-(59)), 179, 16, 42, (int)(59*ratio));
         this.blit(11, (Minecraft.getInstance().mainWindow.getScaledHeight()-(59)), 179, 16, 42, (int)(59*ratio));

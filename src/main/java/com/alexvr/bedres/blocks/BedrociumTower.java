@@ -2,6 +2,7 @@ package com.alexvr.bedres.blocks;
 
 import com.alexvr.bedres.registry.ModParticles;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -30,8 +31,8 @@ public class BedrociumTower extends Block {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
                 .hardnessAndResistance(2.0f)
-                .lightValue(13).variableOpacity());
-        setRegistryName("base_spike");
+                .lightValue(13).variableOpacity().hardnessAndResistance(-1.0F, 3600000.0F).noDrops());
+        setRegistryName(References.BASE_SPIKE_REGNAME);
 
     }
 

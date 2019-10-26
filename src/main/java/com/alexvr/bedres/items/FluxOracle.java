@@ -1,6 +1,7 @@
 package com.alexvr.bedres.items;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,10 +15,11 @@ public class FluxOracle extends Item {
     public FluxOracle() {
         super(new Item.Properties()
                 .group(BedrockResources.setup.itemgroup).maxStackSize(1));
-        setRegistryName("flux_oracle");
+        setRegistryName(References.FLUX_ORACLE_REGNAME);
     }
 
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         if(!worldIn.isRemote) {

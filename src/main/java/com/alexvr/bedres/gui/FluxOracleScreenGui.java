@@ -2,6 +2,7 @@ package com.alexvr.bedres.gui;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.items.FluxOracle;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
@@ -17,13 +18,13 @@ import static com.alexvr.bedres.utils.RendererHelper.drawModalRectWithCustomSize
 
 public class FluxOracleScreenGui extends Screen {
 
-    boolean main = true;
-    boolean scrapes = false;
-    boolean knife = false;
-    ImageButton back;
+    private boolean main = true;
+    private boolean scrapes = false;
+    private boolean knife = false;
+    private ImageButton back;
 
     public FluxOracleScreenGui() {
-        super(new StringTextComponent("flux_Gui"));
+        super(new StringTextComponent(References.FLUX_GUI_TITLE_RESOURCE));
     }
 
     @Override
@@ -92,13 +93,13 @@ public class FluxOracleScreenGui extends Screen {
             }
         }else if (scrapes){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
-            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f), new ResourceLocation("bedres", "textures/gui/widget/bedrock_scrapes.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f), new ResourceLocation("bedres", "textures/gui/widget/bedrock_scrapes.png"));
             drawString(minecraft.fontRenderer,"Bedrock Scrapes:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "Bedrock Scrapes are the introductory item to this mod. They are particles that were, as the name implies, scrapped from bedrock. By doing so you will inhale some bedrock particles which arent great for you until you learn to manage them. To obtain use a Scaping knife on bedrock by shift right clicking it.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }else if (knife){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
-            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f), new ResourceLocation("bedres", "textures/gui/widget/scrape_knife.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f), new ResourceLocation("bedres", "textures/gui/widget/scrape_knife.png"));
             drawString(minecraft.fontRenderer,"Scrape Knife:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "The Scrape knife is used to scrape bedrock particles of bedrock, be careful, particles are released into the air and into your system.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
@@ -114,13 +115,13 @@ public class FluxOracleScreenGui extends Screen {
         int chars = screenWidth/48;
         String[] list2 = s.split(" ");
         ArrayList<String> list = new ArrayList<>();
-        for (int i=0;i<list2.length;i++) {
-            temp.append(list2[i] + " ");
+        for (String aList2 : list2) {
+            temp.append(aList2).append(" ");
             counter++;
-            if (counter == chars){
+            if (counter == chars) {
                 list.add(temp.toString());
                 temp = new StringBuilder();
-                counter=0;
+                counter = 0;
             }
 
         }

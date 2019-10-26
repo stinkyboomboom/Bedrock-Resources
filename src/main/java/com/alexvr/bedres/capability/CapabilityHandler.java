@@ -1,12 +1,12 @@
 package com.alexvr.bedres.capability;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.utils.References;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 /**
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber
 public class CapabilityHandler
 {
-    public static final ResourceLocation FLUX_CAP = new ResourceLocation(BedrockResources.MODID, "bedrock_flux");
+    private static final ResourceLocation FLUX_CAP = new ResourceLocation(BedrockResources.MODID, References.FLUX_CAPABILITY_NAME_RESOURCE);
 
     @SubscribeEvent
     public static void attachCapability(AttachCapabilitiesEvent<Entity> event)
