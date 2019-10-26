@@ -1,19 +1,17 @@
 package com.alexvr.bedres.blocks;
 
-import com.alexvr.bedres.registry.ModParticles;
+import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
@@ -40,15 +38,16 @@ public class BedrociumSpike  extends Block {
         return BlockRenderLayer.TRANSLUCENT;
     }
 
-
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-
-
-
-        for (int i = 0; i < 12 ; i++) {
-            ModParticles.BEDROCK_DUST.spawn(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
-        }
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+    public boolean hasTileEntity(BlockState state) {
+        return true;
     }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new BedrockiumTowerTile();
+    }
+
+
 }

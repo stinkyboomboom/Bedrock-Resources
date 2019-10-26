@@ -1,14 +1,12 @@
 package com.alexvr.bedres.renderer;
 
-import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.registry.ModBlocks;
-import com.alexvr.bedres.utils.RenderHelper;
+import com.alexvr.bedres.utils.RendererHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.util.math.BlockPos;
 
 public class ScraperControllerTER extends TileEntityRenderer<BedrockScraperControllerTile> {
 
@@ -48,13 +46,13 @@ public class ScraperControllerTER extends TileEntityRenderer<BedrockScraperContr
 
         this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         GlStateManager.rotated(45,0,1,0);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.6, 0.5, -0.5, 0.5*scallingMultiplier, (0.5625)*scallingMultiplier, 0.5*scallingMultiplier, false, 0, 0, 0, 35);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, .125-0.5, 1.5, 0.125-0.5, 0.375*scallingMultiplier, (0.125)*scallingMultiplier, 0.375*scallingMultiplier, false, 0, 0, 0, 35);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 0.375-0.7, 0.9, 0.375-0.7, 0.25*scallingMultiplier, (0.125)*scallingMultiplier, 0.25*scallingMultiplier, false, 0, 0, 0, 35);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 1.2-1.4, -0.5, 1.2-1.4, 0.125*scallingMultiplier, (0.25)*scallingMultiplier, 0.125*scallingMultiplier, true, 0, 0, 0, 35);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -0.58, -4.34, -.41, 1.5*scallingMultiplier, (0.03125)*scallingMultiplier, 0.0625*scallingMultiplier, false, 0, 0, 0, 35);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.41, -4.34, -.58, 0.0625*scallingMultiplier, (0.03125)*scallingMultiplier, 1.5*scallingMultiplier, false, 0, 0, 0, 35);
-        RenderHelper.drawAngleCuboidAt(ModBlocks.scrapeTank.getDefaultState(), te, -0.52, -4.52, -0.52, 1.125*scallingMultiplier, (0.025)*scallingMultiplier, 1.125*scallingMultiplier, true, 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.6, 0.5, -0.5, 0.5*scallingMultiplier, (0.5625)*scallingMultiplier, 0.5*scallingMultiplier, false, 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, .125-0.5, 1.5, 0.125-0.5, 0.375*scallingMultiplier, (0.125)*scallingMultiplier, 0.375*scallingMultiplier, false, 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 0.375-0.7, 0.9, 0.375-0.7, 0.25*scallingMultiplier, (0.125)*scallingMultiplier, 0.25*scallingMultiplier, false, 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 1.2-1.4, -0.5, 1.2-1.4, 0.125*scallingMultiplier, (0.25)*scallingMultiplier, 0.125*scallingMultiplier, te.getUpdateTag().getBoolean("multi"), 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -0.58, -4.34, -.41, 1.5*scallingMultiplier, (0.03125)*scallingMultiplier, 0.0625*scallingMultiplier, false, 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.41, -4.34, -.58, 0.0625*scallingMultiplier, (0.03125)*scallingMultiplier, 1.5*scallingMultiplier, false, 0, 0, 0, 35);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.scrapeTank.getDefaultState(), te, -0.52, -4.52, -0.52, 1.125*scallingMultiplier, (0.025)*scallingMultiplier, 1.125*scallingMultiplier, te.getUpdateTag().getBoolean("multi"), 0, 0, 0, 35);
 
 
         GlStateManager.enableRescaleNormal();

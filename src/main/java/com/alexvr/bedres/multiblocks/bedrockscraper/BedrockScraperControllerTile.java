@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 public class BedrockScraperControllerTile extends TileEntity implements IRestorableTileEntity , INamedContainerProvider, ITickableTileEntity {
 
-    BlockPos pos1,pos2,pos3;
+    public BlockPos pos1,pos2,pos3;
     Boolean n,s,e,w;
     public String dir="";
     public boolean multiBlock=false;
@@ -97,6 +97,10 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         if(compound.contains("tick")){
             progress = compound.getInt("tick");
         }
+
+        if(compound.contains("multi")){
+            multiBlock = compound.getBoolean("multi");
+        }
     }
 
     @Override
@@ -110,6 +114,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         compound.putLongArray("pos3",position3);
         compound.putString("dir",dir);
         compound.putInt("tick",progress);
+        compound.putBoolean("multi",multiBlock);
 
     }
 
@@ -129,6 +134,7 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         this.pos3=pos3;
         setDirection(direction);
         setBaseDirection(direction);
+        sendUpdates();
         markDirty();
     }
 
@@ -179,6 +185,8 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
         setDirection(String.valueOf(world.getBlockState(pos2).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         setDirection(String.valueOf(world.getBlockState(pos3).get(BedrockScrapperControllerBlock.FACING_HORIZ).toString().charAt(0)));
         multiBlock = n&&s&&e&&w;
+        sendUpdates();
+        markDirty();
         return multiBlock;
     }
 

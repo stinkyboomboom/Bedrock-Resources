@@ -6,9 +6,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -17,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 
-public class RenderHelper {
+public class RendererHelper {
     public static void drawModalRectWithCustomSizedTexture(double leftSideX, double rightSideX, double bottomY, double topY, ResourceLocation texture) {
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
@@ -114,6 +117,25 @@ public class RenderHelper {
         GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
 
         GlStateManager.popMatrix();
+    }
+
+    public static void renderItem(TileEntity te,ItemStack itemStack,double xTranslate,double yTranslate,double zTranslate,double xScalee,double yScale,double zScale,double xRotate,double yRotate,double zRotate,double angle){
+
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.enableLighting();
+
+        GlStateManager.pushMatrix();
+
+
+        GlStateManager.translated(xTranslate,yTranslate,zTranslate);
+        GlStateManager.scaled(xScalee,yScale,zScale);
+        GlStateManager.rotated(angle,xRotate,yRotate,zRotate);
+
+
+
+        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popMatrix();
+
     }
 
 }

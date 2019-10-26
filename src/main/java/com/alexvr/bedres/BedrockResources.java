@@ -15,6 +15,7 @@ import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
 import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
+import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -107,6 +108,7 @@ public class BedrockResources {
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
             event.getRegistry().register(TileEntityType.Builder.create(ScrapeTankTile::new, ModBlocks.scrapeTank).build(null).setRegistryName("scrape_tank"));
             event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new, ModBlocks.bedrockScraperControllerBlock).build(null).setRegistryName("bedrock_scraper_controller"));
+            event.getRegistry().register(TileEntityType.Builder.create(BedrockiumTowerTile::new, ModBlocks.bedrociumTower).build(null).setRegistryName("base_spike"));
 
         }
 

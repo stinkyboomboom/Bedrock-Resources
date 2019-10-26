@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeIngameGui;
 
-import static com.alexvr.bedres.utils.RenderHelper.drawModalRectWithCustomSizedTexture;
+import static com.alexvr.bedres.utils.RendererHelper.drawModalRectWithCustomSizedTexture;
 
 
 @OnlyIn(Dist.CLIENT)

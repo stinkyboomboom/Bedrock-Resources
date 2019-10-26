@@ -46,7 +46,8 @@ public class BedrockScrapperControllerBlock extends Block {
 
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-        if ((worldIn.getTileEntity(pos)) instanceof BedrockScraperControllerTile){
+        if ((worldIn.getTileEntity(pos)) instanceof BedrockScraperControllerTile && (worldIn.getTileEntity(pos)).getUpdateTag().getBoolean("multi")){
+
             switch (worldIn.getTileEntity(pos).getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ).toString()){
                 case "north":
                     worldIn.addParticle(ParticleTypes.SMOKE,true,pos.getX(),pos.getY(),pos.getZ()+1,0,0.2,0);

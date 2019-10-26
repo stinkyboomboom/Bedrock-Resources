@@ -43,7 +43,7 @@ public class BedrockDust extends ModParticle {
         this.particleGreen = 1f;
         this.particleBlue = 1f;
         this.age=0;
-        this.maxAge = 20*60*60*2;
+        this.maxAge = 20*7;
         nextposition = new double[3];
         nextposition[0] = initialX + new Random().nextFloat()-0.5f;
         nextposition[1] = initialY + new Random().nextFloat()-0.5f;
@@ -101,7 +101,7 @@ public class BedrockDust extends ModParticle {
 
     @Override
     public void tick() {
-        if(!world.getBlockState(new BlockPos(initialX,initialY,initialZ)).getBlock().getRegistryName().equals(ModBlocks.scrapeTank.getRegistryName()) || !world.getBlockState(new BlockPos(initialX,initialY,initialZ)).getBlock().getRegistryName().equals(ModBlocks.bedrociumSpike.getRegistryName())){
+        if(!world.getBlockState(new BlockPos(initialX,initialY,initialZ)).getBlock().getRegistryName().equals(ModBlocks.scrapeTank.getRegistryName()) ){
             this.age++;
         }else{
             this.age=0;

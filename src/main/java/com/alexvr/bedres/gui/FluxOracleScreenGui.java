@@ -13,7 +13,7 @@ import net.minecraft.util.text.StringTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.alexvr.bedres.utils.RenderHelper.drawModalRectWithCustomSizedTexture;
+import static com.alexvr.bedres.utils.RendererHelper.drawModalRectWithCustomSizedTexture;
 
 public class FluxOracleScreenGui extends Screen {
 
