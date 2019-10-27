@@ -1,6 +1,7 @@
 package com.alexvr.bedres.blocks;
 
 import com.alexvr.bedres.registry.ModParticles;
+import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
@@ -11,8 +12,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -30,7 +33,6 @@ public class BedrociumTower extends Block {
     public BedrociumTower() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
-                .hardnessAndResistance(2.0f)
                 .lightValue(13).variableOpacity().hardnessAndResistance(-1.0F, 3600000.0F).noDrops());
         setRegistryName(References.BASE_SPIKE_REGNAME);
 
@@ -121,8 +123,30 @@ public class BedrociumTower extends Block {
             if (total == 8) {
                 ModParticles.BEDROCK_DUST.spawn(worldIn, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0, 0, 0);
 
+                if (worldIn.getBlockState(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN)).getBlock().hasTileEntity(worldIn.getBlockState(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))) &&
+                        worldIn.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    worldIn.addParticle(ParticleTypes.ENCHANT,true,pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN).getX()+.5,pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN).getY()+.4,pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN).getZ()+-.1,0,1,0);
+
+                }
+                else if (worldIn.getBlockState(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN)).getBlock().hasTileEntity(worldIn.getBlockState(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))) &&
+                        worldIn.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    worldIn.addParticle(ParticleTypes.ENCHANT,true,pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN).getX()+.5,pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN).getY()+.4,pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN).getZ()+1.1,0,1,0);
+
+                }
+                else if (worldIn.getBlockState(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN)).getBlock().hasTileEntity(worldIn.getBlockState(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))) &&
+                        worldIn.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    worldIn.addParticle(ParticleTypes.ENCHANT,true,pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN).getX()+1.1,pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN).getY()+.4,pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN).getZ()+.5,0,1,0);
+
+                }
+                else if (worldIn.getBlockState(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN)).getBlock().hasTileEntity(worldIn.getBlockState(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))) &&
+                        worldIn.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    worldIn.addParticle(ParticleTypes.ENCHANT,true,pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN).getX()+-.1,pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN).getY()+.4,pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN).getZ()+.5,0,1,0);
+
+                }
             }
         });
+
+
         super.animateTick(stateIn, worldIn, pos, rand);
     }
 

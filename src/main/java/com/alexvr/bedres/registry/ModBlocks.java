@@ -11,6 +11,7 @@ import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.renderer.BedrockiumTowerTER;
 import com.alexvr.bedres.renderer.ScrapeTankTER;
 import com.alexvr.bedres.renderer.ScraperControllerTER;
+import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import com.alexvr.bedres.utils.References;
@@ -69,6 +70,12 @@ public class ModBlocks {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.BASE_SPIKE_REGNAME)
     public static TileEntityType<BedrockiumTowerTile> bedrockiumTowerType;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.PEDESTAL_REGNAME)
+    public static BedrociumPedestal bedrociumPedestal;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.PEDESTAL_REGNAME)
+    public static TileEntityType<BedrockiumPedestalTile> bedrockiumPedestalType;
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {

@@ -20,7 +20,7 @@ public class BedrockScrapperSlaveBlock extends Block {
     public BedrockScrapperSlaveBlock() {
             super(Block.Properties.create(Material.IRON)
                     .sound(SoundType.ANVIL)
-                    .hardnessAndResistance(24.0f)
+                    .hardnessAndResistance(23.0f)
                     .lightValue(0).variableOpacity());
             setRegistryName(References.BEDROCK_SCRAPER_SLAVE_REGNAME);
 

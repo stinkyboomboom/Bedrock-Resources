@@ -23,7 +23,6 @@ public class BedrociumSpike  extends Block {
     public BedrociumSpike() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
-                .hardnessAndResistance(2.0f)
                 .lightValue(13).variableOpacity().hardnessAndResistance(-1.0F, 3600000.0F).noDrops());
         setRegistryName(References.SPIKE_REGNAME);
 

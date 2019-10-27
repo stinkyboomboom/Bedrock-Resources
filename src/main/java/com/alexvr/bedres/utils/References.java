@@ -27,6 +27,7 @@ public class References {
     public static final String SUN_DAIZE_REGNAME = "sun_daize";
     public static final String SPIKE_REGNAME = "spike";
     public static final String BASE_SPIKE_REGNAME = "base_spike";
+    public static final String PEDESTAL_REGNAME = "pedestal";
 
 
 }

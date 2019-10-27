@@ -15,6 +15,7 @@ import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
 import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
+import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import com.alexvr.bedres.utils.References;
@@ -80,6 +81,7 @@ public class BedrockResources {
             event.getRegistry().register(new SunDaize());
             event.getRegistry().register(new BedrociumSpike());
             event.getRegistry().register(new BedrociumTower());
+            event.getRegistry().register(new BedrociumPedestal());
         }
 
         @SubscribeEvent
@@ -96,6 +98,7 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.enderHush, properties).setRegistryName(References.ENDER_HUSH_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName(References.SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName(References.BASE_SPIKE_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrociumPedestal, properties).setRegistryName(References.PEDESTAL_REGNAME));
             event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
@@ -110,13 +113,13 @@ public class BedrockResources {
             event.getRegistry().register(TileEntityType.Builder.create(ScrapeTankTile::new, ModBlocks.scrapeTank).build(null).setRegistryName(References.SCRAPE_TANK_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new, ModBlocks.bedrockScraperControllerBlock).build(null).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(BedrockiumTowerTile::new, ModBlocks.bedrociumTower).build(null).setRegistryName(References.BASE_SPIKE_REGNAME));
+            event.getRegistry().register(TileEntityType.Builder.create(BedrockiumPedestalTile::new, ModBlocks.bedrociumPedestal).build(null).setRegistryName(References.PEDESTAL_REGNAME));
 
         }
 
         @SubscribeEvent
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ScrapeTankContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer())).setRegistryName(References.SCRAPE_TANK_REGNAME));
-
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BedrockScraperContainer(windowId,BedrockResources.proxy.getClientWorld(),data.readBlockPos(),inv,BedrockResources.proxy.getClientPlayer())).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
 
 
