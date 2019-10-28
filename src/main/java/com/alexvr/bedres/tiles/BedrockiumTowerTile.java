@@ -2,7 +2,6 @@ package com.alexvr.bedres.tiles;
 
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -115,15 +114,12 @@ public class BedrockiumTowerTile extends TileEntity implements ITickableTileEnti
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getItem().getRegistryName().equals(Items.ENDER_EYE.getRegistryName());
+                return true;
             }
 
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(!(stack.getItem().getRegistryName().equals(Items.ENDER_EYE.getRegistryName()))){
-                    return stack;
-                }
                 return super.insertItem(slot, stack, simulate);
             }
 
