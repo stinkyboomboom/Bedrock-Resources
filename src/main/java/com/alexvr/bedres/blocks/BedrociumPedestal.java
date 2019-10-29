@@ -1,5 +1,6 @@
 package com.alexvr.bedres.blocks;
 
+import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
@@ -8,7 +9,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Hand;
@@ -19,6 +23,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -51,19 +56,106 @@ public class BedrociumPedestal extends Block {
 
     @Override
     public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+
         super.onBlockClicked(state, worldIn, pos, player);
     }
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
+        if(!worldIn.isRemote){
+            TileEntity te = worldIn.getTileEntity(pos);
+            if(player.getHeldItemMainhand() != ItemStack.EMPTY){
+                te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                    if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.bedrockScrapes.getRegistryName())){
+                        if (h.getStackInSlot(1) != ItemStack.EMPTY && !((BedrockiumPedestalTile)worldIn.getTileEntity(pos)).crafting) {
+                            System.out.println("dsf");
+                            ((BedrockiumPedestalTile)worldIn.getTileEntity(pos)).craft(h.getStackInSlot(1));
+                        }
+                    }
+                    if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.scrapesKnife.getRegistryName())){
+
+                        if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
+                            player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+                            te.markDirty();
+                            ((BedrockiumPedestalTile) te).sendUpdates();
+                        }
+
+                    }else {
+                        if (h.getStackInSlot(0) == ItemStack.EMPTY) {
+                            h.insertItem(0, new ItemStack(player.getHeldItemMainhand().getItem(), 1), false);
+                            player.getHeldItemMainhand().shrink(1);
+                            te.markDirty();
+                            ((BedrockiumPedestalTile) te).sendUpdates();
+                        }
+                    }
+                });
+                return true;
+            }
+        }
 
         return false;
+    }
+    public void addParticleRandom( World world, BlockPos pos){
+        switch (new Random().nextInt(3)){
+            case 0:
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,new Random().nextFloat()-0.5,0,0);
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,new Random().nextFloat()-0.5,0,0);
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,new Random().nextFloat()-0.5,0,0);
+                break;
+            case 1:
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,0,new Random().nextFloat()-0.5,0);
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,0,new Random().nextFloat()-0.5,0);
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,0,new Random().nextFloat()-0.5,0);
+
+                break;
+            case 2:
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,0,0,new Random().nextFloat()-0.5);
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,0,0,new Random().nextFloat()-0.5);
+                world.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5,pos.getY()+2,pos.getZ()+.5,0,0,new Random().nextFloat()-0.5);
+                break;
+
+        }
     }
 
     @Override
     public void animateTick(BlockState stateIn, World world, BlockPos pos, Random rand) {
+        world.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            if (h.getStackInSlot(1) != ItemStack.EMPTY){
+                if(((BedrockiumPedestalTile)world.getTileEntity(pos)).crafting){
+                    if (((BedrockiumPedestalTile)world.getTileEntity(pos)).craftingCurrentTimer>=((BedrockiumPedestalTile)world.getTileEntity(pos)).craftingTotalTimer){
+                        addParticleRandom(world,pos);
+                    }
 
+                    if(((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX()-(pos.getX()) == 0){
+                        if (((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()-(pos.getZ()) > 0){
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0,-.15,-0.2);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0,-.15,-0.2);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0,-.15,-0.2);
+                        }else{
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0,-.15,0.2);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0,-.15,0.2);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0,-.15,0.2);
+                        }
+                    }else if(((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()-(pos.getZ()) == 0){
+                        if (((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX()-(pos.getX()) > 0){
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,-.2,-.15,0);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,-.2,-.15,0);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,-.2,-.15,0);
+
+                        }else{
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0.2,-.15,0);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0.2,-.15,0);
+                            world.addParticle(ParticleTypes.SMOKE,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getX() + 0.5,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getY() + 2,((BedrockiumPedestalTile)world.getTileEntity(pos)).extractFrom.getZ()+ 0.5,0.2,-.15,0);
+                        }
+                    }
+                }else{
+                    addParticleRandom(world,pos);
+                }
+
+            }
+        });
         super.animateTick(stateIn, world, pos, rand);
     }
 

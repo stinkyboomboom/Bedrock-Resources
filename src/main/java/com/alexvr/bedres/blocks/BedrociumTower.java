@@ -11,15 +11,14 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -102,6 +101,7 @@ public class BedrociumTower extends Block {
                         if (h.getStackInSlot(index) != ItemStack.EMPTY) {
                             InventoryHelper.spawnItemStack(worldIn,  pos.getX(), pos.getY()+1,pos.getZ(),h.extractItem(index,1,false));
                             System.out.println(h.getStackInSlot(index).getDisplayName());
+                            player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                             te.markDirty();
                             ((BedrockiumTowerTile) te).sendUpdates();
                         }
@@ -115,28 +115,7 @@ public class BedrociumTower extends Block {
                     }
                 });
                 return true;
-            }else {
-                for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                    ItemStack stack = player.inventory.getStackInSlot(i);
-                    ResourceLocation name = Items.ENDER_EYE.getRegistryName();
-                    if (player.isSneaking()){
-                        name = Items.ENDER_PEARL.getRegistryName();
-                    }
-                    if (stack.getItem().getRegistryName().equals(name) && te instanceof BedrockiumTowerTile) {
-                        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                            int index = getIndex(player,hit,pos);
-                            if (h.getStackInSlot(index) == ItemStack.EMPTY) {
-                                stack.shrink(1);
-                                h.insertItem(index, new ItemStack(Items.ENDER_EYE, 1), false);
-                                te.markDirty();
-                                ((BedrockiumTowerTile) te).sendUpdates();
-                            }
-                        });
-                        return true;
-                    }
-                }
             }
-
         }
 
         return false;

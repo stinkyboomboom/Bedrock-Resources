@@ -1,7 +1,10 @@
 package com.alexvr.bedres.tiles;
 
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModItems;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -19,13 +22,23 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class BedrockiumPedestalTile extends TileEntity implements ITickableTileEntity {
 
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
 
-    BlockPos towerpos1,towerpos2,towerpos3,towerpos4;
-            //north     south       east    west
+    public BlockPos towerpos1,towerpos2,towerpos3,towerpos4;
+    //north     south       east    west
+
+    public static ArrayList RECEPI = new ArrayList<>();
+
+    public boolean crafting=false;
+    public int craftingTotalTimer=0,craftingCurrentTimer=0;
+    public BlockPos extractFrom;
+
+
+    int counterCheck = 0;
 
     public BedrockiumPedestalTile() {
         super(ModBlocks.bedrockiumPedestalType);
@@ -33,6 +46,32 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         towerpos2= new BlockPos(0,0,0);
         towerpos3= new BlockPos(0,0,0);
         towerpos4= new BlockPos(0,0,0);
+        extractFrom= towerpos1;
+        createList();
+    }
+
+    private void createList() {
+        RECEPI = new ArrayList<>();
+        ArrayList GOLDBLOCK = new ArrayList() {{
+
+            add(new ItemStack(ModItems.enderianIngot,4));
+            add(new ArrayList<String>() {{
+
+                add(Items.ENDER_PEARL.getRegistryName().toString());
+                add(Items.OBSIDIAN.getRegistryName().toString());
+                add(Items.ENDER_PEARL.getRegistryName().toString());
+                add(Items.OBSIDIAN.getRegistryName().toString());
+                add(Items.ENDER_PEARL.getRegistryName().toString());
+                add(Items.OBSIDIAN.getRegistryName().toString());
+                add(Items.ENDER_PEARL.getRegistryName().toString());
+                add(Items.OBSIDIAN.getRegistryName().toString());
+
+            }});
+            add(Items.GOLD_INGOT.getRegistryName().toString());
+
+
+        }};
+        RECEPI.add(GOLDBLOCK);
     }
 
     @Override
@@ -54,14 +93,157 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
                 (world.getBlockState(towerpos2).getBlock().hasTileEntity( world.getBlockState(towerpos2)) && world.getTileEntity(towerpos2) instanceof BedrockiumTowerTile)&&
                 (world.getBlockState(towerpos3).getBlock().hasTileEntity( world.getBlockState(towerpos3)) && world.getTileEntity(towerpos3) instanceof BedrockiumTowerTile)&&
                 (world.getBlockState(towerpos4).getBlock().hasTileEntity( world.getBlockState(towerpos4)) && world.getTileEntity(towerpos4) instanceof BedrockiumTowerTile)){
+            if(crafting){
+                craftingCurrentTimer++;
+                System.out.println("Timer " + craftingCurrentTimer);
+                System.out.println("Total " + craftingTotalTimer);
+                if (craftingCurrentTimer>=craftingTotalTimer+30){
+                    crafting=false;
+                    craftingCurrentTimer=0;
+                    craftingTotalTimer=0;
+                    handler.ifPresent(g -> {
+                        InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), g.extractItem(1, g.getStackInSlot(1).getCount(), false));
 
-            markDirty();
-            sendUpdates();
+                    });
+                    createList();
+                    handler = LazyOptional.of(this::createHandler);
+                    markDirty();
+                    sendUpdates();
+                    return;
+                }
+                if (craftingCurrentTimer % 30 == 0) {
+                    world.getTileEntity(towerpos1).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                        world.getTileEntity(towerpos2).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(j -> {
+                            world.getTileEntity(towerpos3).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(k -> {
+                                world.getTileEntity(towerpos4).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(l -> {
+                                    handler.ifPresent(g ->  {
+                                        for (int i =0;i<8;i++){
+                                            if(h.getStackInSlot(i) != ItemStack.EMPTY && !h.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                                h.extractItem(i,1,false);
+                                                (world.getTileEntity(towerpos1)).markDirty();
+                                                ((BedrockiumTowerTile) world.getTileEntity(towerpos1)).sendUpdates();
+                                                extractFrom = towerpos1;
+                                                break;
+                                            }
+                                            if(j.getStackInSlot(i) != ItemStack.EMPTY && !j.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                                j.extractItem(i,1,false);
+                                                (world.getTileEntity(towerpos2)).markDirty();
+                                                ((BedrockiumTowerTile) world.getTileEntity(towerpos2)).sendUpdates();
+                                                extractFrom = towerpos2;
+                                                break;
+                                            }
+                                            if(k.getStackInSlot(i) != ItemStack.EMPTY && !k.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                                k.extractItem(i,1,false);
+                                                (world.getTileEntity(towerpos3)).markDirty();
+                                                ((BedrockiumTowerTile) world.getTileEntity(towerpos3)).sendUpdates();
+                                                extractFrom = towerpos3;
+                                                break;
+                                            }
+                                            if(l.getStackInSlot(i) != ItemStack.EMPTY && !l.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                                l.extractItem(i,1,false);
+                                                (world.getTileEntity(towerpos4)).markDirty();
+                                                ((BedrockiumTowerTile) world.getTileEntity(towerpos4)).sendUpdates();
+                                                extractFrom = towerpos4;
+                                                break;
+                                            }
+                                        }
+                                        if(g.getStackInSlot(0) != ItemStack.EMPTY && !g.getStackInSlot(0).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                            g.extractItem(0,1,false);
+                                            markDirty();
+                                            sendUpdates();
+                                            extractFrom = pos;
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
+                    markDirty();
+                    sendUpdates();
 
+                }
+            }else {
+                counterCheck++;
+                if (counterCheck >= 20) {
+                    counterCheck = 0;
+                    checkRecepi((BedrockiumTowerTile) world.getTileEntity(towerpos1), (BedrockiumTowerTile) world.getTileEntity(towerpos2), (BedrockiumTowerTile) world.getTileEntity(towerpos3), (BedrockiumTowerTile) world.getTileEntity(towerpos4));
+                    markDirty();
+                    sendUpdates();
+                }
+            }
         }
     }
 
+    @SuppressWarnings("Duplicates")
+    private void checkRecepi(BedrockiumTowerTile tileEntity, BedrockiumTowerTile tileEntity1, BedrockiumTowerTile tileEntity2, BedrockiumTowerTile tileEntity3) {
 
+        tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            tileEntity1.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(j -> {
+                tileEntity2.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(k -> {
+                    tileEntity3.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(l -> {
+                        handler.ifPresent(g ->  {
+                            ArrayList<String> itemsNames = new ArrayList<>();
+                            for(int i = 0; i < 8 ; i++){
+                                if(h.getStackInSlot(i) != ItemStack.EMPTY && !h.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                    itemsNames.add(h.getStackInSlot(i).getItem().getRegistryName().toString());
+                                }
+                                if(j.getStackInSlot(i) != ItemStack.EMPTY && !j.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                    itemsNames.add(j.getStackInSlot(i).getItem().getRegistryName().toString());
+                                }
+                                if(k.getStackInSlot(i) != ItemStack.EMPTY && !k.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                    itemsNames.add(k.getStackInSlot(i).getItem().getRegistryName().toString());
+                                }
+                                if(l.getStackInSlot(i) != ItemStack.EMPTY && !l.getStackInSlot(i).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                    itemsNames.add(l.getStackInSlot(i).getItem().getRegistryName().toString());
+                                }
+                            }
+
+                            boolean shouldErase = true;
+                            for (int kindex =0;kindex<RECEPI.size();kindex++){
+
+                                if (((ArrayList)RECEPI.get(kindex)).size()>=3) {
+
+                                    if (((ArrayList) RECEPI.get(kindex)).get(1).equals(itemsNames) && (g.getStackInSlot(0).getItem().getRegistryName().toString().equals(((ArrayList) RECEPI.get(kindex)).get(2)))) {
+
+                                        if (g.getStackInSlot(1) != ItemStack.EMPTY ||!g.getStackInSlot(1).getItem().getRegistryName().toString().equals("minecraft:air")) {
+                                            g.extractItem(1, g.getStackInSlot(1).getCount(), false);
+                                        }
+                                        g.insertItem(1, ((ItemStack) ((ArrayList) RECEPI.get(kindex)).get(0)), false);
+                                        System.out.println(g.getStackInSlot(1).toString());
+                                        markDirty();
+                                        sendUpdates();
+                                        shouldErase = false;
+                                    }
+                                }else{
+                                    if (((ArrayList) RECEPI.get(kindex)).get(1).equals(itemsNames) && g.getStackInSlot(0) == ItemStack.EMPTY) {
+                                        if (g.getStackInSlot(1) != ItemStack.EMPTY) {
+                                            g.extractItem(1, 1, false);
+                                        }
+                                        ItemStack s = ((ItemStack) ((ArrayList) RECEPI.get(kindex)).get(0));
+                                        s.setCount(s.getCount());
+                                        g.insertItem(1,s, false);
+                                        markDirty();
+                                        sendUpdates();
+                                        shouldErase = false;
+                                    }
+                                }
+                            }
+                            if(shouldErase){
+                                if(g.getStackInSlot(1) != ItemStack.EMPTY){
+                                    g.extractItem(1,1,false);
+                                    markDirty();
+                                    sendUpdates();
+                                }
+
+                            }
+                        });
+                    });
+                });
+            });
+        });
+
+
+    }
 
 
     @Override
@@ -70,7 +252,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         handler.ifPresent(h -> ((INBTSerializable<CompoundNBT>)h).deserializeNBT(compound));
         if(compound.contains("pos1")){
             long[] list = compound.getLongArray("pos1");
-           towerpos1 = new BlockPos(list[0],list[1],list[2]);
+            towerpos1 = new BlockPos(list[0],list[1],list[2]);
         }
         if(compound.contains("pos2")){
             long[] list = compound.getLongArray("pos2");
@@ -83,6 +265,19 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         if(compound.contains("pos4")){
             long[] list = compound.getLongArray("pos4");
             towerpos4 = new BlockPos(list[0],list[1],list[2]);
+        }
+        if(compound.contains("extract")){
+            long[] list = compound.getLongArray("extract");
+            extractFrom = new BlockPos(list[0],list[1],list[2]);
+        }
+        if(compound.contains("crafting")){
+            crafting = compound.getBoolean("crafting");
+        }
+        if(compound.contains("total")){
+            craftingTotalTimer = compound.getInt("total");
+        }
+        if(compound.contains("current")){
+            craftingCurrentTimer = compound.getInt("current");
         }
         super.read(tag);
     }
@@ -102,13 +297,18 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
             compound.putLongArray("pos3",position3);
             long[] position4 = {towerpos4.getX(),towerpos4.getY(),towerpos4.getZ()};
             compound.putLongArray("pos4",position4);
+            long[] extractF = {extractFrom.getX(),extractFrom.getY(),extractFrom.getZ()};
+            compound.putLongArray("extract",extractF);
+            compound.putBoolean("crafting",crafting);
+            compound.putInt("total",craftingTotalTimer);
+            compound.putInt("current",craftingCurrentTimer);
         });
 
         return super.write(tag);
     }
 
     private IItemHandler createHandler() {
-        return new ItemStackHandler(33) {
+        return new ItemStackHandler(2) {
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -129,7 +329,12 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
             @Override
             public int getSlotLimit(int slot) {
-                return 1;
+                if(slot==0) {
+                    return 1;
+                }
+                else{
+                    return 64;
+                }
             }
         };
 
@@ -168,5 +373,26 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
     public void sendUpdates() {
         world.notifyBlockUpdate(pos, this.getBlockState(), getBlockState(), 3);
         markDirty();
+    }
+
+    public void craft(ItemStack itemStack) {
+        crafting = true;
+        craftingCurrentTimer=0;
+        System.out.println(itemStack.toString());
+        for (int kindex =0;kindex<RECEPI.size();kindex++) {
+            System.out.println((((ArrayList) RECEPI.get(kindex)).get(0)).toString());
+            if ((((ArrayList) RECEPI.get(kindex)).get(0)) == itemStack) {
+                craftingTotalTimer = ((ArrayList) ((ArrayList) RECEPI.get(kindex)).get(1)).size();
+                if (((ArrayList) RECEPI.get(kindex)).size() >= 3) {
+                    craftingTotalTimer++;
+                }
+                craftingTotalTimer *= 30;
+                System.out.println(craftingTotalTimer);
+                break;
+            }
+
+        }
+        markDirty();
+        sendUpdates();
     }
 }

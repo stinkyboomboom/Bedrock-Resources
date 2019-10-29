@@ -44,42 +44,35 @@ public class BedrockiumTowerTile extends TileEntity implements ITickableTileEnti
         if(!world.isRemote) {
             handler.ifPresent(h -> {
 
-                int total = 0;
-                for (int i = 0; i < h.getSlots(); i++) {
-                    if (h.getStackInSlot(i) != ItemStack.EMPTY) {
-                        total++;
-                    }
+                if (world.getBlockState(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))) &&
+                        world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))).towerpos1 = pos;
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))).markDirty();
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))).sendUpdates();
+
                 }
-                if (total == 8) {
-                    if (world.getBlockState(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))) &&
-                            world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))).towerpos1 = pos;
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))).markDirty();
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.NORTH).offset(Direction.DOWN))).sendUpdates();
+                else if (world.getBlockState(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))) &&
+                        world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))).towerpos2 = pos;
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))).markDirty();
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))).sendUpdates();
 
-                    }
-                    else if (world.getBlockState(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))) &&
-                            world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))).towerpos2 = pos;
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))).markDirty();
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.SOUTH).offset(Direction.DOWN))).sendUpdates();
-
-                    }
-                    else if (world.getBlockState(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))) &&
-                            world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))).towerpos3 = pos;
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))).markDirty();
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))).sendUpdates();
-
-                    }
-                    else if (world.getBlockState(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))) &&
-                            world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))).towerpos4 = pos;
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))).markDirty();
-                        ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))).sendUpdates();
-
-                    }
                 }
+                else if (world.getBlockState(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))) &&
+                        world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))).towerpos3 = pos;
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))).markDirty();
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.EAST).offset(Direction.EAST).offset(Direction.EAST).offset(Direction.DOWN))).sendUpdates();
+
+                }
+                else if (world.getBlockState(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN)).getBlock().hasTileEntity(world.getBlockState(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))) &&
+                        world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN)) instanceof BedrockiumPedestalTile) {
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))).towerpos4 = pos;
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))).markDirty();
+                    ((BedrockiumPedestalTile) world.getTileEntity(pos.offset(Direction.WEST).offset(Direction.WEST).offset(Direction.WEST).offset(Direction.DOWN))).sendUpdates();
+
+                }
+
 
             });
         }

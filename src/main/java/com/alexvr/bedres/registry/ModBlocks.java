@@ -8,6 +8,7 @@ import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperContainer;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
+import com.alexvr.bedres.renderer.BedrockiumPedestalTER;
 import com.alexvr.bedres.renderer.BedrockiumTowerTER;
 import com.alexvr.bedres.renderer.ScrapeTankTER;
 import com.alexvr.bedres.renderer.ScraperControllerTER;
@@ -83,6 +84,7 @@ public class ModBlocks {
            ClientRegistry.bindTileEntitySpecialRenderer(ScrapeTankTile.class, new ScrapeTankTER());
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockScraperControllerTile.class, new ScraperControllerTER());
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumTowerTile.class, new BedrockiumTowerTER());
+            ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumPedestalTile.class, new BedrockiumPedestalTER());
         });
     }
 }
