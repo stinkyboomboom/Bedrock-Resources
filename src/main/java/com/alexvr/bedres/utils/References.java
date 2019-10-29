@@ -28,6 +28,8 @@ public class References {
     public static final String SPIKE_REGNAME = "spike";
     public static final String BASE_SPIKE_REGNAME = "base_spike";
     public static final String PEDESTAL_REGNAME = "pedestal";
+    public static final String ENDERIAN_BRICK_REGNAME = "enderian_brick";
+    public static final String BEDROCK_STAIRS_REGNAME = "bedrock_stairs";
 
 
 }

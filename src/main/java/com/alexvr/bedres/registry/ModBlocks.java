@@ -42,6 +42,12 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_ORE_REGNAME)
     public static EnderianOre enderianOre;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_BRICK_REGNAME)
+    public static EnderianBrick enderianBrick;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_STAIRS_REGNAME)
+    public static BedrockStair bedrockStair;
+
     @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPER_CONTROLLER_REGNAME)
     public static BedrockScrapperControllerBlock bedrockScraperControllerBlock;
 

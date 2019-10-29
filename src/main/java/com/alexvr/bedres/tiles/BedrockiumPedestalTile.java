@@ -81,7 +81,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return super.getRenderBoundingBox();
+        return INFINITE_EXTENT_AABB;
     }
 
 

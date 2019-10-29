@@ -6,6 +6,7 @@ import com.alexvr.bedres.capability.IBedrockFlux;
 import com.alexvr.bedres.gui.ScrapeTankScreen;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperScreen;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.world.ModFlowerFeature;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -18,6 +19,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.FrequencyConfig;
+import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -36,6 +38,8 @@ public class ClientProxy implements IProxy{
                 biomeEntry.biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
                         ModBlocks.enderianOre.getDefaultState(), 6), Placement.COUNT_RANGE, new CountRangeConfig(2,0,0,16)));
                 biomeEntry.biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(MODFLOWER_FEATURE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
+                biomeEntry.biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(ModFeatures.ALTAR, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+                biomeEntry.biome.addStructure(ModFeatures.ALTAR, IFeatureConfig.NO_FEATURE_CONFIG);
 
             }
         }

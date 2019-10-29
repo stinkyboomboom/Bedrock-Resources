@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -30,13 +31,10 @@ import java.util.Random;
 
 public class BedrociumPedestal extends Block {
 
-    protected static final VoxelShape Base = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, .2, 11.0D);
-    protected static final VoxelShape SPIKE1 = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, .8, 11.0D);
-    protected static final VoxelShape SPIKE2 = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, .8, 11.0D);
-    protected static final VoxelShape SPIKE3 = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, .8, 11.0D);
-    protected static final VoxelShape SPIKE4 = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, .8, 11.0D);
+    protected static final VoxelShape Base = Block.makeCuboidShape(0, 0.0D, 0, 16, .3, 16);
 
-    protected static final VoxelShape Shape = VoxelShapes.or(Base,SPIKE1,SPIKE2,SPIKE3,SPIKE4);
+
+    protected static final VoxelShape Shape = VoxelShapes.or(Base);
     public BedrociumPedestal() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
@@ -73,7 +71,7 @@ public class BedrociumPedestal extends Block {
                             ((BedrockiumPedestalTile)worldIn.getTileEntity(pos)).craft(h.getStackInSlot(1));
                         }
                     }
-                    if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.scrapesKnife.getRegistryName())){
+                    else if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.scrapesKnife.getRegistryName())){
 
                         if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                             InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
@@ -91,6 +89,22 @@ public class BedrociumPedestal extends Block {
                         }
                     }
                 });
+                return true;
+            }else{
+                for(int i =0 ; i< player.inventory.getSizeInventory(); i ++) {
+                    ItemStack stack = player.inventory.getStackInSlot(i);
+                    if (stack.getItem().getRegistryName().equals(Items.ENDER_PEARL.getRegistryName()) && te instanceof BedrockiumPedestalTile) {
+                        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                            if (h.getStackInSlot(0) == ItemStack.EMPTY) {
+                                h.insertItem(0, new ItemStack(Items.ENDER_PEARL, 1), false);
+                                stack.shrink(1);
+                                te.markDirty();
+                                ((BedrockiumPedestalTile) te).sendUpdates();
+                            }
+                        });
+                    }
+                }
+
                 return true;
             }
         }

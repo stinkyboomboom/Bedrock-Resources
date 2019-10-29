@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -115,6 +116,20 @@ public class BedrociumTower extends Block {
                     }
                 });
                 return true;
+            }else{
+                for(int i =0 ; i< player.inventory.getSizeInventory(); i ++) {
+                    ItemStack stack = player.inventory.getStackInSlot(i);
+                    if (stack.getItem().getRegistryName().equals(Items.ENDER_PEARL.getRegistryName()) && te instanceof BedrockiumTowerTile) {
+                        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                            if (h.getStackInSlot(0) == ItemStack.EMPTY) {
+                                h.insertItem(0, new ItemStack(Items.ENDER_PEARL, 1), false);
+                                stack.shrink(1);
+                                te.markDirty();
+                                ((BedrockiumTowerTile) te).sendUpdates();
+                            }
+                        });
+                    }
+                }
             }
         }
 

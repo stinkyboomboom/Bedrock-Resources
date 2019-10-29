@@ -11,6 +11,7 @@ import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
 import com.alexvr.bedres.setup.ModSetup;
@@ -63,7 +64,9 @@ public class BedrockResources {
         setup.init();
         proxy.init();
         DistExecutor.runWhenOn(Dist.CLIENT, () -> ModBlocks::registerRenderers);
+
     }
+
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)
@@ -74,6 +77,8 @@ public class BedrockResources {
             event.getRegistry().register(new ScrapeTank());
             event.getRegistry().register(new EnderianBlock(Material.IRON, SoundType.METAL,32,2, References.ENDERIAN_BLOCK_REGNAME));
             event.getRegistry().register(new EnderianOre(Material.IRON, SoundType.STONE,54,3,References.ENDERIAN_ORE_REGNAME));
+            event.getRegistry().register(new EnderianBrick(Material.IRON, SoundType.STONE,54,5,References.ENDERIAN_BRICK_REGNAME));
+            event.getRegistry().register(new BedrockStair(Material.IRON, SoundType.STONE,54,5,References.BEDROCK_STAIRS_REGNAME));
             event.getRegistry().register(new BedrockScrapperControllerBlock());
             event.getRegistry().register(new BedrockScrapperSlaveBlock());
             event.getRegistry().register(new Blazium());
@@ -91,6 +96,8 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.scrapeTank, properties).setRegistryName(References.SCRAPE_TANK_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.enderianBlock, properties).setRegistryName(References.ENDERIAN_BLOCK_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.enderianOre, properties).setRegistryName(References.ENDERIAN_ORE_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderianBrick, properties).setRegistryName(References.ENDERIAN_BRICK_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.bedrockStair, properties).setRegistryName(References.BEDROCK_STAIRS_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperControllerBlock, properties).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperSlaveBlock, properties).setRegistryName(References.BEDROCK_SCRAPER_SLAVE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.blazium, properties).setRegistryName(References.BLAZIUM_REGNAME));
@@ -126,10 +133,10 @@ public class BedrockResources {
         }
 
         @SubscribeEvent
-        public static void registerFeatures(RegistryEvent.Register<Feature<?>> event) {
-            IForgeRegistry<Feature<?>> r = event.getRegistry();
+        public static void onRegisterFeatures(RegistryEvent.Register<Feature<?>> event) {
+            IForgeRegistry<Feature<?>> registry = event.getRegistry();
 
-
+            ModFeatures.registerFeatures(registry);
 
         }
 
