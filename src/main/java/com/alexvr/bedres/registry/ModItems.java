@@ -1,7 +1,6 @@
 package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.items.EnderianIngot;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.items.ScrapeKnife;
@@ -10,8 +9,8 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class ModItems {
 
-    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPE_REGNAME)
-    public static BedrockScrape bedrockScrapes;
+//    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPE_REGNAME)
+//    public static BedrockScrape bedrockScrapes;
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPE_KNIFE_REGNAME)
     public static ScrapeKnife scrapesKnife;

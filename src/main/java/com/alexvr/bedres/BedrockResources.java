@@ -2,7 +2,6 @@ package com.alexvr.bedres;
 
 import com.alexvr.bedres.blocks.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
-import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.items.EnderianIngot;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.items.ScrapeKnife;
@@ -25,6 +24,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.gen.feature.Feature;
@@ -82,6 +82,7 @@ public class BedrockResources {
             event.getRegistry().register(new BedrockScrapperControllerBlock());
             event.getRegistry().register(new BedrockScrapperSlaveBlock());
             event.getRegistry().register(new Blazium());
+            event.getRegistry().register(new BedrockWireBlock());
             event.getRegistry().register(new EnderHush());
             event.getRegistry().register(new SunDaize());
             event.getRegistry().register(new BedrociumSpike());
@@ -106,7 +107,8 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName(References.SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumPedestal, properties).setRegistryName(References.PEDESTAL_REGNAME));
-            event.getRegistry().register(new BedrockScrape());
+            event.getRegistry().register( new BlockNamedItem(ModBlocks.bedrockWire,properties).setRegistryName(References.BEDROCK_SCRAPE_REGNAME));
+            //event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());

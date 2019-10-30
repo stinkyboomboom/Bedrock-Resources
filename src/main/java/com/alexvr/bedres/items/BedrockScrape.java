@@ -12,4 +12,5 @@ public class BedrockScrape extends Item {
         setRegistryName(References.BEDROCK_SCRAPE_REGNAME);
     }
 
+
 }

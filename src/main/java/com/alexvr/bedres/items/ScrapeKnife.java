@@ -3,7 +3,7 @@ package com.alexvr.bedres.items;
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.capability.BedrockFluxProvider;
 import com.alexvr.bedres.capability.IBedrockFlux;
-import com.alexvr.bedres.registry.ModItems;
+import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.References;
 import com.alexvr.bedres.utils.VectorHelper;
 import com.google.common.collect.ImmutableSet;
@@ -49,7 +49,7 @@ public class ScrapeKnife extends SwordItem {
             BlockRayTraceResult bs = selectBlock(playerIn.getHeldItemMainhand(),playerIn);
             if(playerIn.isSneaking() && bs != null){
                 playerIn.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_AQUA + new TranslationTextComponent("message.bedres.validblock").getUnformattedComponentText()), true);
-                ItemStack stack = new ItemStack(ModItems.bedrockScrapes);
+                ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.bedrockWire));
                 InventoryHelper.spawnItemStack(worldIn,  bs.getPos().getX(), bs.getPos().getY()+1, bs.getPos().getZ(),stack);
                 playerIn.getHeldItemMainhand().damageItem(2, playerIn, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                 LazyOptional<IBedrockFlux> bedrockFlux = playerIn.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);

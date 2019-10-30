@@ -69,6 +69,9 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SUN_DAIZE_REGNAME)
     public static SunDaize sunDaize;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_WIRE_REGNAME)
+    public static BedrockWireBlock bedrockWire;
+
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SPIKE_REGNAME)
     public static BedrociumSpike bedrociumSpike;
 

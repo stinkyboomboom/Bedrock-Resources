@@ -1,5 +1,6 @@
 package com.alexvr.bedres.blocks;
 
+import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.utils.References;
@@ -11,6 +12,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
@@ -65,7 +67,7 @@ public class BedrociumPedestal extends Block {
             TileEntity te = worldIn.getTileEntity(pos);
             if(player.getHeldItemMainhand() != ItemStack.EMPTY){
                 te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                    if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.bedrockScrapes.getRegistryName())){
+                    if (player.getHeldItemMainhand().getItem().getRegistryName().equals(Item.getItemFromBlock(ModBlocks.bedrockWire).getRegistryName())){
                         if (h.getStackInSlot(1) != ItemStack.EMPTY && !((BedrockiumPedestalTile)worldIn.getTileEntity(pos)).crafting) {
                             System.out.println("dsf");
                             ((BedrockiumPedestalTile)worldIn.getTileEntity(pos)).craft(h.getStackInSlot(1));

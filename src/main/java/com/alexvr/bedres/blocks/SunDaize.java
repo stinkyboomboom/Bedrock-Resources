@@ -13,5 +13,4 @@ public class SunDaize extends FlowerBlock {
         setRegistryName(References.SUN_DAIZE_REGNAME);
     }
 
-
 }

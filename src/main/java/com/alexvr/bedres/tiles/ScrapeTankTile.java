@@ -1,12 +1,12 @@
 package com.alexvr.bedres.tiles;
 
 import com.alexvr.bedres.containers.ScrapeTankContainer;
-import com.alexvr.bedres.items.BedrockScrape;
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -98,13 +98,13 @@ public class ScrapeTankTile extends TileEntity implements ITickableTileEntity, I
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getItem() instanceof BedrockScrape;
+                return stack.getItem().getRegistryName().equals(Item.getItemFromBlock(ModBlocks.bedrockWire).getRegistryName());
             }
 
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if(!(stack.getItem() instanceof BedrockScrape)){
+                if(!(stack.getItem().getRegistryName().equals(Item.getItemFromBlock(ModBlocks.bedrockWire).getRegistryName()))){
                     return stack;
                 }
                 return super.insertItem(slot, stack, simulate);

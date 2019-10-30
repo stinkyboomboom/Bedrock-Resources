@@ -1,7 +1,6 @@
 package com.alexvr.bedres.multiblocks.bedrockscraper;
 
 import com.alexvr.bedres.registry.ModBlocks;
-import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.utils.IRestorableTileEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +9,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -246,11 +246,11 @@ public class BedrockScraperControllerTile extends TileEntity implements IRestora
                     }
                     if (progress >= 20 * 60) {
                         progress = 0;
-                        ItemStack stack = new ItemStack(ModItems.bedrockScrapes, 1);
+                        ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.bedrockWire), 1);
                         TileEntity block = (world.getTileEntity(getPos().offset(getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ))));
                         if (block instanceof IInventory ) {
                             for (int i = 0; i < ((IInventory) block).getSizeInventory(); i++) {
-                                if (((IInventory) block).getStackInSlot(i).getItem() == ModItems.bedrockScrapes && ((IInventory) block).getStackInSlot(i).getCount() < 64) {
+                                if (((IInventory) block).getStackInSlot(i).getItem() == Item.getItemFromBlock(ModBlocks.bedrockWire) && ((IInventory) block).getStackInSlot(i).getCount() < 64) {
                                     ((IInventory) block).getStackInSlot(i).setCount(((IInventory) block).getStackInSlot(i).getCount() + 1);
                                     return;
                                 } else if (((IInventory) block).getStackInSlot(i) == ItemStack.EMPTY) {

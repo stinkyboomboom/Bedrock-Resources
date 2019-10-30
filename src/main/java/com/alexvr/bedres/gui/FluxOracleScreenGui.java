@@ -21,7 +21,10 @@ public class FluxOracleScreenGui extends Screen {
     private boolean main = true;
     private boolean scrapes = false;
     private boolean knife = false;
+    private boolean altar = false;
+    private boolean altar2 = false;
     private ImageButton back;
+    private ImageButton next;
 
     public FluxOracleScreenGui() {
         super(new StringTextComponent(References.FLUX_GUI_TITLE_RESOURCE));
@@ -48,9 +51,25 @@ public class FluxOracleScreenGui extends Screen {
     protected void init() {
         back = new ImageButton(15+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-48)),32,32,0,0,0,new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/back.png"),32,32, (button) -> {
 
-            main = true;
-            scrapes = false;
-            knife = false;
+            if(altar2){
+                altar2=false;
+                altar=true;
+            }else {
+                main = true;
+                scrapes = false;
+                knife = false;
+                altar = false;
+                altar2 = false;
+            }
+
+        });
+
+        next = new ImageButton(76+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-48)),32,32,0,0,0,new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/next.png"),32,32, (button) -> {
+
+            if (altar){
+                altar=false;
+                altar2=true;
+            }
 
 
         });
@@ -61,6 +80,8 @@ public class FluxOracleScreenGui extends Screen {
                     main = false;
                     scrapes = true;
                     knife = false;
+                    altar = false;
+                    altar2 = false;
                 }
 
             }));
@@ -70,11 +91,25 @@ public class FluxOracleScreenGui extends Screen {
                     main = false;
                     scrapes = false;
                     knife = true;
+                    altar = true;
+                    altar2 = false;
+                }
+
+            }));
+
+            add(new ImageButton(164+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), 46+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/altar.png"),32,32, (button) -> {
+                if(main) {
+                    main = false;
+                    scrapes = false;
+                    knife = false;
+                    altar = true;
+                    altar2 = false;
                 }
 
             }));
 
             add(back);
+            add(next);
 
         }};
 
@@ -103,8 +138,19 @@ public class FluxOracleScreenGui extends Screen {
             drawString(minecraft.fontRenderer,"Scrape Knife:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "The Scrape knife is used to scrape bedrock particles of bedrock, be careful, particles are released into the air and into your system.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (altar){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f), new ResourceLocation("bedres", "textures/gui/widget/altar.png"));
+            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "The altar is a multiblock structure composed of 4 Bedrocium Towers and 1 Bedrocium Pedestal. This structure can be used for many things, most importantly crafting and infusing items/blocks. You can right click any of the slots of the towers or the pedestal to place an item in it. Once a correct recipe is placed the output will be displayed on top of the altar. Right click the pedestal with bedrock scrapes to start crafting.";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (altar2){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32, new ResourceLocation("bedres", "textures/gui/altar.png"));
+            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
         }
         back.renderButton(p_render_1_, p_render_2_, p_render_3_);
+        next.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
 
     }

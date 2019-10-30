@@ -117,12 +117,13 @@ public class BedrociumTower extends Block {
                 });
                 return true;
             }else{
+                int index = getIndex(player,hit,pos);
                 for(int i =0 ; i< player.inventory.getSizeInventory(); i ++) {
                     ItemStack stack = player.inventory.getStackInSlot(i);
                     if (stack.getItem().getRegistryName().equals(Items.ENDER_PEARL.getRegistryName()) && te instanceof BedrockiumTowerTile) {
                         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                            if (h.getStackInSlot(0) == ItemStack.EMPTY) {
-                                h.insertItem(0, new ItemStack(Items.ENDER_PEARL, 1), false);
+                            if (h.getStackInSlot(index) == ItemStack.EMPTY) {
+                                h.insertItem(index, new ItemStack(Items.ENDER_PEARL, 1), false);
                                 stack.shrink(1);
                                 te.markDirty();
                                 ((BedrockiumTowerTile) te).sendUpdates();
