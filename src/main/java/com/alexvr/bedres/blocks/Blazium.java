@@ -41,15 +41,7 @@ public class Blazium extends FlowerBlock {
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos pos, BlockPos facingPos) {
         if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == Blocks.AIR){
-            BlockState blockstate1 = ((FireBlock)Blocks.FIRE).getStateForPlacement(worldIn, pos.offset(Direction.NORTH));
-            worldIn.setBlockState(pos.offset(Direction.NORTH), blockstate1, 11);
-            BlockState blockstate2 = ((FireBlock)Blocks.FIRE).getStateForPlacement(worldIn, pos.offset(Direction.SOUTH));
-            worldIn.setBlockState(pos.offset(Direction.SOUTH), blockstate2, 11);
-            BlockState blockstate3 = ((FireBlock)Blocks.FIRE).getStateForPlacement(worldIn, pos.offset(Direction.EAST));
-            worldIn.setBlockState(pos.offset(Direction.EAST), blockstate3, 11);
-            BlockState blockstate4 = ((FireBlock)Blocks.FIRE).getStateForPlacement(worldIn, pos.offset(Direction.WEST));
-            worldIn.setBlockState(pos.offset(Direction.WEST), blockstate4, 11);
-            return ((FireBlock)Blocks.FIRE).getStateForPlacement(worldIn, pos);
+            return getDefaultState();
         }
         return super.updatePostPlacement(stateIn, facing, facingState, worldIn, pos, facingPos);
     }
