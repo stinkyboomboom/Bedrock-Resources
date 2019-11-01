@@ -36,6 +36,7 @@ public class FluxOracleScreenGui extends Screen {
 
     double xOffset = 0, yOffset =0;
     double mouseX = 0, mouseY =0;
+    double scaleX = 0, scaleY =0;
 
 
     private ImageButton back;
@@ -60,12 +61,26 @@ public class FluxOracleScreenGui extends Screen {
 
     @Override
     public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
-        xOffset += (p_mouseDragged_1_-mouseX)/32;
-        yOffset += (p_mouseDragged_3_-mouseY)/32;
-
+        if (xOffset + (p_mouseDragged_1_ - mouseX) / 32<478 && xOffset+ (p_mouseDragged_1_ - mouseX) / 32>-389) {
+            xOffset += (p_mouseDragged_1_ - mouseX) / 32;
+        }
+        if (yOffset+(p_mouseDragged_3_ - mouseY) / 32< 191 && yOffset+(p_mouseDragged_3_ - mouseY) / 32>-109) {
+            yOffset += (p_mouseDragged_3_ - mouseY) / 32;
+        }
 
 
         return super.mouseDragged(p_mouseDragged_1_,p_mouseDragged_3_,p_mouseDragged_5_,p_mouseDragged_6_,p_mouseDragged_8_);
+    }
+
+    @Override
+    public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
+
+        if (scaleX+ p_mouseScrolled_5_>-23 && scaleY+ p_mouseScrolled_5_<9) {
+            scaleX += p_mouseScrolled_5_;
+            scaleY += p_mouseScrolled_5_;
+        }
+
+        return super.mouseScrolled(p_mouseScrolled_1_,p_mouseScrolled_3_,p_mouseScrolled_5_);
     }
 
     @Override
@@ -84,6 +99,8 @@ public class FluxOracleScreenGui extends Screen {
                 new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/back.png"),32,32, (button) -> {
             xOffset=0;
             yOffset=5;
+            scaleY=0;
+            scaleX=0;
             if(altar2){
                 changePage("altar");
             }else if(scraper2){
@@ -106,78 +123,78 @@ public class FluxOracleScreenGui extends Screen {
 
         List<AbstractButton> buttons = new ArrayList<AbstractButton>() {{
 
-            add(new ImageButton((int)xOffset+15+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), (int)yOffset+15+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/items/bedrock_scrapes.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+15+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), (int)yOffset+15+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/items/bedrock_scrapes.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("scrapes");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+64+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+64+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/scrape_knife.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+64+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+64+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/scrape_knife.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("knife");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+164+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+46+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/altar.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+164+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+46+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/altar.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("altar");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+300+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+21+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/blazium.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+300+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+21+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/blazium.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("blazium");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+106+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+76+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/ender_hush_base.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+106+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+76+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/ender_hush_base.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("hush");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+186+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+66+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/sun_daize.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+186+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+66+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/sun_daize.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("daize");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+243+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+83+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/enderian_ore.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+243+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+83+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/enderian_ore.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("eOre");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+243+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+23+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/items/enderian_ingot.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+243+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+23+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/items/enderian_ingot.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("eIngot");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+106+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+28+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/tank.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+106+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+28+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/tank.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("tank");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+164+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+97+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/scraper.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+164+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+97+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/scraper.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("scraper");
                 }
             }));
 
-            add(new ImageButton((int)xOffset+32+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+97+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32,32,0,0,0,
-                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/flux.png"),32,32, (button) -> {
+            add(new ImageButton((int)xOffset+32+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+97+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/flux.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
                 if(main) {
                     changePage("flux");
                 }
@@ -265,6 +282,8 @@ public class FluxOracleScreenGui extends Screen {
 
         if(main) {
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_gui.png"));
+            minecraft.getTextureManager().bindTexture(new ResourceLocation(BedrockResources.MODID,References.SCRAPE_TANK_GUI_BACK_TEXTURE_RESOURCE));
+            this.blit((Minecraft.getInstance().mainWindow.getScaledWidth()/8)-3, (Minecraft.getInstance().mainWindow.getScaledWidth()/9)-1, (int)xOffset/2, (int)yOffset/2, (Minecraft.getInstance().mainWindow.getScaledWidth() - Minecraft.getInstance().mainWindow.getScaledWidth()/4)+2 , Minecraft.getInstance().mainWindow.getScaledHeight() - (Minecraft.getInstance().mainWindow.getScaledWidth()/5)-8);
             for (Widget b : buttons) {
                 if (b.x < 46 || b.y< 56 || b.x + b.getWidth() > Minecraft.getInstance().mainWindow.getScaledWidth() - 46 || b.y + b.getHeight()> Minecraft.getInstance().mainWindow.getScaledHeight() - 56){
                     continue;
