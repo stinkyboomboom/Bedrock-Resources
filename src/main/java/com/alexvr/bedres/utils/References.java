@@ -12,6 +12,7 @@ public class References {
     public static final String SCRAPE_TANK_GUI_BACK_TEXTURE_RESOURCE = "textures/gui/flux_oracle_book_gui_back.png";
     public static final String FLUX_GUI_TITLE_RESOURCE = "flux_Gui";
     public static final String FLUX_CAPABILITY_NAME_RESOURCE = "bedrock_flux";
+    public static final String PLAYER_ABILITY_CAP_NAME_RESOURCE = "player_ability";
 
     public static final String BEDROCK_SCRAPE_REGNAME = "bedrock_scrapes";
     public static final String SCRAPE_KNIFE_REGNAME = "scrape_knife";

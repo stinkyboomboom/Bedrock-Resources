@@ -1,8 +1,11 @@
 package com.alexvr.bedres.setup;
 
-import com.alexvr.bedres.capability.BedrockFlux;
-import com.alexvr.bedres.capability.BedrockFluxStorage;
-import com.alexvr.bedres.capability.IBedrockFlux;
+import com.alexvr.bedres.capability.abilities.IPlayerAbility;
+import com.alexvr.bedres.capability.abilities.PlayerAbility;
+import com.alexvr.bedres.capability.abilities.PlayerAbilityStorage;
+import com.alexvr.bedres.capability.bedrock_flux.BedrockFlux;
+import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxStorage;
+import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.gui.ScrapeTankScreen;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperScreen;
 import com.alexvr.bedres.registry.ModBlocks;
@@ -32,6 +35,7 @@ public class ClientProxy implements IProxy{
         ScreenManager.registerFactory(ModBlocks.scrapeTankContainerType, ScrapeTankScreen::new);
         ScreenManager.registerFactory(ModBlocks.bedrockScraperControllerContainer, BedrockScraperScreen::new);
         CapabilityManager.INSTANCE.register(IBedrockFlux.class, new BedrockFluxStorage(), BedrockFlux::new);
+        CapabilityManager.INSTANCE.register(IPlayerAbility.class, new PlayerAbilityStorage(), PlayerAbility::new);
 
         for (BiomeManager.BiomeType btype : BiomeManager.BiomeType.values()) {
             for (BiomeManager.BiomeEntry biomeEntry : BiomeManager.getBiomes(btype)) {

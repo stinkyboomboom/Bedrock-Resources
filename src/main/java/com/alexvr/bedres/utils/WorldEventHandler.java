@@ -1,8 +1,10 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.capability.BedrockFluxProvider;
-import com.alexvr.bedres.capability.IBedrockFlux;
+import com.alexvr.bedres.capability.abilities.IPlayerAbility;
+import com.alexvr.bedres.capability.abilities.PlayerAbilityProvider;
+import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
+import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.gui.FluxOracleScreen;
 import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
@@ -21,6 +23,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -74,6 +77,14 @@ public class WorldEventHandler {
 
         });
 
+        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+            String message = String.format("Hello there, you have %s sword %s axe %s shovel %s hoe %s pick. And speed of %d and jump of %d",h.getSword(),h.getAxe(),h.getShovel(),h.getHoe(),h.getPick(),h.getSpeedBoost(),h.getJumpBoost());
+            player.sendStatusMessage(new StringTextComponent(message),false);
+
+
+        });
+
 
     }
 
@@ -90,9 +101,48 @@ public class WorldEventHandler {
                 BedrockResources.proxy.getMinecraft().ingameGUI=fx;
                 String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
                 player.sendStatusMessage(new StringTextComponent(message),true);
-
             });
         }
+    }
+
+    @SubscribeEvent
+    public static void PlayerHarvestEvent(PlayerEvent.HarvestCheck event)
+    {
+        System.out.println("Harvest");
+        System.out.println(event.getTargetBlock().getMaterial().toString());
+        System.out.println(event.getTargetBlock().toString());
+        System.out.println();
+        PlayerEntity player = event.getPlayer();
+        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+            System.out.println(event.getTargetBlock().getMaterial().toString());
+        });
+    }
+
+    @SubscribeEvent
+    public static void PlayerLeftClickEvent(PlayerInteractEvent.LeftClickBlock event)
+    {
+        System.out.println("Left");
+        System.out.println(event.getUseBlock().toString());
+        System.out.println(event.getUseItem().toString());
+        System.out.println();
+        PlayerEntity player = event.getPlayer();
+        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+
+        });
+    }
+
+    @SubscribeEvent
+    public static void PlayerBreakSpeedEvent(PlayerEvent.BreakSpeed event)
+    {
+        PlayerEntity player = event.getPlayer();
+        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+            event.setNewSpeed(event.getOriginalSpeed()+h.getSpeedBoost());
+            System.out.println(event.getNewSpeed());
+            System.out.println();
+        });
     }
 
     @SubscribeEvent

@@ -1,7 +1,7 @@
 package com.alexvr.bedres.gui;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.capability.IBedrockFlux;
+import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

@@ -1,4 +1,4 @@
-package com.alexvr.bedres.capability;
+package com.alexvr.bedres.capability.bedrock_flux;
 
 import net.minecraft.nbt.FloatNBT;
 import net.minecraft.nbt.INBT;

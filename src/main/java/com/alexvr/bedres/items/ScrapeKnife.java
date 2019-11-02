@@ -1,8 +1,8 @@
 package com.alexvr.bedres.items;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.capability.BedrockFluxProvider;
-import com.alexvr.bedres.capability.IBedrockFlux;
+import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
+import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.References;
 import com.alexvr.bedres.utils.VectorHelper;

@@ -1,4 +1,4 @@
-package com.alexvr.bedres.capability;
+package com.alexvr.bedres.capability.bedrock_flux;
 
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -6,7 +6,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

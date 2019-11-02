@@ -1,4 +1,4 @@
-package com.alexvr.bedres.capability;
+package com.alexvr.bedres.capability.bedrock_flux;
 
 import com.alexvr.bedres.gui.FluxOracleScreen;
 
