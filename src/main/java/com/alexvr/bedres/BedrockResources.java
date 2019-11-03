@@ -108,7 +108,6 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumPedestal, properties).setRegistryName(References.PEDESTAL_REGNAME));
             event.getRegistry().register( new BlockNamedItem(ModBlocks.bedrockWire,properties).setRegistryName(References.BEDROCK_SCRAPE_REGNAME));
-            //event.getRegistry().register(new BedrockScrape());
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());

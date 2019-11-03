@@ -1,8 +1,10 @@
 package com.alexvr.bedres.setup;
 
+import com.alexvr.bedres.network.Networking;
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 
 public class ModSetup {
 
@@ -13,11 +15,9 @@ public class ModSetup {
         }
     };
 
-    public void init(){
-
-
-
-
+    public void init() {
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        Networking.registerMessages();
     }
 
 }
