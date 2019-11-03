@@ -1,8 +1,6 @@
 package com.alexvr.bedres.utils;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
@@ -10,7 +8,7 @@ import net.minecraft.world.World;
 
 public class VectorHelper {
 
-    public static BlockRayTraceResult getLookingAt(PlayerEntity player, ItemStack tool) {
+    public static BlockRayTraceResult getLookingAt(PlayerEntity player) {
         return getLookingAt(player, RayTraceContext.FluidMode.NONE);
     }
 
@@ -27,8 +25,5 @@ public class VectorHelper {
         return result;
     }
 
-    public static BlockPos getPosLookingAt(PlayerEntity player, ItemStack tool) {
-        return VectorHelper.getLookingAt(player, tool).getPos();
-    }
 
 }

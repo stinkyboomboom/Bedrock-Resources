@@ -10,8 +10,8 @@ public interface IPlayerAbility {
     String getSword();
     String getHoe();
 
-    int getSpeedBoost();
-    int getJumpBoost();
+    int getMiningSpeedBoost();
+    float getJumpBoost();
     float getGravityMultiplier();
 
 
@@ -22,12 +22,12 @@ public interface IPlayerAbility {
     void setHoe(String name);
     void setname(String name);
 
-    void setSpeedBoost(int amount);
-    void setJumpBoost(int amount);
+    void setMiningSpeedBoost(int amount);
+    void setJumpBoost(float amount);
     void setGRavityMultiplier(float amount);
 
-    void addSpeed(int amount);
-    void addJump(int amount);
+    void addMiningSpeed(int amount);
+    void addJump(float amount);
     void addGrav(float amount);
 
 

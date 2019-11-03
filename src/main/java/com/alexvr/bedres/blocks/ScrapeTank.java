@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -28,7 +29,7 @@ public class ScrapeTank extends Block{
 
     public ScrapeTank() {
         super(Properties.create(Material.IRON)
-                .sound(SoundType.METAL)
+                .sound(SoundType.METAL).harvestTool(ToolType.PICKAXE)
         .hardnessAndResistance(2.0f)
         .lightValue(13).variableOpacity());
         setRegistryName(References.SCRAPE_TANK_REGNAME);

@@ -2,9 +2,9 @@ package com.alexvr.bedres.capability.abilities;
 
 public class PlayerAbility implements  IPlayerAbility{
 
-    String axe = "none",pick= "none",shovel= "none",sword= "none",hoe= "none",name = "none";
-    int speed =1,jump=0;
-    float gravilty = 0;
+    String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no";
+    int speed =15;
+    float gravilty = 0,jump=0;
 
     @Override
     public String getNAme() {
@@ -37,12 +37,12 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public int getSpeedBoost() {
+    public int getMiningSpeedBoost() {
         return speed;
     }
 
     @Override
-    public int getJumpBoost() {
+    public float getJumpBoost() {
         return jump;
     }
 
@@ -86,13 +86,13 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public void setSpeedBoost(int amount) {
+    public void setMiningSpeedBoost(int amount) {
         speed=amount;
 
     }
 
     @Override
-    public void setJumpBoost(int amount) {
+    public void setJumpBoost(float amount) {
         jump=amount;
 
     }
@@ -103,12 +103,12 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public void addSpeed(int amount) {
+    public void addMiningSpeed(int amount) {
         speed+=amount;
     }
 
     @Override
-    public void addJump(int amount) {
+    public void addJump(float amount) {
         jump+=amount;
     }
 

@@ -75,10 +75,10 @@ public class BedrockResources {
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
             event.getRegistry().register(new ScrapeTank());
-            event.getRegistry().register(new EnderianBlock(Material.IRON, SoundType.METAL,32,2, References.ENDERIAN_BLOCK_REGNAME));
-            event.getRegistry().register(new EnderianOre(Material.IRON, SoundType.STONE,54,3,References.ENDERIAN_ORE_REGNAME));
-            event.getRegistry().register(new EnderianBrick(Material.IRON, SoundType.STONE,54,5,References.ENDERIAN_BRICK_REGNAME));
-            event.getRegistry().register(new BedrockStair(Material.IRON, SoundType.STONE,54,5,References.BEDROCK_STAIRS_REGNAME));
+            event.getRegistry().register(new EnderianBlock(Material.IRON, SoundType.METAL,16,2, References.ENDERIAN_BLOCK_REGNAME));
+            event.getRegistry().register(new EnderianOre(Material.ROCK, SoundType.STONE,16,3,References.ENDERIAN_ORE_REGNAME));
+            event.getRegistry().register(new EnderianBrick(Material.ROCK, SoundType.STONE,8,5,References.ENDERIAN_BRICK_REGNAME));
+            event.getRegistry().register(new BedrockStair(Material.ROCK, SoundType.STONE,8,5,References.BEDROCK_STAIRS_REGNAME));
             event.getRegistry().register(new BedrockScrapperControllerBlock());
             event.getRegistry().register(new BedrockScrapperSlaveBlock());
             event.getRegistry().register(new Blazium());
