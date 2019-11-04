@@ -18,4 +18,9 @@ public interface IBedrockFlux {
     void setScreen(FluxOracleScreen fx);
 
     String getBedrockFluxString();
+
+    int getTimer();
+    int getMaxTimer();
+    void count();
+    void changeMax();
 }

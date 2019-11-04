@@ -1,11 +1,18 @@
 package com.alexvr.bedres.network.packets;
 
+import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
+import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
+import com.alexvr.bedres.gui.FluxOracleScreen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -43,6 +50,36 @@ import java.util.function.Supplier;
                 if (id.equals("bedres:altar")){
                     ctx.get().getSender().addPotionEffect(new EffectInstance(Effects.ABSORPTION,180,40));
                     ctx.get().getSender().teleport(spawnWorld,pos2.getX(),pos2.getY() + 200,pos2.getZ(),ctx.get().getSender().getYaw(0),ctx.get().getSender().getPitch(0));
+                }else if (id.equals("bedres:rflux")){
+                    PlayerEntity player = ctx.get().getSender();
+                    LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+                    bedrockFlux.ifPresent(h -> {
+                        h.set(0);
+                    });
+                }else if (id.equals("bedres:mflux")){
+                    PlayerEntity player = ctx.get().getSender();
+                    LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+                    bedrockFlux.ifPresent(h -> {
+                        h.set(h.getMaxBedrockFlux());
+                    });
+                }else if (id.equals("bedres:hflux")){
+                    PlayerEntity player = ctx.get().getSender();
+                    LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+                    bedrockFlux.ifPresent(h -> {
+                        h.set(h.getMaxBedrockFlux()/2);
+                    });
+                }else if (id.equals("bedres:show")){
+                    PlayerEntity player = ctx.get().getSender();
+                    FluxOracleScreen fx = new FluxOracleScreen();
+                    LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+                    bedrockFlux.ifPresent(h -> {
+                        h.setCrafterFlux();
+                        fx.flux = h;
+                        h.setScreen(fx);
+                        BedrockResources.proxy.getMinecraft().ingameGUI=fx;
+                        String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
+                        player.sendStatusMessage(new StringTextComponent(message),true);
+                    });
                 }
                 //entityType.spawn(spawnWorld, null, null, pos, SpawnReason.SPAWN_EGG, true, true);
             });

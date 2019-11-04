@@ -3,7 +3,7 @@ package com.alexvr.bedres.capability.abilities;
 public class PlayerAbility implements  IPlayerAbility{
 
     String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no";
-    int speed =15;
+    int speed =0;
     float gravilty = 0,jump=0;
 
     @Override

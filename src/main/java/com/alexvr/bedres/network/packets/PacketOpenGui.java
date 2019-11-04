@@ -1,6 +1,6 @@
 package com.alexvr.bedres.network.packets;
 
-import com.alexvr.bedres.gui.SpawnerScreen;
+import com.alexvr.bedres.gui.CommandScreen;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -18,7 +18,7 @@ public class PacketOpenGui {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(SpawnerScreen::open);
+        ctx.get().enqueueWork(CommandScreen::open);
         ctx.get().setPacketHandled(true);
     }
 

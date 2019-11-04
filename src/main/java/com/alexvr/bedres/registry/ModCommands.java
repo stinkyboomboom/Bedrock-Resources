@@ -1,7 +1,7 @@
 package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.command.CommandSpawn;
+import com.alexvr.bedres.command.CommandHelp;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.command.CommandSource;
@@ -12,7 +12,7 @@ public class ModCommands {
     public static void register(CommandDispatcher<CommandSource> dispatcher){
         LiteralCommandNode<CommandSource> cmdBedRes = dispatcher.register(
                 Commands.literal(BedrockResources.MODID)
-                .then(CommandSpawn.register(dispatcher))
+                .then(CommandHelp.register(dispatcher))
         );
         dispatcher.register(Commands.literal("bedres").redirect(cmdBedRes));
     }

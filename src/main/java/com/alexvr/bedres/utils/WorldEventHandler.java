@@ -20,6 +20,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -32,10 +34,10 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -45,6 +47,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.Random;
 
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
@@ -58,11 +61,6 @@ public class WorldEventHandler {
             mc.displayGuiScreen(fxG);
 
         }
-
-    }
-
-    @SubscribeEvent
-    public static void onRegisterModelsEvent(final ModelRegistryEvent event) {
 
     }
 
@@ -98,11 +96,64 @@ public class WorldEventHandler {
             String message = String.format("Hello there, your list of skills is: %s sword %s axe %s shovel %s hoe %s pick. And speed of %d and jump of %f",h.getSword(),h.getAxe(),h.getShovel(),h.getHoe(),h.getPick(),h.getMiningSpeedBoost(),h.getJumpBoost());
             player.sendStatusMessage(new StringTextComponent(message),false);
 
-
         });
 
 
     }
+
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event){
+        PlayerEntity player = event.player;
+
+        if (player.world.isRemote) return;
+
+        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+
+        bedrockFlux.ifPresent(h -> {
+            if (h.getBedrockFlux()>250.32f) {
+                h.count();
+                if (h.getTimer() >= h.getMaxTimer()) {
+                    h.changeMax();
+                    //int rand = new Random().nextInt(20) + 1;
+                    int rand = 30;
+                    if (rand <= 4) {
+                        if (h.getBedrockFlux()<400){
+                            int choice =  new Random().nextInt(5);
+                            System.out.println(choice);
+
+                            switch (choice){
+                                case 0:
+                                    player.setFire(40);
+                                    break;
+                                case 1:
+                                    player.addPotionEffect(new EffectInstance(Effects.LEVITATION,40,2));
+                                    break;
+                                case 2:
+                                    if (player.getRidingEntity() != null){
+                                        player.stopRiding();
+                                    }
+                                    player.dropItem(player.getHeldItemMainhand(),false);
+                                    player.getHeldItemMainhand().shrink(player.getHeldItemMainhand().getCount());
+                                    player.jump();
+                                    break;
+                                case 3:
+                                    player.addPotionEffect(new EffectInstance(Effects.BLINDNESS,100,2));
+                                    break;
+                                case 4:
+
+                                    break;
+                            }
+
+                        }
+                    }
+                    String message = ("You dont feel too well");
+                    player.sendStatusMessage(new StringTextComponent(message), true);
+                }
+            }
+        });
+
+        }
 
     @SubscribeEvent
     public static void onPlayerCraft(PlayerEvent.ItemCraftedEvent event){
@@ -133,7 +184,6 @@ public class WorldEventHandler {
 
         });
     }
-
 
     private static int getharvestLevel(String material){
         switch (material) {

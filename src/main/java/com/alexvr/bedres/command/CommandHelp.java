@@ -12,12 +12,12 @@ import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.fml.network.NetworkDirection;
 
-public class CommandSpawn implements Command<CommandSource> {
+public class CommandHelp implements Command<CommandSource> {
 
-    private static final CommandSpawn CMD = new CommandSpawn();
+    private static final CommandHelp CMD = new CommandHelp();
 
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
-        return Commands.literal("tp2Struct")
+        return Commands.literal("commands")
                 .requires(cs -> cs.hasPermissionLevel(0))
                 .executes(CMD);
     }

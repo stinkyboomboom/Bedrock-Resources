@@ -3,6 +3,7 @@ package com.alexvr.bedres.capability.bedrock_flux;
 import com.alexvr.bedres.gui.FluxOracleScreen;
 
 import java.text.DecimalFormat;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
@@ -14,6 +15,8 @@ public class BedrockFlux implements IBedrockFlux
     private float maxbedrockflux = 2500.0F;
     private boolean crafted = false;
     private FluxOracleScreen screen = null;
+    private int timer =0;
+    private int maxTimer = (20*60) *5;
 
     public void consume(float points)
     {
@@ -82,6 +85,27 @@ public class BedrockFlux implements IBedrockFlux
     public String getBedrockFluxString() {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         return decimalFormat.format(getBedrockFlux());
+    }
+
+    @Override
+    public int getTimer() {
+        return timer;
+    }
+
+    @Override
+    public int getMaxTimer() {
+        return maxTimer;
+    }
+
+    @Override
+    public void count() {
+        timer++;
+    }
+
+    @Override
+    public void changeMax() {
+        timer=0;
+        maxTimer = new Random().nextInt((20*60)*5)+((20*60)*5);
     }
 
     private static class Factory implements Callable<IBedrockFlux> {
