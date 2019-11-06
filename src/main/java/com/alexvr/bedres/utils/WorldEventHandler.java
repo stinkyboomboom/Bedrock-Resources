@@ -206,7 +206,8 @@ public class WorldEventHandler {
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof PickaxeItem) &&
-                !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem)) {
+                !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem) &&
+                event.getTargetBlock().getHarvestTool() != null) {
             LazyOptional<IPlayerAbility> abilities = event.getPlayer().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
             abilities.ifPresent(h -> {
                 boolean flag = false;

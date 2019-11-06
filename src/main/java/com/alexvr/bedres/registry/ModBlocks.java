@@ -8,12 +8,10 @@ import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperContainer;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
-import com.alexvr.bedres.renderer.BedrockiumPedestalTER;
-import com.alexvr.bedres.renderer.BedrockiumTowerTER;
-import com.alexvr.bedres.renderer.ScrapeTankTER;
-import com.alexvr.bedres.renderer.ScraperControllerTER;
+import com.alexvr.bedres.renderer.*;
 import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
+import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.inventory.container.ContainerType;
@@ -87,6 +85,12 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.PEDESTAL_REGNAME)
     public static TileEntityType<BedrockiumPedestalTile> bedrockiumPedestalType;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_RITUAL_PEDESTAL_REGNAME)
+    public static EnderianRitualPedestal enderianRitualPedestal;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_RITUAL_PEDESTAL_REGNAME)
+    public static TileEntityType<EnderianRitualPedestalTile> enderianRitualPedestalTileTileEntityType;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {
@@ -94,6 +98,7 @@ public class ModBlocks {
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockScraperControllerTile.class, new ScraperControllerTER());
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumTowerTile.class, new BedrockiumTowerTER());
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumPedestalTile.class, new BedrockiumPedestalTER());
+            ClientRegistry.bindTileEntitySpecialRenderer(EnderianRitualPedestalTile.class, new EnderianRitualPedestalTER());
         });
     }
 }

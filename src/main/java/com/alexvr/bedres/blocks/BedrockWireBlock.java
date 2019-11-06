@@ -89,6 +89,9 @@ public class BedrockWireBlock extends Block {
      * Note that this method should ideally consider only the specific face passed in.
      */
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if(worldIn.getBlockState(currentPos.offset(Direction.DOWN)).getBlock() == Blocks.AIR || worldIn.getBlockState(currentPos.offset(Direction.DOWN)).getBlock() == ModBlocks.bedrockWire){
+            return Blocks.AIR.getDefaultState();
+        }
         if (facing == Direction.DOWN) {
             return stateIn;
         } else {
@@ -143,7 +146,8 @@ public class BedrockWireBlock extends Block {
     }
 
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return true;
+        Block block = state.getBlock();
+        return block != Blocks.AIR ;
     }
 
 

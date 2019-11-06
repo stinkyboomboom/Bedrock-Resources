@@ -17,6 +17,7 @@ import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
 import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.BedrockiumTowerTile;
+import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.tiles.ScrapeTankTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
@@ -83,6 +84,7 @@ public class BedrockResources {
             event.getRegistry().register(new BedrockScrapperSlaveBlock());
             event.getRegistry().register(new Blazium());
             event.getRegistry().register(new BedrockWireBlock());
+            event.getRegistry().register(new EnderianRitualPedestal());
             event.getRegistry().register(new EnderHush());
             event.getRegistry().register(new SunDaize());
             event.getRegistry().register(new BedrociumSpike());
@@ -100,6 +102,7 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.enderianBrick, properties).setRegistryName(References.ENDERIAN_BRICK_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockStair, properties).setRegistryName(References.BEDROCK_STAIRS_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperControllerBlock, properties).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.enderianRitualPedestal, properties).setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrockScraperSlaveBlock, properties).setRegistryName(References.BEDROCK_SCRAPER_SLAVE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.blazium, properties).setRegistryName(References.BLAZIUM_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.sunDaize, properties).setRegistryName(References.SUN_DAIZE_REGNAME));
@@ -122,6 +125,7 @@ public class BedrockResources {
             event.getRegistry().register(TileEntityType.Builder.create(BedrockScraperControllerTile::new, ModBlocks.bedrockScraperControllerBlock).build(null).setRegistryName(References.BEDROCK_SCRAPER_CONTROLLER_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(BedrockiumTowerTile::new, ModBlocks.bedrociumTower).build(null).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(BedrockiumPedestalTile::new, ModBlocks.bedrociumPedestal).build(null).setRegistryName(References.PEDESTAL_REGNAME));
+            event.getRegistry().register(TileEntityType.Builder.create(EnderianRitualPedestalTile::new, ModBlocks.enderianRitualPedestal).build(null).setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME));
 
         }
 
