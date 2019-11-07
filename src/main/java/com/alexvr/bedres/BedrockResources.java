@@ -5,6 +5,7 @@ import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.EnderianIngot;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.items.ScrapeKnife;
+import com.alexvr.bedres.items.Staff;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperContainer;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
@@ -112,6 +113,7 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumPedestal, properties).setRegistryName(References.PEDESTAL_REGNAME));
             event.getRegistry().register( new BlockNamedItem(ModBlocks.bedrockWire,properties).setRegistryName(References.BEDROCK_SCRAPE_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
+            event.getRegistry().register(new Staff());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());
 
