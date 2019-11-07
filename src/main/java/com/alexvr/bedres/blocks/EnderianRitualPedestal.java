@@ -127,7 +127,7 @@ public class EnderianRitualPedestal extends Block {
                     }else {
                         if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                             h.insertItem(0, new ItemStack(player.getHeldItemMainhand().getItem(), 1), false);
-                            ((EnderianRitualPedestalTile) te).item = player.getHeldItemMainhand().getItem().getDisplayName(player.getHeldItemMainhand()).getString();
+                            ((EnderianRitualPedestalTile) te).item = player.getHeldItemMainhand().getItem().getRegistryName().toString();
                             player.getHeldItemMainhand().shrink(1);
                             te.markDirty();
                             ((EnderianRitualPedestalTile) te).sendUpdates();
@@ -143,7 +143,7 @@ public class EnderianRitualPedestal extends Block {
                             if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                                 h.insertItem(0, new ItemStack(Items.ENDER_PEARL, 1), false);
                                 stack.shrink(1);
-                                ((EnderianRitualPedestalTile) te).item = stack.getItem().getDisplayName(stack).getString();
+                                ((EnderianRitualPedestalTile) te).item = stack.getItem().getRegistryName().toString();
                                 te.markDirty();
                                 ((EnderianRitualPedestalTile) te).sendUpdates();
                             }

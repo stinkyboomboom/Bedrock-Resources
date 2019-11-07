@@ -8,6 +8,8 @@ import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.gui.FluxOracleScreen;
 import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
+import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -22,9 +24,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -38,14 +38,17 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -101,12 +104,149 @@ public class WorldEventHandler {
 
     }
 
+    static ArrayList PICKAXE_UPGRADE = new ArrayList() {{
+
+        add("bedres:pickUpgrade");
+        add(new ArrayList<String>() {{
+
+            add("wwwpwww");
+            add("w  w  w");
+            add("w rwr w");
+            add("pww wwp");
+            add("w rwr w");
+            add("w  w  w");
+            add("wwwpwww");
+
+        }});
+        add(new ArrayList<String>() {{
+
+            add("w=bedres:bedrock_scrapes");
+            add("p=minecraft:diamond_pickaxe");
+            add("r=minecraft:redstone");
+
+        }});
+
+
+    }};
+
+    public static ArrayList RECEPI = new ArrayList(){{
+
+        add(PICKAXE_UPGRADE);
+
+    }};
+
+    @SubscribeEvent
+    public static void onDamage(LivingDamageEvent event){
+
+        BlockPos playerPos = new BlockPos(event.getEntityLiving().posX,event.getEntityLiving().posY,event.getEntityLiving().posZ);
+        System.out.println(playerPos.toString());
+        LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(iPlayerAbility -> {
+            if (!iPlayerAbility.getChecking() && !iPlayerAbility.getInRitual()){
+                if (event.getEntityLiving() instanceof PlayerEntity && event.getSource() == DamageSource.IN_FIRE && event.getEntityLiving().world.getBlockState(playerPos.offset(Direction.DOWN)).getBlock() == ModBlocks.enderianBlock){
+                    ArrayList<EnderianRitualPedestalTile> listOfTIles;
+                    iPlayerAbility.flipChecking();
+                    for (int i =0;i<RECEPI.size();i++) {
+                        listOfTIles = new ArrayList<>();
+                        boolean skip = false;
+                        for (int x = -3; x < 4; x++) {
+                            if (skip){
+                                break;
+                            }
+                            for (int y = -3; y < 4; y++) {
+                                if (x==0&&y==0){
+                                    continue;
+                                }
+                                Character key = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(1)).get(x+3)).charAt(y+3);
+                                System.out.println("Character Analyzed: " + key);
+
+                                if (key == ' '){
+                                    System.out.println("Spaced Detected at: " + playerPos.east(x).south(y).toString());
+
+                                    if (event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y).down()).getBlock() != ModBlocks.enderianBrick ){
+                                        System.out.println("Error: No Brick at: " + playerPos.east(x).south(y).down().toString());
+
+                                        skip =true;
+                                        break;
+                                    }
+                                    continue;
+                                }
+                                ItemStack stack = ItemStack.EMPTY;
+                                for (int j =0;j<((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).size();j++) {
+                                    Character value = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).charAt(0);
+                                    System.out.println("Value Analyzed: " + value);
+
+                                    if (key == value){
+                                        String ss = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).substring(2);
+                                        ResourceLocation locatoin = new ResourceLocation(ss);
+                                        System.out.println("Name to look for: " + ss);
+                                        System.out.println("Resourse Location: " + locatoin.toString());
+                                        stack = new ItemStack( ForgeRegistries.ITEMS.getValue(locatoin));
+                                        System.out.println("Stack Found: " + stack.toString());
+
+                                        break;
+                                    }
+                                }
+                                if (stack == ItemStack.EMPTY || stack.getItem().getRegistryName().equals(ItemStack.EMPTY.getItem().getRegistryName())){
+                                    System.out.println("Error: No stack to match: " + key);
+
+                                    skip =true;
+                                    break;
+                                }
+                                if (stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.bedrockWire) {
+                                    System.out.println("Error: No Wire at: " + playerPos.east(x).south(y).toString());
+
+                                    skip = true;
+                                    break;
+                                }
+                                if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.enderianRitualPedestal) {
+                                    System.out.println("Error: No Pedestal at: " + playerPos.east(x).south(y).toString());
+                                    skip = true;
+                                    break;
+                                }else if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() == ModBlocks.enderianRitualPedestal) {
+                                    if (event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y)) instanceof EnderianRitualPedestalTile && !((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item.equals(stack.getItem().getRegistryName().toString())){
+                                        System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
+
+                                        skip = true;
+                                        break;
+                                    }else{
+                                        System.out.println("Added Pedestal at: " + playerPos.east(x).south(y).toString() + " with correct item");
+
+                                        listOfTIles.add(((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))));
+                                    }
+                                }
+                            }
+                        }
+                        if(!skip){
+                            System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
+                            iPlayerAbility.flipRitual();
+                            event.getEntityLiving().setFire(0);
+                            event.setCanceled(true);
+                        }
+                    }
+                    iPlayerAbility.flipChecking();
+
+
+                }
+            }
+        });
+
+
+
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
         PlayerEntity player = event.player;
 
         if (player.world.isRemote) return;
+
+        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(iPlayerAbility -> {
+            if (iPlayerAbility.getInRitual()){
+                iPlayerAbility.flipRitual();
+            }
+        });
 
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
@@ -153,7 +293,7 @@ public class WorldEventHandler {
             }
         });
 
-        }
+    }
 
     @SubscribeEvent
     public static void onPlayerCraft(PlayerEvent.ItemCraftedEvent event){
@@ -188,7 +328,7 @@ public class WorldEventHandler {
     private static int getharvestLevel(String material){
         switch (material) {
             case "wood":
-               return ItemTier.WOOD.getHarvestLevel();
+                return ItemTier.WOOD.getHarvestLevel();
             case "stone":
                 return  ItemTier.IRON.getHarvestLevel();
             case "iron":
@@ -243,9 +383,6 @@ public class WorldEventHandler {
                         flag = material != Material.WOOD && material != Material.PLANTS && material != Material.TALL_PLANTS && material != Material.BAMBOO ;
                     }
                 }
-                System.out.println(flag);
-                System.out.println(event.getTargetBlock().getMaterial().isToolNotRequired());
-                System.out.println();
                 if (event.getTargetBlock().getMaterial().isToolNotRequired() || flag) {
                     event.setCanHarvest(true);
                 }

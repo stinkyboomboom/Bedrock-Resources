@@ -3,8 +3,9 @@ package com.alexvr.bedres.capability.abilities;
 public class PlayerAbility implements  IPlayerAbility{
 
     String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no";
-    int speed =0;
+    int speed =0, ritualTimer =0,totalRitual=0;
     float gravilty = 0,jump=0;
+    boolean ritual = false,checking = false;
 
     @Override
     public String getNAme() {
@@ -42,6 +43,16 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
+    public int getRitualTimer() {
+        return ritualTimer;
+    }
+
+    @Override
+    public int getRitualTotalTimer() {
+        return totalRitual;
+    }
+
+    @Override
     public float getJumpBoost() {
         return jump;
     }
@@ -49,6 +60,16 @@ public class PlayerAbility implements  IPlayerAbility{
     @Override
     public float getGravityMultiplier() {
         return gravilty;
+    }
+
+    @Override
+    public boolean getInRitual() {
+        return ritual;
+    }
+
+    @Override
+    public boolean getChecking() {
+        return checking;
     }
 
     @Override
@@ -115,5 +136,30 @@ public class PlayerAbility implements  IPlayerAbility{
     @Override
     public void addGrav(float amount) {
         gravilty+=amount;
+    }
+
+    @Override
+    public void flipRitual() {
+        ritual=!ritual;
+    }
+
+    @Override
+    public void setRitualTimer(int amount) {
+        ritualTimer = amount;
+    }
+
+    @Override
+    public void setRitualTotalTimer(int amount) {
+        totalRitual = amount;
+    }
+
+    @Override
+    public void incrementRitualTimer() {
+        ritualTimer++;
+    }
+
+    @Override
+    public void flipChecking() {
+        checking=!checking;
     }
 }

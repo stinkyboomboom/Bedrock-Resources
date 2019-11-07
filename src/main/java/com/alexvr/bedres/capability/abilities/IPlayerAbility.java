@@ -11,8 +11,14 @@ public interface IPlayerAbility {
     String getHoe();
 
     int getMiningSpeedBoost();
+    int getRitualTimer();
+    int getRitualTotalTimer();
+
     float getJumpBoost();
     float getGravityMultiplier();
+
+    boolean getInRitual();
+    boolean getChecking();
 
 
     void setAxe(String name);
@@ -30,5 +36,11 @@ public interface IPlayerAbility {
     void addJump(float amount);
     void addGrav(float amount);
 
+    void flipRitual();
+
+    void setRitualTimer(int amount);
+    void setRitualTotalTimer(int amount);
+    void incrementRitualTimer();
+    void flipChecking();
 
 }
