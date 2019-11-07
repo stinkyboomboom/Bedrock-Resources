@@ -19,6 +19,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -27,12 +28,14 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -234,31 +237,24 @@ public class WorldEventHandler {
                             iPlayerAbility.flipRitual();
                             iPlayerAbility.setRitualTotalTimer(listOfTIles.size()*100);
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
-                            event.getEntityLiving().rotationPitch = 34.349922f;
-                            event.getEntityLiving().rotationYaw =  -222.34435f;
-                            event.getEntityLiving().rotationYawHead =  -222.34435f;
-                            //TODO MouseEvent cancel
+                            event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+12,-0.999));
                             event.getEntityLiving().setFire(0);
                             event.setCanceled(true);
+                            System.out.println(event.getEntityLiving().getLookVec().toString());
                         }
                     }
                     iPlayerAbility.flipChecking();
-
-
                 }
             }
         });
-
-
-
     }
+
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
         PlayerEntity player = event.player;
 
         if (player.world.isRemote) return;
-
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(iPlayerAbility -> {
             if (iPlayerAbility.getInRitual()){
@@ -269,17 +265,22 @@ public class WorldEventHandler {
                 Minecraft.getInstance().gameSettings.thirdPersonView = 2;
                 Minecraft.getInstance().gameSettings.hideGUI = true;
                 Minecraft.getInstance().gameSettings.fov = 195;
-                System.out.println(player.rotationPitch);
-                System.out.println(player.rotationYaw);
-                System.out.println(player.rotationYawHead);
-                System.out.println();
+                Minecraft.getInstance().gameSettings.mouseSensitivity = -1F/3F;
+                player.lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(iPlayerAbility.getListOfPedestals().get(0).getPos().add(0,9,0)));
+                BlockPos particlePos =  iPlayerAbility.getListOfPedestals().get(0).getPos();
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,(double)particlePos.getX(),(double)particlePos.getY(),(double)particlePos.getZ(),(player.posX-particlePos.getX())/3,0.0,(player.posZ-particlePos.getZ())/3);
+                if (iPlayerAbility.getRitualTimer()%100 == 0){
+                    System.out.println(player.getLookVec().toString());
+                    iPlayerAbility.getListOfPedestals().remove(0);
+                }
                 if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
                     iPlayerAbility.flipRitual();
+                    Minecraft.getInstance().gameSettings.mouseSensitivity = 0.5D;
                     event.player.world.addEntity(new LightningBoltEntity(event.player.world,player.posX,player.posY,player.posZ,true));
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                     Minecraft.getInstance().gameSettings.hideGUI = false;
                     Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
-                    iPlayerAbility.setRitualTimer(0);
+                    iPlayerAbility.setRitualTimer(1);
 
 
                 }else{
