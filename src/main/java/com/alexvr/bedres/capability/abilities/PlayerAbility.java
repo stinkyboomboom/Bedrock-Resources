@@ -1,11 +1,17 @@
 package com.alexvr.bedres.capability.abilities;
 
+import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
+
+import java.util.ArrayList;
+
 public class PlayerAbility implements  IPlayerAbility{
 
-    String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no";
+    String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no",result="";
     int speed =0, ritualTimer =0,totalRitual=0;
     float gravilty = 0,jump=0;
     boolean ritual = false,checking = false;
+    ArrayList<EnderianRitualPedestalTile> pedestals;
+    double FOV;
 
     @Override
     public String getNAme() {
@@ -53,6 +59,16 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
+    public ArrayList<EnderianRitualPedestalTile> getListOfPedestals() {
+        return pedestals;
+    }
+
+    @Override
+    public String getRitualCraftingResult() {
+        return result;
+    }
+
+    @Override
     public float getJumpBoost() {
         return jump;
     }
@@ -70,6 +86,11 @@ public class PlayerAbility implements  IPlayerAbility{
     @Override
     public boolean getChecking() {
         return checking;
+    }
+
+    @Override
+    public double getFOV() {
+        return FOV;
     }
 
     @Override
@@ -161,5 +182,20 @@ public class PlayerAbility implements  IPlayerAbility{
     @Override
     public void flipChecking() {
         checking=!checking;
+    }
+
+    @Override
+    public void setRitualPedestals(ArrayList<EnderianRitualPedestalTile> pedestals) {
+        this.pedestals = pedestals;
+    }
+
+    @Override
+    public void setRitualCraftingResult(String result) {
+        this.result = result;
+    }
+
+    @Override
+    public void setFOV(double FOV) {
+        this.FOV = FOV;
     }
 }

@@ -18,7 +18,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -33,6 +38,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ToolType;
@@ -51,6 +57,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
@@ -219,7 +226,18 @@ public class WorldEventHandler {
                         }
                         if(!skip){
                             System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
+                            System.out.println();
+                            System.out.println();
+                            event.getEntityLiving().world.setBlockState(playerPos,Blocks.AIR.getDefaultState());
+                            iPlayerAbility.setRitualCraftingResult((String)(((ArrayList)RECEPI.get(i)).get(0)));
+                            iPlayerAbility.setRitualPedestals(listOfTIles);
                             iPlayerAbility.flipRitual();
+                            iPlayerAbility.setRitualTotalTimer(listOfTIles.size()*100);
+                            iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
+                            event.getEntityLiving().rotationPitch = 34.349922f;
+                            event.getEntityLiving().rotationYaw =  -222.34435f;
+                            event.getEntityLiving().rotationYawHead =  -222.34435f;
+                            //TODO MouseEvent cancel
                             event.getEntityLiving().setFire(0);
                             event.setCanceled(true);
                         }
@@ -244,7 +262,31 @@ public class WorldEventHandler {
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(iPlayerAbility -> {
             if (iPlayerAbility.getInRitual()){
-                iPlayerAbility.flipRitual();
+                KeyBinding.unPressAllKeys();
+                player.setVelocity(0,0,0);
+                player.setJumping(false);
+                player.addPotionEffect(new EffectInstance(Effects.SLOWNESS,1,999));
+                Minecraft.getInstance().gameSettings.thirdPersonView = 2;
+                Minecraft.getInstance().gameSettings.hideGUI = true;
+                Minecraft.getInstance().gameSettings.fov = 195;
+                System.out.println(player.rotationPitch);
+                System.out.println(player.rotationYaw);
+                System.out.println(player.rotationYawHead);
+                System.out.println();
+                if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
+                    iPlayerAbility.flipRitual();
+                    event.player.world.addEntity(new LightningBoltEntity(event.player.world,player.posX,player.posY,player.posZ,true));
+                    Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                    Minecraft.getInstance().gameSettings.hideGUI = false;
+                    Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
+                    iPlayerAbility.setRitualTimer(0);
+
+
+                }else{
+                    iPlayerAbility.incrementRitualTimer();
+
+                }
+
             }
         });
 
@@ -293,6 +335,73 @@ public class WorldEventHandler {
             }
         });
 
+    }
+
+    /**
+     * Edit the speed of an entity.
+     *
+     * @param entity
+     * @param speedModifierUUID
+     *            Unique UUID for modification
+     * @param name
+     *            Unique name for easier debugging
+     * @param modifier
+     *            The speed will be multiplied by this number
+     */
+    public static void changeSpeed(LivingEntity entity,
+                                   UUID speedModifierUUID, String name, double modifier) {
+        AttributeModifier speedModifier = (new AttributeModifier(
+                speedModifierUUID, name, modifier - 1,AttributeModifier.Operation.byId(2)));
+        IAttributeInstance attributeinstance = entity
+                .getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+
+        if (attributeinstance.getModifier(speedModifierUUID) != null) {
+            attributeinstance.removeModifier(speedModifier);
+        }
+        attributeinstance.applyModifier(speedModifier);
+    }
+
+    /**
+     * Cancel the FOV decrease caused by the decreasing speed due to player penalties.
+     * Original FOV value given by the event is never used, we start from scratch 1.0F value.
+     * Edited from AbstractClientPlayer.getFovModifier()
+     * @param event
+     */
+    @SubscribeEvent
+    public void onFOVUpdate(FOVUpdateEvent event) {
+        PlayerEntity player = event.getEntity();
+        float modifier = 0;
+
+        float f = 1.0F;
+
+
+        IAttributeInstance iattributeinstance = player.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        double oldAttributeValue = iattributeinstance.getValue() / modifier;
+        f = (float)((double)f * ((oldAttributeValue / (double)player.getAIMoveSpeed() + 1.0D) / 2.0D));
+
+        if (player.getAIMoveSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f))
+        {
+            f = 1.0F;
+        }
+
+        if (player.isHandActive() && player.getActiveItemStack() != null && player.getActiveItemStack().getItem() == Items.BOW)
+        {
+            int i = player.getItemInUseMaxCount();
+            float f1 = (float)i / 20.0F;
+
+            if (f1 > 1.0F)
+            {
+                f1 = 1.0F;
+            }
+            else
+            {
+                f1 = f1 * f1;
+            }
+
+            f *= 1.0F - f1 * 0.15F;
+        }
+
+        event.setNewfov(f);
     }
 
     @SubscribeEvent

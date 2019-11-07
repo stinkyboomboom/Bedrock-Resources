@@ -1,5 +1,9 @@
 package com.alexvr.bedres.capability.abilities;
 
+import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
+
+import java.util.ArrayList;
+
 public interface IPlayerAbility {
 
 
@@ -13,12 +17,16 @@ public interface IPlayerAbility {
     int getMiningSpeedBoost();
     int getRitualTimer();
     int getRitualTotalTimer();
+    ArrayList<EnderianRitualPedestalTile> getListOfPedestals();
+    String getRitualCraftingResult();
 
     float getJumpBoost();
     float getGravityMultiplier();
 
     boolean getInRitual();
     boolean getChecking();
+
+    double getFOV();
 
 
     void setAxe(String name);
@@ -42,5 +50,8 @@ public interface IPlayerAbility {
     void setRitualTotalTimer(int amount);
     void incrementRitualTimer();
     void flipChecking();
+    void setRitualPedestals(ArrayList<EnderianRitualPedestalTile> pedestals);
+    void setRitualCraftingResult(String result);
+    void setFOV(double FOV);
 
 }
