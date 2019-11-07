@@ -7,6 +7,7 @@ import com.alexvr.bedres.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
@@ -24,9 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BedrociumTower extends Block {
@@ -51,6 +55,24 @@ public class BedrociumTower extends Block {
     @Override
     public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
         super.onBlockClicked(state, worldIn, pos, player);
+    }
+
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+        TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
+        if (tileentity instanceof BedrockiumTowerTile) {
+            BedrockiumTowerTile bedrockiumTowerTile = (BedrockiumTowerTile)tileentity;
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
+                bedrockiumTowerTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                    for (int i =0;i<h.getSlots();i++) {
+                        if (h.getStackInSlot(i) != ItemStack.EMPTY) {
+                            p_220168_2_.accept(h.getStackInSlot(i));
+                        }
+                    }
+                });
+            });
+        }
+
+        return super.getDrops(state, builder);
     }
 
     public int getIndex(PlayerEntity player,BlockRayTraceResult hit,BlockPos pos){

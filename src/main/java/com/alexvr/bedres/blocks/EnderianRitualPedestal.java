@@ -6,27 +6,33 @@ import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
@@ -44,20 +50,44 @@ public class EnderianRitualPedestal extends Block {
 
     }
 
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPE;
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+        TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
+        if (tileentity instanceof EnderianRitualPedestalTile) {
+            EnderianRitualPedestalTile enderianRitualPedestalTile = (EnderianRitualPedestalTile)tileentity;
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
+                enderianRitualPedestalTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                    if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                        p_220168_2_.accept(h.getStackInSlot(0));
+                    }
+                });
+            });
+        }
+
+        return super.getDrops(state, builder);
     }
 
-
-    @Override
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-
-        CompoundNBT compoundNBT = stack.getTag();
-        if(compoundNBT != null) {
-            String s = compoundNBT.getString("name");
-            tooltip.add(new StringTextComponent(TextFormatting.DARK_GRAY + ("Item: " +s)));
-        }
         super.addInformation(stack, worldIn, tooltip, flagIn);
+        CompoundNBT compoundnbt = stack.getChildTag("BlockEntityTag");
+        if (compoundnbt != null) {
+            if (compoundnbt.contains("LootTable", 8)) {
+                tooltip.add(new StringTextComponent("???????"));
+            }
+            if (compoundnbt.contains("Items", 9)) {
+                NonNullList<ItemStack> nonnulllist = NonNullList.withSize(1, ItemStack.EMPTY);
+                ItemStackHelper.loadAllItems(compoundnbt, nonnulllist);
+                if (!nonnulllist.get(0).isEmpty()) {
+                    ITextComponent itextcomponent = nonnulllist.get(0).getDisplayName().deepCopy();
+                    tooltip.add(itextcomponent);
+                }
+            }
+        }
+
+    }
+
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
     }
 
 
