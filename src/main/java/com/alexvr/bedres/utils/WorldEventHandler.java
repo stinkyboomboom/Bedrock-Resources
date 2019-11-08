@@ -235,10 +235,12 @@ public class WorldEventHandler {
                             iPlayerAbility.setRitualCraftingResult((String)(((ArrayList)RECEPI.get(i)).get(0)));
                             iPlayerAbility.setRitualPedestals(listOfTIles);
                             iPlayerAbility.flipRitual();
-                            iPlayerAbility.setRitualTotalTimer(listOfTIles.size()*100);
+                            iPlayerAbility.setRitualTotalTimer(listOfTIles.size()*120);
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
-                            event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+12,-0.999));
+                            event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+8,-0.999));
                             event.getEntityLiving().setFire(0);
+                            event.getEntityLiving().posY+=1.5;
+                            event.getEntityLiving().setNoGravity(true);
                             event.setCanceled(true);
                             System.out.println(event.getEntityLiving().getLookVec().toString());
                         }
@@ -266,15 +268,18 @@ public class WorldEventHandler {
                 Minecraft.getInstance().gameSettings.hideGUI = true;
                 Minecraft.getInstance().gameSettings.fov = 195;
                 Minecraft.getInstance().gameSettings.mouseSensitivity = -1F/3F;
-                player.lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(iPlayerAbility.getListOfPedestals().get(0).getPos().add(0,9,0)));
+                player.lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(iPlayerAbility.getListOfPedestals().get(0).getPos().add(0,3,0)));
                 BlockPos particlePos =  iPlayerAbility.getListOfPedestals().get(0).getPos();
-                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,(double)particlePos.getX(),(double)particlePos.getY(),(double)particlePos.getZ(),(player.posX-particlePos.getX())/3,0.0,(player.posZ-particlePos.getZ())/3);
-                if (iPlayerAbility.getRitualTimer()%100 == 0){
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,(double)particlePos.getX()+0.5,(double)particlePos.getY()+.8,(double)particlePos.getZ()+.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,(double)player.posX,(double)player.posY+1,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                if (iPlayerAbility.getRitualTimer()%120 == 0){
                     System.out.println(player.getLookVec().toString());
                     iPlayerAbility.getListOfPedestals().remove(0);
                 }
                 if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
                     iPlayerAbility.flipRitual();
+                    player.posY-=1.5;
+                    player.setNoGravity(false);
                     Minecraft.getInstance().gameSettings.mouseSensitivity = 0.5D;
                     event.player.world.addEntity(new LightningBoltEntity(event.player.world,player.posX,player.posY,player.posZ,true));
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
