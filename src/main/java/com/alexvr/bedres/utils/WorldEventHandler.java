@@ -21,12 +21,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.*;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
@@ -54,13 +53,15 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
+
+import static com.alexvr.bedres.utils.RitalCrafting.*;
 
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
@@ -90,60 +91,81 @@ public class WorldEventHandler {
     {
 
         PlayerEntity player = event.getPlayer();
-        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
-        bedrockFlux.ifPresent(h -> {
-
-            String message = String.format("Hello there, you have %s flux.",h.getBedrockFluxString());
-            player.sendStatusMessage(new StringTextComponent(message),false);
-            if (h.getCrafterFlux()){
-                h.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                h.getScreen().flux = h;
-                BedrockResources.proxy.getMinecraft().ingameGUI=h.getScreen();
-            }
-
-        });
 
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
-            String message = String.format("Hello there, your list of skills is: %s sword %s axe %s shovel %s hoe %s pick. And speed of %d and jump of %f",h.getSword(),h.getAxe(),h.getShovel(),h.getHoe(),h.getPick(),h.getMiningSpeedBoost(),h.getJumpBoost());
-            player.sendStatusMessage(new StringTextComponent(message),false);
+            h.setname(player.getName().toString());
+
+            player.sendStatusMessage(new StringTextComponent("Hello there" + h.getNAme()),false);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",h.getSword())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",h.getAxe())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",h.getShovel())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",h.getHoe())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",h.getPick())),false);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",h.getMiningSpeedBoost())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",h.getJumpBoost())),false);
+
+            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+
+            bedrockFlux.ifPresent(flux -> {
+
+                player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
+
+                if (flux.getCrafterFlux()){
+                    flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                    flux.getScreen().flux = flux;
+                    BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+                }
+
+            });
 
         });
+
+
 
 
     }
 
-    static ArrayList PICKAXE_UPGRADE = new ArrayList() {{
 
-        add("bedres:pickUpgrade");
-        add(new ArrayList<String>() {{
+    static ArrayList RECEPI = new ArrayList(){{
 
-            add("wwwpwww");
-            add("w  w  w");
-            add("w rwr w");
-            add("pww wwp");
-            add("w rwr w");
-            add("w  w  w");
-            add("wwwpwww");
+        add(DIAMOND_PICKAXE_UPGRADE);
+        add(GOLD_PICKAXE_UPGRADE);
+        add(IRON_PICKAXE_UPGRADE);
+        add(STONE_PICKAXE_UPGRADE);
+        add(WOOD_PICKAXE_UPGRADE);
 
-        }});
-        add(new ArrayList<String>() {{
+        add(DIAMOND_AXE_UPGRADE);
+        add(GOLD_AXE_UPGRADE);
+        add(IRON_AXE_UPGRADE);
+        add(STONE_AXE_UPGRADE);
+        add(WOOD_AXE_UPGRADE);
 
-            add("w=bedres:bedrock_scrapes");
-            add("p=minecraft:diamond_pickaxe");
-            add("r=minecraft:redstone");
+        add(DIAMOND_SHOVEL_UPGRADE);
+        add(GOLD_SHOVEL_UPGRADE);
+        add(IRON_SHOVEL_UPGRADE);
+        add(STONE_SHOVEL_UPGRADE);
+        add(WOOD_SHOVEL_UPGRADE);
 
-        }});
+        add(DIAMOND_SWORD_UPGRADE);
+        add(GOLD_SWORD_UPGRADE);
+        add(IRON_SWORD_UPGRADE);
+        add(STONE_SWORD_UPGRADE);
+        add(WOOD_SWORD_UPGRADE);
 
+        add(ACTIVE_HOE_UPGRADE);
+
+        add(ACTIVE_SPEED_UPGRADE);
+
+        add(ACTIVE_JUMP_UPGRADE);
+
+        add(ACTIVE_GRAVITY_UPGRADE);
 
     }};
 
-    public static ArrayList RECEPI = new ArrayList(){{
-
-        add(PICKAXE_UPGRADE);
-
-    }};
 
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent event){
@@ -157,6 +179,9 @@ public class WorldEventHandler {
                     ArrayList<EnderianRitualPedestalTile> listOfTIles;
                     iPlayerAbility.flipChecking();
                     for (int i =0;i<RECEPI.size();i++) {
+                        System.out.println("Crafting: " + RECEPI.get(i).toString());
+                        System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
+
                         listOfTIles = new ArrayList<>();
                         boolean skip = false;
                         for (int x = -3; x < 4; x++) {
@@ -167,6 +192,7 @@ public class WorldEventHandler {
                                 if (x==0&&y==0){
                                     continue;
                                 }
+                                System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
                                 Character key = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(1)).get(x+3)).charAt(y+3);
                                 System.out.println("Character Analyzed: " + key);
 
@@ -214,6 +240,7 @@ public class WorldEventHandler {
                                     skip = true;
                                     break;
                                 }else if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() == ModBlocks.enderianRitualPedestal) {
+
                                     if (event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y)) instanceof EnderianRitualPedestalTile && !((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item.equals(stack.getItem().getRegistryName().toString())){
                                         System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
 
@@ -227,6 +254,9 @@ public class WorldEventHandler {
                                 }
                             }
                         }
+                        System.out.println();
+                        System.out.println();
+
                         if(!skip){
                             System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
                             System.out.println();
@@ -239,8 +269,6 @@ public class WorldEventHandler {
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
                             event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+6,-0.999));
                             event.getEntityLiving().setFire(0);
-                            event.getEntityLiving().setNoGravity(true);
-                            (event.getEntityLiving()).moveToBlockPosAndAngles(playerPos.up(),event.getEntityLiving().rotationYaw,event.getEntityLiving().rotationPitch);
                             iPlayerAbility.setLookPos(new Vec3d(listOfTIles.get(0).getPos().getX(),listOfTIles.get(0).getPos().getY()+2,listOfTIles.get(0).getPos().getZ()));
                             event.setCanceled(true);
                             System.out.println(event.getEntityLiving().getLookVec().toString());
@@ -288,9 +316,6 @@ public class WorldEventHandler {
                     } else {
                         iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(0, 0, -speed));
                     }
-
-                    System.out.println(iPlayerAbility.getlookPos().toString());
-                    System.out.println();
                     player.lookAt(EntityAnchorArgument.Type.EYES,iPlayerAbility.getlookPos());
                 }else{
                     BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(0).getPos().west(2).north(1);
@@ -308,15 +333,19 @@ public class WorldEventHandler {
                     } else {
                         iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(0, 0, -speed));
                     }
-
-                    System.out.println(iPlayerAbility.getlookPos().toString());
-                    System.out.println();
                     player.lookAt(EntityAnchorArgument.Type.EYES,iPlayerAbility.getlookPos());
                 }
 
                 BlockPos particlePos =  iPlayerAbility.getListOfPedestals().get(0).getPos();
                 Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)particlePos.getX()+0.5,(double)particlePos.getY()+.8,(double)particlePos.getZ()+.5,(new Random().nextFloat()-0.7),new Random().nextFloat()-0.7,new Random().nextFloat()-0.7);
                 if (iPlayerAbility.getRitualTimer()%120 == 0){
+                    iPlayerAbility.getListOfPedestals().get(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                        if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                            h.extractItem(0,1, false);
+                            ( iPlayerAbility.getListOfPedestals().get(0)).markDirty();
+                            ( iPlayerAbility.getListOfPedestals().get(0)).sendUpdates();
+                        }
+                    });
                     iPlayerAbility.getListOfPedestals().remove(0);
                 }
                 if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
@@ -324,13 +353,78 @@ public class WorldEventHandler {
                     Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
                     Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
                     iPlayerAbility.flipRitual();
-                    player.posY-=1.5;
-                    player.setNoGravity(false);
                     Minecraft.getInstance().gameSettings.mouseSensitivity = 0.5D;
                     event.player.world.addEntity(new LightningBoltEntity(event.player.world,player.posX,player.posY,player.posZ,true));
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                     Minecraft.getInstance().gameSettings.hideGUI = false;
                     Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
+                    if (iPlayerAbility.getRitualCraftingResult().contains("Upgrade")) {
+                        if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
+                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                iPlayerAbility.setPick("wood");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                iPlayerAbility.setPick("iron");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                iPlayerAbility.setPick("gold");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                iPlayerAbility.setPick("diamond");
+                            }
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("axeUpgrade")) {
+                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                iPlayerAbility.setAxe("wood");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                iPlayerAbility.setAxe("iron");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                iPlayerAbility.setAxe("gold");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                iPlayerAbility.setAxe("diamond");
+                            }
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("shovelUpgrade")) {
+                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                iPlayerAbility.setShovel("wood");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                iPlayerAbility.setShovel("iron");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                iPlayerAbility.setShovel("gold");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                iPlayerAbility.setShovel("diamond");
+                            }
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("swordUpgrade")) {
+                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                iPlayerAbility.setSword("wood");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                iPlayerAbility.setSword("iron");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                iPlayerAbility.setSword("gold");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                iPlayerAbility.setSword("diamond");
+                            }
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("hoeUpgrade")) {
+                            iPlayerAbility.setHoe("active");
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("speedUpgrade")) {
+                            iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + 5);
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("gravityUpgrade")) {
+                            iPlayerAbility.setGRavityMultiplier(iPlayerAbility.getGravityMultiplier() + 2.5f);
+                        } else if (iPlayerAbility.getRitualCraftingResult().contains("jumpUpgrade")) {
+                            iPlayerAbility.addJump(1.2f);
+                        }
+                        player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("message.bedres.stat_change").getUnformattedComponentText()), true);
+                        player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",iPlayerAbility.getSword())),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",iPlayerAbility.getAxe())),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",iPlayerAbility.getShovel())),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",iPlayerAbility.getHoe())),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",iPlayerAbility.getPick())),false);
+                        player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",iPlayerAbility.getMiningSpeedBoost())),false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",iPlayerAbility.getJumpBoost())),false);
+                        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+                        bedrockFlux.ifPresent(flux -> player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false));
+                    }else{
+
+                        InventoryHelper.spawnItemStack(event.player.world,player.posX,player.posY,player.posZ,new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(iPlayerAbility.getRitualCraftingResult()))));
+                    }
+
                     iPlayerAbility.setRitualTimer(1);
 
 
@@ -389,29 +483,6 @@ public class WorldEventHandler {
 
     }
 
-    /**
-     * Edit the speed of an entity.
-     *
-     * @param entity
-     * @param speedModifierUUID
-     *            Unique UUID for modification
-     * @param name
-     *            Unique name for easier debugging
-     * @param modifier
-     *            The speed will be multiplied by this number
-     */
-    public static void changeSpeed(LivingEntity entity,
-                                   UUID speedModifierUUID, String name, double modifier) {
-        AttributeModifier speedModifier = (new AttributeModifier(
-                speedModifierUUID, name, modifier - 1,AttributeModifier.Operation.byId(2)));
-        IAttributeInstance attributeinstance = entity
-                .getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-
-        if (attributeinstance.getModifier(speedModifierUUID) != null) {
-            attributeinstance.removeModifier(speedModifier);
-        }
-        attributeinstance.applyModifier(speedModifier);
-    }
 
     /**
      * Cancel the FOV decrease caused by the decreasing speed due to player penalties.
@@ -474,8 +545,7 @@ public class WorldEventHandler {
     }
 
     @SubscribeEvent
-    public static void PlayerBreakSpeedEvent(PlayerEvent.BreakSpeed event)
-    {
+    public static void PlayerBreakSpeedEvent(PlayerEvent.BreakSpeed event) {
         PlayerEntity player = event.getPlayer();
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
@@ -501,8 +571,7 @@ public class WorldEventHandler {
     }
 
     @SubscribeEvent
-    public static void PlayerBreakBlockEvent(PlayerInteractEvent.HarvestCheck event)
-    {
+    public static void PlayerBreakBlockEvent(PlayerInteractEvent.HarvestCheck event) {
         if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof SwordItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&
@@ -552,11 +621,11 @@ public class WorldEventHandler {
 
     }
 
-    protected static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.getDefaultState(), Blocks.GRASS_PATH, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT, Blocks.FARMLAND.getDefaultState(), Blocks.COARSE_DIRT, Blocks.DIRT.getDefaultState()));
+    private static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.getDefaultState(),
+            Blocks.GRASS_PATH, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT, Blocks.FARMLAND.getDefaultState(), Blocks.COARSE_DIRT, Blocks.DIRT.getDefaultState()));
 
     @SubscribeEvent
-    public static void PlayerRightClickEvent( PlayerInteractEvent.RightClickBlock event)
-    {
+    public static void PlayerRightClickEvent( PlayerInteractEvent.RightClickBlock event) {
         if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof SwordItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&
@@ -603,8 +672,7 @@ public class WorldEventHandler {
 
 
     @SubscribeEvent
-    public static void PlayerWakeUpEvent(PlayerSleepInBedEvent event)
-    {
+    public static void PlayerWakeUpEvent(PlayerSleepInBedEvent event) {
         PlayerEntity player = event.getEntityPlayer();
 
         if (player.world.isRemote) return;
@@ -629,8 +697,7 @@ public class WorldEventHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerFalls(LivingFallEvent event)
-    {
+    public static void onPlayerFalls(LivingFallEvent event) {
         Entity entity = event.getEntity();
 
         if (entity.world.isRemote || !(entity instanceof PlayerEntity) || event.getDistance() < 3) return;
@@ -663,12 +730,31 @@ public class WorldEventHandler {
      * Copy data from dead player to the new player
      */
     @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event)
-    {
+    public static void onPlayerClone(PlayerEvent.Clone event) {
         PlayerEntity player = event.getEntityPlayer();
+
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
         LazyOptional<IBedrockFlux> oldbedrockFlux =  event.getOriginal().getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
         bedrockFlux.ifPresent(h -> oldbedrockFlux.ifPresent(o -> h.set(o.getBedrockFlux())));
+
+        LazyOptional<IPlayerAbility> playerAbility = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        LazyOptional<IPlayerAbility> oldplayerAbility =  event.getOriginal().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        playerAbility.ifPresent(h -> oldplayerAbility.ifPresent(o -> {
+            h.setJumpBoost(o.getJumpBoost());
+            h.setGRavityMultiplier(o.getGravityMultiplier());
+            h.setMiningSpeedBoost(o.getMiningSpeedBoost());
+            h.setHoe(o.getHoe());
+            h.setSword(o.getSword());
+            h.setShovel(o.getShovel());
+            h.setAxe(o.getAxe());
+            h.setPick(o.getPick());
+            h.setRitualTimer(0);
+            h.setRitualTotalTimer(0);
+            h.setRitualPedestals(new ArrayList<>());
+            h.setFOV(o.getFOV());
+            h.setLookPos(o.getlookPos());
+            h.setname(o.getNAme());
+        }));
+
     }
 }

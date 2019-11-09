@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PlayerAbility implements  IPlayerAbility{
 
     String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no",result="";
-    int speed =0, ritualTimer =1,totalRitual=0;
+    int speed =0, ritualTimer =1,totalRitual=1;
     float gravilty = 0,jump=0;
     boolean ritual = false,checking = false;
     ArrayList<EnderianRitualPedestalTile> pedestals;

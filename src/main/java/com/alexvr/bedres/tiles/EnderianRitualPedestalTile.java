@@ -72,7 +72,6 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
 
     @Override
     public void tick() {
-
     }
 
 
@@ -94,6 +93,7 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
 
             @Override
             protected void onContentsChanged(int slot) {
+                EnderianRitualPedestalTile.this.item = getStackInSlot(0).getItem().getRegistryName().toString();
                 EnderianRitualPedestalTile.this.sendUpdates();
                 super.onContentsChanged(slot);
             }
@@ -103,6 +103,12 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
 
                 return 1;
 
+            }
+
+            @Override
+            protected void onLoad() {
+                EnderianRitualPedestalTile.this.item = getStackInSlot(0).getItem().getRegistryName().toString();
+                super.onLoad();
             }
         };
 
@@ -142,5 +148,6 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
         world.notifyBlockUpdate(pos, this.getBlockState(), getBlockState(), 3);
         markDirty();
     }
+
 
 }

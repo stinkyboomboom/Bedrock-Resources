@@ -31,6 +31,7 @@
 
   "_comment": "Messeges",
   "message.bedres.invalidblock": "Only Bedrock can be scraped",
+  "message.bedres.stat_change": "Stats Changed",
   "bedrock_scraper.invalid_floor": "Floor must be Bedrock",
   "message.bedres.validblock": "That is indeed bedrock",
   "message.bedres.whispers": "HahaHahHAHHa the darknes is near, the darknes is comming.",
