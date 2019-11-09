@@ -1,6 +1,7 @@
 package com.alexvr.bedres.capability.abilities;
 
 import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,8 @@ public interface IPlayerAbility {
 
     double getFOV();
 
+    Vec3d getlookPos();
+
 
     void setAxe(String name);
     void setPick(String name);
@@ -53,5 +56,7 @@ public interface IPlayerAbility {
     void setRitualPedestals(ArrayList<EnderianRitualPedestalTile> pedestals);
     void setRitualCraftingResult(String result);
     void setFOV(double FOV);
+    void setLookPos(Vec3d vec3d);
+    void addLookPos(double x, double y, double z);
 
 }

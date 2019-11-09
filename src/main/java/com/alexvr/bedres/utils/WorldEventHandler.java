@@ -237,10 +237,11 @@ public class WorldEventHandler {
                             iPlayerAbility.flipRitual();
                             iPlayerAbility.setRitualTotalTimer(listOfTIles.size()*120);
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
-                            event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+8,-0.999));
+                            event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+6,-0.999));
                             event.getEntityLiving().setFire(0);
-                            event.getEntityLiving().posY+=1.5;
                             event.getEntityLiving().setNoGravity(true);
+                            (event.getEntityLiving()).moveToBlockPosAndAngles(playerPos.up(),event.getEntityLiving().rotationYaw,event.getEntityLiving().rotationPitch);
+                            iPlayerAbility.setLookPos(new Vec3d(listOfTIles.get(0).getPos().getX(),listOfTIles.get(0).getPos().getY()+2,listOfTIles.get(0).getPos().getZ()));
                             event.setCanceled(true);
                             System.out.println(event.getEntityLiving().getLookVec().toString());
                         }
@@ -268,15 +269,60 @@ public class WorldEventHandler {
                 Minecraft.getInstance().gameSettings.hideGUI = true;
                 Minecraft.getInstance().gameSettings.fov = 195;
                 Minecraft.getInstance().gameSettings.mouseSensitivity = -1F/3F;
-                player.lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(iPlayerAbility.getListOfPedestals().get(0).getPos().add(0,3,0)));
+                BlockPos thisblock = iPlayerAbility.getListOfPedestals().get(0).getPos();
+
+                if (iPlayerAbility.getListOfPedestals().size()>1){
+                    System.out.println(iPlayerAbility.getlookPos().toString());
+                    BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(1).getPos();
+                    double xDif =((thisblock.getX()-nextblock.getX())/120.0)  ;
+                    double zDif = ((thisblock.getZ()-nextblock.getZ())/120.0)  ;
+                    double speed = ((0.1 * iPlayerAbility.getRitualTimer()%60) /10);
+                    if (xDif >= 0) {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(speed, 0, 0));
+                    } else {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(-speed, 0, 0));
+                    }
+
+                    if (zDif >= 0) {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(0, 0, speed));
+                    } else {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(0, 0, -speed));
+                    }
+
+                    System.out.println(iPlayerAbility.getlookPos().toString());
+                    System.out.println();
+                    player.lookAt(EntityAnchorArgument.Type.EYES,iPlayerAbility.getlookPos());
+                }else{
+                    BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(0).getPos().west(2).north(1);
+                    double xDif =((thisblock.getX()-nextblock.getX())/120.0)  ;
+                    double zDif = ((thisblock.getZ()-nextblock.getZ())/120.0)  ;
+                    double speed = ((0.1 * iPlayerAbility.getRitualTimer()%60) /10);
+                    if (xDif >= 0) {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(speed, 0, 0));
+                    } else {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(-speed, 0, 0));
+                    }
+
+                    if (zDif >= 0) {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(0, 0, speed));
+                    } else {
+                        iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(0, 0, -speed));
+                    }
+
+                    System.out.println(iPlayerAbility.getlookPos().toString());
+                    System.out.println();
+                    player.lookAt(EntityAnchorArgument.Type.EYES,iPlayerAbility.getlookPos());
+                }
+
                 BlockPos particlePos =  iPlayerAbility.getListOfPedestals().get(0).getPos();
-                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,(double)particlePos.getX()+0.5,(double)particlePos.getY()+.8,(double)particlePos.getZ()+.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
-                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,(double)player.posX,(double)player.posY+1,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)particlePos.getX()+0.5,(double)particlePos.getY()+.8,(double)particlePos.getZ()+.5,(new Random().nextFloat()-0.7),new Random().nextFloat()-0.7,new Random().nextFloat()-0.7);
                 if (iPlayerAbility.getRitualTimer()%120 == 0){
-                    System.out.println(player.getLookVec().toString());
                     iPlayerAbility.getListOfPedestals().remove(0);
                 }
                 if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
+                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
                     iPlayerAbility.flipRitual();
                     player.posY-=1.5;
                     player.setNoGravity(false);

@@ -1,6 +1,7 @@
 package com.alexvr.bedres.capability.abilities;
 
 import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class PlayerAbility implements  IPlayerAbility{
     boolean ritual = false,checking = false;
     ArrayList<EnderianRitualPedestalTile> pedestals;
     double FOV;
+    Vec3d lookingAt;
 
     @Override
     public String getNAme() {
@@ -91,6 +93,11 @@ public class PlayerAbility implements  IPlayerAbility{
     @Override
     public double getFOV() {
         return FOV;
+    }
+
+    @Override
+    public Vec3d getlookPos() {
+        return lookingAt;
     }
 
     @Override
@@ -197,5 +204,15 @@ public class PlayerAbility implements  IPlayerAbility{
     @Override
     public void setFOV(double FOV) {
         this.FOV = FOV;
+    }
+
+    @Override
+    public void setLookPos(Vec3d vec3d) {
+        lookingAt = vec3d;
+    }
+
+    @Override
+    public void addLookPos(double x, double y, double z) {
+        lookingAt.add(x,y,z);
     }
 }

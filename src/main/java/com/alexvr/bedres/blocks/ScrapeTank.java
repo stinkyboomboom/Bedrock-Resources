@@ -126,20 +126,6 @@ public class ScrapeTank extends Block{
         return new ScrapeTankTile();
     }
 
-    public void spawnParticles(int particlesToSpawn, BlockPos pos, World world) {
-
-        for (int i =0; i<particlesToSpawn; i++){
-            ModParticles.BEDROCK_DUST.spawn(world,pos.getX() + 0.5,pos.getY() + 0.5,pos.getZ()+ 0.5,0,0,0);
-            System.out.println("Spawning particle");
-        }
-
-    }
-
-    public void spawnParticle(BlockPos pos, World world) {
-
-        ModParticles.BEDROCK_DUST.spawn(world,pos.getX() + 0.5,pos.getY() + 0.5,pos.getZ()+ 0.5,0,0,0);
-
-    }
 
 
 
