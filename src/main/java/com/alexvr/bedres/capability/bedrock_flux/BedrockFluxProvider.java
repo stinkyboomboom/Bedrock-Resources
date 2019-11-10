@@ -11,11 +11,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Mana provider
+ * BedrockFlux provider
  *
  * This class is responsible for providing a capability. Other modders may
  * attach their own provider with implementation that returns another
- * implementation of IMana to the target's (Entity, TE, ItemStack, etc.) disposal.
+ * implementation of IBedrockFlux to the target's (Entity, TE, ItemStack, etc.) disposal.
  */
 public class BedrockFluxProvider implements ICapabilitySerializable<INBT>
 {

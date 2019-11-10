@@ -164,6 +164,8 @@ public class WorldEventHandler {
 
         add(ACTIVE_GRAVITY_UPGRADE);
 
+        add(CLEAR_UPGRADE);
+
     }};
 
 
@@ -171,7 +173,6 @@ public class WorldEventHandler {
     public static void onDamage(LivingDamageEvent event){
 
         BlockPos playerPos = new BlockPos(event.getEntityLiving().posX,event.getEntityLiving().posY,event.getEntityLiving().posZ);
-        System.out.println(playerPos.toString());
         LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(iPlayerAbility -> {
             if (!iPlayerAbility.getChecking() && !iPlayerAbility.getInRitual()){
@@ -300,7 +301,6 @@ public class WorldEventHandler {
                 BlockPos thisblock = iPlayerAbility.getListOfPedestals().get(0).getPos();
 
                 if (iPlayerAbility.getListOfPedestals().size()>1){
-                    System.out.println(iPlayerAbility.getlookPos().toString());
                     BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(1).getPos();
                     double xDif =((thisblock.getX()-nextblock.getX())/120.0)  ;
                     double zDif = ((thisblock.getZ()-nextblock.getZ())/120.0)  ;
@@ -359,13 +359,15 @@ public class WorldEventHandler {
                     Minecraft.getInstance().gameSettings.hideGUI = false;
                     Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
                     if (iPlayerAbility.getRitualCraftingResult().contains("Upgrade")) {
-                        if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
+                        if (iPlayerAbility.getRitualCraftingResult().contains("stickUpgrade")) {
+                            iPlayerAbility.clear();
+                        }else if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
                             if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
                                 iPlayerAbility.setPick("wood");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
                                 iPlayerAbility.setPick("iron");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setPick("gold");
+                                iPlayerAbility.setPick("golden");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
                                 iPlayerAbility.setPick("diamond");
                             }
@@ -375,7 +377,7 @@ public class WorldEventHandler {
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
                                 iPlayerAbility.setAxe("iron");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setAxe("gold");
+                                iPlayerAbility.setAxe("golden");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
                                 iPlayerAbility.setAxe("diamond");
                             }
@@ -385,7 +387,7 @@ public class WorldEventHandler {
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
                                 iPlayerAbility.setShovel("iron");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setShovel("gold");
+                                iPlayerAbility.setShovel("golden");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
                                 iPlayerAbility.setShovel("diamond");
                             }
@@ -395,7 +397,7 @@ public class WorldEventHandler {
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
                                 iPlayerAbility.setSword("iron");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setSword("gold");
+                                iPlayerAbility.setSword("golden");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
                                 iPlayerAbility.setSword("diamond");
                             }
@@ -549,11 +551,53 @@ public class WorldEventHandler {
         PlayerEntity player = event.getPlayer();
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
-            if (player.getHeldItemMainhand() == ItemStack.EMPTY) {
+            if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof SwordItem) &&
+                    !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
+                    !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&
+                    !(event.getPlayer().getHeldItemMainhand().getItem() instanceof PickaxeItem) &&
+                    !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem) &&
+                    event.getState().getHarvestTool() != null) {
+                float speeed = 0;
+
+                if (event.getState().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())) {
+                    speeed = getSpeed(h.getPick());
+                }else if (event.getState().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())) {
+                    speeed = getSpeed(h.getShovel());
+
+                }else if (event.getState().getHarvestTool().toString().equals(ToolType.AXE.toString())) {
+                    speeed = getSpeed(h.getAxe());
+                }
+                speeed *=1.35;
+                if (event.getState().getMaterial().isToolNotRequired()){
+                    event.setNewSpeed(((event.getOriginalSpeed()+h.getMiningSpeedBoost()+speeed)));
+
+                }else {
+                    event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost()  + speeed) * (100.0 / 30.0)));
+                }
+
+
+            }else{
                 event.setNewSpeed(event.getOriginalSpeed() + h.getMiningSpeedBoost());
+
             }
 
         });
+    }
+
+    private static float getSpeed(String material) {
+        switch (material) {
+            case "wood":
+                return ItemTier.WOOD.getEfficiency();
+            case "stone":
+                return  ItemTier.STONE.getEfficiency();
+            case "iron":
+                return ItemTier.IRON.getEfficiency();
+            case "golden":
+                return ItemTier.GOLD.getEfficiency();
+            case "diamond":
+                return  ItemTier.DIAMOND.getEfficiency();
+        }
+        return 0;
     }
 
     private static int getharvestLevel(String material){
@@ -561,13 +605,15 @@ public class WorldEventHandler {
             case "wood":
                 return ItemTier.WOOD.getHarvestLevel();
             case "stone":
-                return  ItemTier.IRON.getHarvestLevel();
+                return  ItemTier.STONE.getHarvestLevel();
             case "iron":
                 return ItemTier.IRON.getHarvestLevel();
+            case "golden":
+                return ItemTier.GOLD.getHarvestLevel();
             case "diamond":
                 return  ItemTier.DIAMOND.getHarvestLevel();
         }
-        return 0;
+        return -1;
     }
 
     @SubscribeEvent
@@ -583,46 +629,44 @@ public class WorldEventHandler {
                 boolean flag = false;
                 Block block = event.getTargetBlock().getBlock();
                 if (event.getTargetBlock().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())) {
-
                     int i = getharvestLevel(h.getPick());
-
                     if (i >= event.getTargetBlock().getHarvestLevel()) {
                         flag = true;
-                    } else {
+                    } else if (!h.getPick().equals("no")){
+
                         Material material = event.getTargetBlock().getMaterial();
                         flag = material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
                     }
                 }else if (event.getTargetBlock().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())) {
-
                     int i = getharvestLevel(h.getShovel());
-
                     if (i >= event.getTargetBlock().getHarvestLevel()) {
                         flag = true;
                     }
-                    if (!flag){
+                    if (!flag&&!h.getShovel().equals("no")){
                         flag= block == Blocks.SNOW || block == Blocks.SNOW_BLOCK;
                     }
                 }else if (event.getTargetBlock().getHarvestTool().toString().equals(ToolType.AXE.toString())) {
-
                     int i = getharvestLevel(h.getAxe());
-
                     if (i >= event.getTargetBlock().getHarvestLevel()) {
                         flag = true;
-                    } else {
+                    } else if (!h.getAxe().equals("no")){
                         Material material = event.getTargetBlock().getMaterial();
                         flag = material != Material.WOOD && material != Material.PLANTS && material != Material.TALL_PLANTS && material != Material.BAMBOO ;
                     }
                 }
                 if (event.getTargetBlock().getMaterial().isToolNotRequired() || flag) {
                     event.setCanHarvest(true);
+                }else{
+                    event.setCanHarvest(false);
                 }
             });
         }
-
     }
 
     private static final Map<Block, BlockState> HOE_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.FARMLAND.getDefaultState(),
             Blocks.GRASS_PATH, Blocks.FARMLAND.getDefaultState(), Blocks.DIRT, Blocks.FARMLAND.getDefaultState(), Blocks.COARSE_DIRT, Blocks.DIRT.getDefaultState()));
+
+    protected static final Map<Block, BlockState> SHOVEL_LOOKUP = Maps.newHashMap(ImmutableMap.of(Blocks.GRASS_BLOCK, Blocks.GRASS_PATH.getDefaultState()));
 
     @SubscribeEvent
     public static void PlayerRightClickEvent( PlayerInteractEvent.RightClickBlock event) {
@@ -650,6 +694,20 @@ public class WorldEventHandler {
                             if (!world.isRemote) {
                                 world.setBlockState(blockpos, blockstate, 11);
 
+                            }
+                        }
+                    }
+                }
+                if(h.getShovel().equals("diamond")){
+                    World world = event.getWorld();
+                    BlockPos blockpos = event.getPos();
+                    if (event.getFace() != Direction.DOWN && world.getBlockState(blockpos.up()).isAir(world, blockpos.up()) && event.getPlayer().isSneaking()) {
+                        BlockState blockstate = SHOVEL_LOOKUP.get(world.getBlockState(blockpos).getBlock());
+                        if (blockstate != null) {
+                            PlayerEntity playerentity = event.getPlayer();
+                            world.playSound(playerentity, blockpos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            if (!world.isRemote) {
+                                world.setBlockState(blockpos, blockstate, 11);
                             }
                         }
                     }

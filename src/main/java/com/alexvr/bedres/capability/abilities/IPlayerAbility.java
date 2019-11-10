@@ -59,4 +59,5 @@ public interface IPlayerAbility {
     void setLookPos(Vec3d vec3d);
     void addLookPos(double x, double y, double z);
 
+    void clear();
 }

@@ -1,6 +1,6 @@
 package com.alexvr.bedres.capability.abilities;
 
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PlayerAbilityProvider implements ICapabilitySerializable<INBT>
+public class PlayerAbilityProvider implements ICapabilitySerializable<CompoundNBT>
 {
     @CapabilityInject(IPlayerAbility.class)
     public static final Capability<IPlayerAbility> PLAYER_ABILITY_CAPABILITY = null;
@@ -37,13 +37,15 @@ public class PlayerAbilityProvider implements ICapabilitySerializable<INBT>
 
 
     @Override
-    public INBT serializeNBT()
+    public CompoundNBT serializeNBT()
     {
-        return PLAYER_ABILITY_CAPABILITY.getStorage().writeNBT(PLAYER_ABILITY_CAPABILITY, this.instance, null);
+        return (CompoundNBT)(PLAYER_ABILITY_CAPABILITY.getStorage()).writeNBT(PLAYER_ABILITY_CAPABILITY, this.instance, null);
     }
 
+
+
     @Override
-    public void deserializeNBT(INBT nbt)
+    public void deserializeNBT(CompoundNBT nbt)
     {
         PLAYER_ABILITY_CAPABILITY.getStorage().readNBT(PLAYER_ABILITY_CAPABILITY, this.instance, null, nbt);
     }

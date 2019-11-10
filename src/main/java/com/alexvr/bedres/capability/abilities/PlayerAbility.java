@@ -215,4 +215,21 @@ public class PlayerAbility implements  IPlayerAbility{
     public void addLookPos(double x, double y, double z) {
         lookingAt.add(x,y,z);
     }
+
+    public void clear(){
+        axe = "no";
+        pick= "no";
+        shovel= "no";
+        sword= "no";
+        hoe= "no";
+        name = "no";
+        result="";
+        speed =0;
+        ritualTimer =1;
+        totalRitual=1;
+        gravilty = 0;
+        jump=0;
+        ritual = false;
+        checking = false;
+    }
 }

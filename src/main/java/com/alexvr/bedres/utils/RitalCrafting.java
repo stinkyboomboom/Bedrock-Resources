@@ -50,6 +50,8 @@ class RitalCrafting {
         }};
     }
 
+    public static ArrayList CLEAR_UPGRADE = getUpgradeRecipe("na","stick",TOOLACHEMIZER);
+
 
     public static ArrayList DIAMOND_PICKAXE_UPGRADE = getUpgradeRecipe("diamond","pickaxe",TOOLACHEMIZER);
     public static ArrayList GOLD_PICKAXE_UPGRADE = getUpgradeRecipe("golden","pickaxe",TOOLACHEMIZER);
