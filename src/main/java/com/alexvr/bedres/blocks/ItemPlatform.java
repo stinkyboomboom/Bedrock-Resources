@@ -5,23 +5,20 @@ import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.tiles.ItemPlatformTile;
 import com.alexvr.bedres.utils.References;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -39,14 +36,19 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemPlatform extends Block {
+public class ItemPlatform extends DirectionalBlock {
     private static final VoxelShape SHAPE = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10, 1.0D, 10.0D);
 
+    protected static final VoxelShape ITEM_PLATFORM_EAST_AABB = Block.makeCuboidShape(15.0D, 6.0D, 6.0D, 16.0D, 10.0D, 10.0D);
+    protected static final VoxelShape ITEM_PLATFORM_WEST_AABB = Block.makeCuboidShape(0.0D, 6.0D, 6.0D, 1.0D, 10.0D, 10.0D);
+    protected static final VoxelShape ITEM_PLATFORM_SOUTH_AABB = Block.makeCuboidShape(6.0D, 6.0D, 15.0D, 10.0D, 10.0D, 16.0D);
+    protected static final VoxelShape ITEM_PLATFORM_NORTH_AABB = Block.makeCuboidShape(6.0D, 6.0D, 0.0D, 10.0D, 10.0D, 1.0D);
+    protected static final VoxelShape ITEM_PLATFORM_UP_AABB = Block.makeCuboidShape(6.0D, 15.0D, 6.0D, 10, 16.0D, 10.0D);
+    protected static final VoxelShape ITEM_PLATFORM_DOWN_AABB = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10, 1.0D, 10.0D);
 
     public ItemPlatform() {
         super(Properties.create(Material.IRON)
-                .sound(SoundType.METAL)
-                .lightValue(13).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
+                .sound(SoundType.METAL).lightValue(8).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
         setRegistryName(References.ITEM_PLATFORM_REGNAME);
 
     }
@@ -94,7 +96,21 @@ public class ItemPlatform extends Block {
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPE;
+        switch(state.get(FACING)) {
+            case DOWN:
+                return ITEM_PLATFORM_DOWN_AABB;
+            case UP:
+            default:
+                return ITEM_PLATFORM_UP_AABB;
+            case NORTH:
+                return ITEM_PLATFORM_NORTH_AABB;
+            case SOUTH:
+                return ITEM_PLATFORM_SOUTH_AABB;
+            case WEST:
+                return ITEM_PLATFORM_WEST_AABB;
+            case EAST:
+                return ITEM_PLATFORM_EAST_AABB;
+        }
     }
 
     @Override
@@ -106,15 +122,15 @@ public class ItemPlatform extends Block {
                     InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
                     player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                     ((ItemPlatformTile) te).item = "none";
-
                     te.markDirty();
                     ((ItemPlatformTile) te).sendUpdates();
+                    state.updateNeighbors(worldIn,pos,32);
                 }
             });
         }
-
         super.onBlockClicked(state, worldIn, pos, player);
     }
+
 
     @Override
     public BlockRenderLayer getRenderLayer() {
@@ -144,11 +160,9 @@ public class ItemPlatform extends Block {
                             InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
                             player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                             ((ItemPlatformTile) te).item = "none";
-
                             te.markDirty();
                             ((ItemPlatformTile) te).sendUpdates();
                         }
-
                     }else {
                         if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                             h.insertItem(0, new ItemStack(player.getHeldItemMainhand().getItem(), 1), false);
@@ -171,11 +185,11 @@ public class ItemPlatform extends Block {
                                 ((ItemPlatformTile) te).item = stack.getItem().getRegistryName().toString();
                                 te.markDirty();
                                 ((ItemPlatformTile) te).sendUpdates();
+
                             }
                         });
                     }
                 }
-
                 return true;
             }
         }
@@ -183,5 +197,25 @@ public class ItemPlatform extends Block {
         return false;
     }
 
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.getDefaultState().with(FACING, context.getNearestLookingDirection());
+    }
+
+
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.with(FACING, rot.rotate(state.get(FACING)));
+    }
+
+    public BlockState rotate(BlockState state, net.minecraft.world.IWorld world, BlockPos pos, Rotation direction) {
+        return super.rotate(state, world, pos, direction);
+    }
+
+    public BlockState mirror(BlockState state, Mirror mirrorIn) {
+        return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+    }
+
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
 
 }

@@ -29,6 +29,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameters;
@@ -45,8 +46,7 @@ public class EnderianRitualPedestal extends Block {
 
     public EnderianRitualPedestal() {
         super(Properties.create(Material.IRON)
-                .sound(SoundType.METAL)
-                .lightValue(13).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
+                .sound(SoundType.METAL).lightValue(8).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
         setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME);
 
     }
@@ -65,9 +65,6 @@ public class EnderianRitualPedestal extends Block {
         }
 
         return super.getDrops(state, builder);
-    }
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-        return true;
     }
 
     @Override
@@ -128,6 +125,11 @@ public class EnderianRitualPedestal extends Block {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new EnderianRitualPedestalTile();
+    }
+
+    @Override
+    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+        return 0;
     }
 
     @Override
