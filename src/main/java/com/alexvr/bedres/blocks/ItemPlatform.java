@@ -2,7 +2,6 @@ package com.alexvr.bedres.blocks;
 
 import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
-import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.tiles.ItemPlatformTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.*;
@@ -11,7 +10,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,8 +22,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameters;
@@ -37,30 +36,34 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemPlatform extends DirectionalBlock {
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10, 1.0D, 10.0D);
 
-    protected static final VoxelShape ITEM_PLATFORM_EAST_AABB = Block.makeCuboidShape(15.0D, 6.0D, 6.0D, 16.0D, 10.0D, 10.0D);
-    protected static final VoxelShape ITEM_PLATFORM_WEST_AABB = Block.makeCuboidShape(0.0D, 6.0D, 6.0D, 1.0D, 10.0D, 10.0D);
-    protected static final VoxelShape ITEM_PLATFORM_SOUTH_AABB = Block.makeCuboidShape(6.0D, 6.0D, 15.0D, 10.0D, 10.0D, 16.0D);
-    protected static final VoxelShape ITEM_PLATFORM_NORTH_AABB = Block.makeCuboidShape(6.0D, 6.0D, 0.0D, 10.0D, 10.0D, 1.0D);
-    protected static final VoxelShape ITEM_PLATFORM_UP_AABB = Block.makeCuboidShape(6.0D, 15.0D, 6.0D, 10, 16.0D, 10.0D);
-    protected static final VoxelShape ITEM_PLATFORM_DOWN_AABB = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10, 1.0D, 10.0D);
+    private static final VoxelShape ITEM_PLATFORM_EAST_AABB = Block.makeCuboidShape(15.0D, 6.0D, 6.0D, 16.0D, 10.0D, 10.0D);
+    private static final VoxelShape ITEM_PLATFORM_WEST_AABB = Block.makeCuboidShape(0.0D, 6.0D, 6.0D, 1.0D, 10.0D, 10.0D);
+    private static final VoxelShape ITEM_PLATFORM_SOUTH_AABB = Block.makeCuboidShape(6.0D, 6.0D, 15.0D, 10.0D, 10.0D, 16.0D);
+    private static final VoxelShape ITEM_PLATFORM_NORTH_AABB = Block.makeCuboidShape(6.0D, 6.0D, 0.0D, 10.0D, 10.0D, 1.0D);
+    private static final VoxelShape ITEM_PLATFORM_UP_AABB = Block.makeCuboidShape(6.0D, 15.0D, 6.0D, 10, 16.0D, 10.0D);
+    private static final VoxelShape ITEM_PLATFORM_DOWN_AABB = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10, 1.0D, 10.0D);
 
     public ItemPlatform() {
         super(Properties.create(Material.IRON)
-                .sound(SoundType.METAL).lightValue(8).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
+                .sound(SoundType.METAL).lightValue(8).variableOpacity().hardnessAndResistance(5.0F, 36000.0F));
         setRegistryName(References.ITEM_PLATFORM_REGNAME);
 
     }
 
 
 
+
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+        return true;
+    }
+
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
-        if (tileentity instanceof EnderianRitualPedestalTile) {
-            EnderianRitualPedestalTile enderianRitualPedestalTile = (EnderianRitualPedestalTile)tileentity;
+        if (tileentity instanceof ItemPlatformTile) {
+            ItemPlatformTile itemPlatformTile = (ItemPlatformTile)tileentity;
             builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
-                enderianRitualPedestalTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                itemPlatformTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                         p_220168_2_.accept(h.getStackInSlot(0));
                     }
@@ -70,28 +73,12 @@ public class ItemPlatform extends DirectionalBlock {
 
         return super.getDrops(state, builder);
     }
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-        return true;
-    }
-
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         CompoundNBT compoundnbt = stack.getChildTag("BlockEntityTag");
-        if (compoundnbt != null) {
-            if (compoundnbt.contains("LootTable", 8)) {
-                tooltip.add(new StringTextComponent("???????"));
-            }
-            if (compoundnbt.contains("Items", 9)) {
-                NonNullList<ItemStack> nonnulllist = NonNullList.withSize(1, ItemStack.EMPTY);
-                ItemStackHelper.loadAllItems(compoundnbt, nonnulllist);
-                if (!nonnulllist.get(0).isEmpty()) {
-                    ITextComponent itextcomponent = nonnulllist.get(0).getDisplayName().deepCopy();
-                    tooltip.add(itextcomponent);
-                }
-            }
-        }
+        EnderianRitualPedestal.generateShowItemStoredToolTip(tooltip, compoundnbt);
 
     }
 
@@ -113,9 +100,11 @@ public class ItemPlatform extends DirectionalBlock {
         }
     }
 
+
+
     @Override
     public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-        if (!worldIn.isRemote){
+        if (!worldIn.isRemote && player.getHeldItemMainhand() == ItemStack.EMPTY){
             TileEntity te = worldIn.getTileEntity(pos);
             te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 if (h.getStackInSlot(0) != ItemStack.EMPTY) {
@@ -195,6 +184,85 @@ public class ItemPlatform extends DirectionalBlock {
         }
 
         return false;
+    }
+
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        switch(state.get(FACING)) {
+            case DOWN:
+                if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.AIR){
+                    return false;
+                }else{
+                    return true;
+                }
+            case UP:
+                if (worldIn.getBlockState(pos.up()).getBlock() == Blocks.AIR){
+                    return false;
+                }else{
+                    return true;
+                }
+            case NORTH:
+                if (worldIn.getBlockState(pos.north()).getBlock() == Blocks.AIR){
+                    return false;
+                }else{
+                    return true;
+                }
+            case SOUTH:
+                if (worldIn.getBlockState(pos.south()).getBlock() == Blocks.AIR){
+                    return false;
+                }else{
+                    return true;
+                }
+            case WEST:
+                if (worldIn.getBlockState(pos.west()).getBlock() == Blocks.AIR){
+                    return false;
+                }else{
+                    return true;
+                }
+            case EAST:
+                if (worldIn.getBlockState(pos.east()).getBlock() == Blocks.AIR){
+                    return false;
+                }else{
+                    return true;
+                }
+        }
+        return true;
+    }
+
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+
+        switch (facing){
+            case UP:
+                if (worldIn.getBlockState(currentPos.up()).getBlock() == Blocks.AIR){
+                    return Blocks.AIR.getDefaultState();
+                }
+                break;
+            case DOWN:
+                if (worldIn.getBlockState(currentPos.down()).getBlock() == Blocks.AIR){
+                    return Blocks.AIR.getDefaultState();
+                }
+                break;
+            case NORTH:
+                if (worldIn.getBlockState(currentPos.north()).getBlock() == Blocks.AIR){
+                    return Blocks.AIR.getDefaultState();
+                }
+                break;
+            case EAST:
+                if (worldIn.getBlockState(currentPos.east()).getBlock() == Blocks.AIR){
+                    return Blocks.AIR.getDefaultState();
+                }
+                break;
+            case WEST:
+                if (worldIn.getBlockState(currentPos.west()).getBlock() == Blocks.AIR){
+                    return Blocks.AIR.getDefaultState();
+                }
+                break;
+            case SOUTH:
+                if (worldIn.getBlockState(currentPos.south()).getBlock() == Blocks.AIR){
+                    return Blocks.AIR.getDefaultState();
+                }
+                break;
+        }
+        return stateIn;
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {

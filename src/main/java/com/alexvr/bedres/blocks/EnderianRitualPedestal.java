@@ -3,8 +3,8 @@ package com.alexvr.bedres.blocks;
 import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
 import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
-import com.alexvr.bedres.tiles.ItemPlatformTile;
 import com.alexvr.bedres.utils.References;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShulkerBoxBlock;
@@ -36,60 +36,71 @@ import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class EnderianRitualPedestal extends Block {
     private static final VoxelShape SHAPE = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
 
 
     public EnderianRitualPedestal() {
         super(Properties.create(Material.IRON)
-                .sound(SoundType.METAL).lightValue(8).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
+                .sound(SoundType.METAL).lightValue(4).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
         setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME);
 
     }
+
+
+    @MethodsReturnNonnullByDefault
+    @Override
+    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+        if (!worldIn.isRemote && player.getHeldItemMainhand() == ItemStack.EMPTY){
+            TileEntity te = worldIn.getTileEntity(pos);
+            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> extractItem(worldIn, pos, player, te, h));
+        }
+
+        super.onBlockClicked(state, worldIn, pos, player);
+    }
+
+    private void extractItem(World worldIn, BlockPos pos, PlayerEntity player, TileEntity te, IItemHandler h) {
+        if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
+            player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+            ((EnderianRitualPedestalTile) te).item = "none";
+
+            te.markDirty();
+            ((EnderianRitualPedestalTile) te).sendUpdates();
+        }
+    }
+
 
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof EnderianRitualPedestalTile) {
             EnderianRitualPedestalTile enderianRitualPedestalTile = (EnderianRitualPedestalTile)tileentity;
-            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
-                enderianRitualPedestalTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                    if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                        p_220168_2_.accept(h.getStackInSlot(0));
-                    }
-                });
-            });
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b,
+                    (p_220168_1_, p_220168_2_) -> enderianRitualPedestalTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                    p_220168_2_.accept(h.getStackInSlot(0));
+                }
+            }));
         }
 
         return super.getDrops(state, builder);
-    }
-
-    @Override
-    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-        if (!worldIn.isRemote){
-            TileEntity te = worldIn.getTileEntity(pos);
-            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
-                    player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-                    ((ItemPlatformTile) te).item = "none";
-
-                    te.markDirty();
-                    ((ItemPlatformTile) te).sendUpdates();
-                }
-            });
-        }
-
-        super.onBlockClicked(state, worldIn, pos, player);
     }
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         CompoundNBT compoundnbt = stack.getChildTag("BlockEntityTag");
+        generateShowItemStoredToolTip(tooltip, compoundnbt);
+
+    }
+
+    static void generateShowItemStoredToolTip(List<ITextComponent> tooltip, CompoundNBT compoundnbt) {
         if (compoundnbt != null) {
             if (compoundnbt.contains("LootTable", 8)) {
                 tooltip.add(new StringTextComponent("???????"));
@@ -103,9 +114,10 @@ public class EnderianRitualPedestal extends Block {
                 }
             }
         }
-
     }
 
+
+    @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return SHAPE;
     }
@@ -140,14 +152,7 @@ public class EnderianRitualPedestal extends Block {
                 te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.scrapesKnife.getRegistryName())){
 
-                        if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
-                            player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-                            ((EnderianRitualPedestalTile) te).item = "none";
-
-                            te.markDirty();
-                            ((EnderianRitualPedestalTile) te).sendUpdates();
-                        }
+                        extractItem(worldIn, pos, player, te, h);
 
                     }else {
                         if (h.getStackInSlot(0) == ItemStack.EMPTY) {

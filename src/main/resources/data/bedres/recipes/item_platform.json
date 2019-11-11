@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "bedres:item_platform",
+    "count":2
+  },
+  "pattern": [
+    "   ",
+    " i ",
+    "ili"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "i": {
+      "tag": "forge:ingots/gold"
+    },
+    "l": {
+      "item": "bedres:item_platform"
+    }
+  }
+}
