@@ -4,7 +4,7 @@
   },
   "pattern": [
     " ii",
-    "ei ",
+    "eri",
     "be "
   ],
   "type": "minecraft:crafting_shaped",
@@ -17,6 +17,9 @@
     },
     "b": {
       "item": "minecraft:blaze_rod"
+    },
+    "r": {
+      "item": "minecraft:ender_eye"
     }
   }
 }

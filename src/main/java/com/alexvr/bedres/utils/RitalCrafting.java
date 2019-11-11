@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 class RitalCrafting {
 
+    /**
+
+     the recipe is 3 elements
+        RESULT = <item/block registry name> | String
+        PATTERN = LIST OF 7 STRINGS OF SEVEN CHARACTERS EACH
+        LEYEND = LIST  OF STRINGS EACH STRING BEING 'CHARACTER=<item/block registry name>'
+
+    */
 
 
     private static  String  WIRE = "w=bedres:bedrock_scrapes";

@@ -677,7 +677,7 @@ public class WorldEventHandler {
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem)) {
             LazyOptional<IPlayerAbility> abilities = event.getPlayer().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
             abilities.ifPresent(h -> {
-                if(!h.getHoe().equals("no")){
+                if(!h.getHoe().equals("no") && !event.getPlayer().isSneaking()){
                     World world = event.getWorld();
                     BlockPos blockpos = event.getPos();
                     int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(new ItemUseContext(event.getPlayer(),event.getHand(),selectBlock(event.getPlayer())));

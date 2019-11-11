@@ -52,6 +52,11 @@ public class BedrociumPedestal extends Block {
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return Shape;
     }
+
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+        return true;
+    }
+
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof BedrockiumPedestalTile) {
@@ -204,7 +209,6 @@ public class BedrociumPedestal extends Block {
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new BedrockiumPedestalTile();
     }
-
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {

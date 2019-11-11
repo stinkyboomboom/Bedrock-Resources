@@ -9,10 +9,7 @@ import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.renderer.*;
-import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
-import com.alexvr.bedres.tiles.BedrockiumTowerTile;
-import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
-import com.alexvr.bedres.tiles.ScrapeTankTile;
+import com.alexvr.bedres.tiles.*;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
@@ -91,6 +88,12 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.ENDERIAN_RITUAL_PEDESTAL_REGNAME)
     public static TileEntityType<EnderianRitualPedestalTile> enderianRitualPedestalTileTileEntityType;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ITEM_PLATFORM_REGNAME)
+    public static ItemPlatform itemPlatform;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.ITEM_PLATFORM_REGNAME)
+    public static TileEntityType<ItemPlatformTile> itemPlatformTileTileEntityType;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {
@@ -99,6 +102,7 @@ public class ModBlocks {
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumTowerTile.class, new BedrockiumTowerTER());
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumPedestalTile.class, new BedrockiumPedestalTER());
             ClientRegistry.bindTileEntitySpecialRenderer(EnderianRitualPedestalTile.class, new EnderianRitualPedestalTER());
+            ClientRegistry.bindTileEntitySpecialRenderer(ItemPlatformTile.class, new ItemPlatformTER());
         });
     }
 }

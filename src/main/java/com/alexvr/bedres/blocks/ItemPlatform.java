@@ -39,17 +39,19 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EnderianRitualPedestal extends Block {
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
+public class ItemPlatform extends Block {
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10, 1.0D, 10.0D);
 
 
-    public EnderianRitualPedestal() {
+    public ItemPlatform() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
                 .lightValue(13).variableOpacity().hardnessAndResistance(15.0F, 36000.0F));
-        setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME);
+        setRegistryName(References.ITEM_PLATFORM_REGNAME);
 
     }
+
+
 
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
@@ -70,24 +72,6 @@ public class EnderianRitualPedestal extends Block {
         return true;
     }
 
-    @Override
-    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-        if (!worldIn.isRemote){
-            TileEntity te = worldIn.getTileEntity(pos);
-            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
-                    player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-                    ((ItemPlatformTile) te).item = "none";
-
-                    te.markDirty();
-                    ((ItemPlatformTile) te).sendUpdates();
-                }
-            });
-        }
-
-        super.onBlockClicked(state, worldIn, pos, player);
-    }
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
@@ -113,6 +97,24 @@ public class EnderianRitualPedestal extends Block {
         return SHAPE;
     }
 
+    @Override
+    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+        if (!worldIn.isRemote){
+            TileEntity te = worldIn.getTileEntity(pos);
+            te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                if (h.getStackInSlot(0) != ItemStack.EMPTY) {
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
+                    player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+                    ((ItemPlatformTile) te).item = "none";
+
+                    te.markDirty();
+                    ((ItemPlatformTile) te).sendUpdates();
+                }
+            });
+        }
+
+        super.onBlockClicked(state, worldIn, pos, player);
+    }
 
     @Override
     public BlockRenderLayer getRenderLayer() {
@@ -127,7 +129,7 @@ public class EnderianRitualPedestal extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new EnderianRitualPedestalTile();
+        return new ItemPlatformTile();
     }
 
     @Override
@@ -141,19 +143,19 @@ public class EnderianRitualPedestal extends Block {
                         if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                             InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
                             player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
-                            ((EnderianRitualPedestalTile) te).item = "none";
+                            ((ItemPlatformTile) te).item = "none";
 
                             te.markDirty();
-                            ((EnderianRitualPedestalTile) te).sendUpdates();
+                            ((ItemPlatformTile) te).sendUpdates();
                         }
 
                     }else {
                         if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                             h.insertItem(0, new ItemStack(player.getHeldItemMainhand().getItem(), 1), false);
-                            ((EnderianRitualPedestalTile) te).item = player.getHeldItemMainhand().getItem().getRegistryName().toString();
+                            ((ItemPlatformTile) te).item = player.getHeldItemMainhand().getItem().getRegistryName().toString();
                             player.getHeldItemMainhand().shrink(1);
                             te.markDirty();
-                            ((EnderianRitualPedestalTile) te).sendUpdates();
+                            ((ItemPlatformTile) te).sendUpdates();
                         }
                     }
                 });
@@ -166,9 +168,9 @@ public class EnderianRitualPedestal extends Block {
                             if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                                 h.insertItem(0, new ItemStack(Items.ENDER_PEARL, 1), false);
                                 stack.shrink(1);
-                                ((EnderianRitualPedestalTile) te).item = stack.getItem().getRegistryName().toString();
+                                ((ItemPlatformTile) te).item = stack.getItem().getRegistryName().toString();
                                 te.markDirty();
-                                ((EnderianRitualPedestalTile) te).sendUpdates();
+                                ((ItemPlatformTile) te).sendUpdates();
                             }
                         });
                     }

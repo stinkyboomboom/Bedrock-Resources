@@ -10,7 +10,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "i": {
-      "tag": "forge:ingots/iron"
+      "item": "bedres:enderian_ingot"
     },
     "e": {
       "item": "bedres:bedrock_scrapes"

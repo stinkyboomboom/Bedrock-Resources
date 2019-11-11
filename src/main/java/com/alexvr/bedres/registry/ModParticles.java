@@ -2,7 +2,6 @@ package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.particles.BedrockDust;
 import com.alexvr.bedres.particles.IParticle;
-import com.alexvr.bedres.particles.RitualParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.world.World;
@@ -10,8 +9,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public enum ModParticles {
-    BEDROCK_DUST,
-    RITUALPARTICLE;
+    BEDROCK_DUST;
 
     ModParticles() {}
 
@@ -25,8 +23,6 @@ public enum ModParticles {
         switch (this) {
             case BEDROCK_DUST:
                 return new BedrockDust.Factory();
-            case RITUALPARTICLE:
-                return new RitualParticle.Factory();
         }
         return this.getDefaultParticle().getFactory();
     }

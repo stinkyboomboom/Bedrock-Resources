@@ -16,10 +16,7 @@ import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
 import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
-import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
-import com.alexvr.bedres.tiles.BedrockiumTowerTile;
-import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
-import com.alexvr.bedres.tiles.ScrapeTankTile;
+import com.alexvr.bedres.tiles.*;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -86,6 +83,7 @@ public class BedrockResources {
             event.getRegistry().register(new Blazium());
             event.getRegistry().register(new BedrockWireBlock());
             event.getRegistry().register(new EnderianRitualPedestal());
+            event.getRegistry().register(new ItemPlatform());
             event.getRegistry().register(new EnderHush());
             event.getRegistry().register(new SunDaize());
             event.getRegistry().register(new BedrociumSpike());
@@ -111,6 +109,7 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName(References.SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumPedestal, properties).setRegistryName(References.PEDESTAL_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.itemPlatform, properties).setRegistryName(References.ITEM_PLATFORM_REGNAME));
             event.getRegistry().register( new BlockNamedItem(ModBlocks.bedrockWire,properties).setRegistryName(References.BEDROCK_SCRAPE_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new Staff());
@@ -128,6 +127,7 @@ public class BedrockResources {
             event.getRegistry().register(TileEntityType.Builder.create(BedrockiumTowerTile::new, ModBlocks.bedrociumTower).build(null).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(BedrockiumPedestalTile::new, ModBlocks.bedrociumPedestal).build(null).setRegistryName(References.PEDESTAL_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(EnderianRitualPedestalTile::new, ModBlocks.enderianRitualPedestal).build(null).setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME));
+            event.getRegistry().register(TileEntityType.Builder.create(ItemPlatformTile::new, ModBlocks.itemPlatform).build(null).setRegistryName(References.ITEM_PLATFORM_REGNAME));
 
         }
 

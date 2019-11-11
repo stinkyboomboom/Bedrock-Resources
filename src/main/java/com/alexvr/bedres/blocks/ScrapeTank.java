@@ -57,6 +57,9 @@ public class ScrapeTank extends Block{
         }
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+        return true;
+    }
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {

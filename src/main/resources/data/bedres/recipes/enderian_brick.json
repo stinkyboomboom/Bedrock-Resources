@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "bedres:enderian_brick",
+    "count":16
+  },
+  "pattern": [
+    " s ",
+    "sbs",
+    " s "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "b": {
+      "item": "minecraft:stone_bricks"
+    },
+    "s": {
+      "item": "bedres:enderian_ingot"
+    }
+  }
+}

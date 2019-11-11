@@ -2,7 +2,9 @@ package com.alexvr.bedres.tiles;
 
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -52,7 +54,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
     private void createList() {
         RECEPI = new ArrayList<>();
-        ArrayList GOLDBLOCK = new ArrayList() {{
+        ArrayList EINGOT = new ArrayList() {{
 
             add(new ItemStack(ModItems.enderianIngot,4));
             add(new ArrayList<String>() {{
@@ -71,7 +73,27 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
 
         }};
-        RECEPI.add(GOLDBLOCK);
+        ArrayList ITEMPLATFORM = new ArrayList() {{
+
+            add(new ItemStack(ModBlocks.itemPlatform,8));
+            add(new ArrayList<String>() {{
+
+                add(Item.getItemFromBlock(Blocks.GOLD_BLOCK).getRegistryName().toString());
+                add(Items.GOLD_INGOT.getRegistryName().toString());
+                add(Item.getItemFromBlock(Blocks.GOLD_BLOCK).getRegistryName().toString());
+                add(Items.GOLD_INGOT.getRegistryName().toString());
+                add(Item.getItemFromBlock(Blocks.GOLD_BLOCK).getRegistryName().toString());
+                add(Items.GOLD_INGOT.getRegistryName().toString());
+                add(Item.getItemFromBlock(Blocks.GOLD_BLOCK).getRegistryName().toString());
+                add(Items.GOLD_INGOT.getRegistryName().toString());
+
+            }});
+            add(Items.ENDER_PEARL.getRegistryName().toString());
+
+
+        }};
+        RECEPI.add(EINGOT);
+        RECEPI.add(ITEMPLATFORM);
     }
 
     @Override
