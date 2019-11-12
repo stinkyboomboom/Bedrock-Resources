@@ -52,28 +52,39 @@ public class ScrapeKnife extends SwordItem {
                 LazyOptional<IBedrockFlux> bedrockFlux = playerIn.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
                 bedrockFlux.ifPresent(h -> {
-                    if(h.getBedrockFlux()==0.00f){
-                        h.fill(250.32f);
-                        String message = ("Some odd particles lift into the air, you back away as quickly as possible, yet you still feel you breathed in some. You inhaled over 200 particles");
-                        playerIn.sendStatusMessage(new StringTextComponent(message),true);
-                        playerIn.sendStatusMessage(new StringTextComponent("That's alright, how bad can it be,Ill be more careful from now on..."),false);
-                        playerIn.move(MoverType.PLAYER,playerIn.getLookVec().subtractReverse(playerIn.getLookVec().mul(2,2,2)));
-                    }else{
-                        h.fill(20.32f);
-                        playerIn.sendStatusMessage(new StringTextComponent("You were careful and only inhaled over 15 particles"),true);
+                    if (h.getBedrockFlux()<h.getMaxBedrockFlux()/2) {
+                        if (h.getBedrockFlux() == 0.00f) {
+                            h.fill(250.32f);
+                            String message = ("Some odd particles lift into the air, you back away as quickly as possible, yet you still feel you breathed in some. You inhaled over 200 particles");
+                            playerIn.sendStatusMessage(new StringTextComponent(TextFormatting.RED +message), false);
+                            playerIn.sendStatusMessage(new StringTextComponent("That's alright, how bad can it be,Ill be more careful from now on..."), false);
+                            playerIn.move(MoverType.PLAYER, playerIn.getLookVec().subtractReverse(playerIn.getLookVec().mul(2, 2, 2)));
+                        } else {
+                            h.fill(20.32f);
+                            playerIn.sendStatusMessage(new StringTextComponent("You were careful and only inhaled over 15 particles"), true);
 
+                        }
+                        if (playerIn.isPotionActive((Effects.NAUSEA))){
+                            playerIn.addPotionEffect(new EffectInstance(Effects.NAUSEA, (20 * 15) + playerIn.getActivePotionEffect(Effects.NAUSEA).getDuration(), 2, true, true));
+                        }
+                        else{
+                            playerIn.addPotionEffect(new EffectInstance(Effects.NAUSEA, 20 * 15, 2, true, true));
+                        }
+                        if (playerIn.isPotionActive((Effects.HUNGER))){
+                            playerIn.addPotionEffect(new EffectInstance(Effects.HUNGER, (20 * 15) + playerIn.getActivePotionEffect(Effects.HUNGER).getDuration(), 2, true, true));
+                        }
+                        else{
+                            playerIn.addPotionEffect(new EffectInstance(Effects.HUNGER, 20 * 15, 2, true, true));
+                        }
+                        if (playerIn.isPotionActive((Effects.WEAKNESS))){
+                            playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS, (20 * 15) + playerIn.getActivePotionEffect(Effects.WEAKNESS).getDuration(), 1, true, true));
+                        }
+                        else{
+                            playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 20 * 15, 2, true, true));
+                        }
                     }
-                    playerIn.addPotionEffect(new EffectInstance(Effects.NAUSEA,20 *15,2,true,true));
-                    playerIn.addPotionEffect(new EffectInstance(Effects.HUNGER,20 *25,2,true,true));
-                    playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS,20 *15,1,true,true));
-
                 });
 
-            }
-            else if(playerIn.isSneaking()){
-                LazyOptional<IBedrockFlux> bedrockFlux = playerIn.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
-                bedrockFlux.ifPresent(h -> h.consume(100));
             }
         }
 
@@ -89,7 +100,7 @@ public class ScrapeKnife extends SwordItem {
 
 
         BlockState state = world.getBlockState(lookingAt.getPos());
-        if (!(state.getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName()))) {
+        if (!(state.getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())) || !(state.getBlock().getRegistryName().equals(ModBlocks.itemPlatform.getRegistryName())) || !(state.getBlock().getRegistryName().equals(ModBlocks.enderianRitualPedestal.getRegistryName())) || !(state.getBlock().getRegistryName().equals(ModBlocks.bedrociumPedestal.getRegistryName()))) {
             player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + new TranslationTextComponent("message.bedres.invalidblock").getUnformattedComponentText()), true);
             return null;
         }
