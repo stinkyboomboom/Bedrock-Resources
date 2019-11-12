@@ -45,14 +45,12 @@ public class ScrapeKnife extends SwordItem {
         if(!worldIn.isRemote){
             BlockRayTraceResult bs = selectBlock(playerIn.getHeldItemMainhand(),playerIn);
             if(playerIn.isSneaking() && bs != null){
-                playerIn.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_AQUA + new TranslationTextComponent("message.bedres.validblock").getUnformattedComponentText()), true);
-                ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.bedrockWire));
-                InventoryHelper.spawnItemStack(worldIn,  bs.getPos().getX(), bs.getPos().getY()+1, bs.getPos().getZ(),stack);
-                playerIn.getHeldItemMainhand().damageItem(2, playerIn, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                 LazyOptional<IBedrockFlux> bedrockFlux = playerIn.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
                 bedrockFlux.ifPresent(h -> {
                     if (h.getBedrockFlux()<h.getMaxBedrockFlux()/2) {
+                        ItemStack stack = new ItemStack(Item.getItemFromBlock(ModBlocks.bedrockWire));
+                        InventoryHelper.spawnItemStack(worldIn,  bs.getPos().getX(), bs.getPos().getY()+1, bs.getPos().getZ(),stack);
+                        playerIn.getHeldItemMainhand().damageItem(2, playerIn, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                         if (h.getBedrockFlux() == 0.00f) {
                             h.fill(250.32f);
                             String message = ("Some odd particles lift into the air, you back away as quickly as possible, yet you still feel you breathed in some. You inhaled over 200 particles");
