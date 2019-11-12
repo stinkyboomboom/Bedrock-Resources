@@ -98,7 +98,7 @@ public class ScrapeKnife extends SwordItem {
 
 
         BlockState state = world.getBlockState(lookingAt.getPos());
-        if (!(state.getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())) || !(state.getBlock().getRegistryName().equals(ModBlocks.itemPlatform.getRegistryName())) || !(state.getBlock().getRegistryName().equals(ModBlocks.enderianRitualPedestal.getRegistryName())) || !(state.getBlock().getRegistryName().equals(ModBlocks.bedrociumPedestal.getRegistryName()))) {
+        if (!(state.getBlock().getRegistryName().equals(Blocks.BEDROCK.getRegistryName())) && !(state.getBlock().getRegistryName().equals(ModBlocks.itemPlatform.getRegistryName())) && !(state.getBlock().getRegistryName().equals(ModBlocks.enderianRitualPedestal.getRegistryName())) && !(state.getBlock().getRegistryName().equals(ModBlocks.bedrociumPedestal.getRegistryName()))) {
             player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + new TranslationTextComponent("message.bedres.invalidblock").getUnformattedComponentText()), true);
             return null;
         }
