@@ -38,6 +38,12 @@ public class References {
     public static final String BEDROCK_STAIRS_REGNAME = "bedrock_stairs";
     public static final String BEDROCK_WIRE_REGNAME = "bedrock_wire";
     public static final String SCRAPER_MOTOR_REGNAME = "scraper_motor";
+    public static final String DF_DIRT_REGNAME = "decaying_fluxed_dirt";
+    public static final String DF_SAPPLING_REGNAME = "decaying_fluxed_sappling";
+    public static final String DF_GRASS_REGNAME = "decaying_fluxed_grass";
+    public static final String DF_OAK_LOG_REGNAME = "decaying_fluxed_oak_log";
+    public static final String DF_OAK_LEAVES_REGNAME = "decaying_fluxed_oak_leave";
+    public static final String DF_COOBLE_REGNAME = "decaying_fluxed_cobblestone";
 
 
 }

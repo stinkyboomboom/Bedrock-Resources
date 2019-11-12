@@ -1,6 +1,8 @@
 package com.alexvr.bedres;
 
+import com.alexvr.bedres.biomes.decayingfluxed.DecayingFluxedBiome;
 import com.alexvr.bedres.blocks.*;
+import com.alexvr.bedres.blocks.decayingfluxedblocks.*;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperContainer;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
@@ -23,6 +25,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -87,6 +90,12 @@ public class BedrockResources {
             event.getRegistry().register(new BedrociumSpike());
             event.getRegistry().register(new BedrociumTower());
             event.getRegistry().register(new BedrociumPedestal());
+            event.getRegistry().register(new DFCobble());
+            event.getRegistry().register(new DFDirt());
+            event.getRegistry().register(new DFGrass());
+            event.getRegistry().register(new DFOakLeave());
+            event.getRegistry().register(new DFOakLog());
+            event.getRegistry().register(new DFOakSappling());
         }
 
         @SubscribeEvent
@@ -110,6 +119,12 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.motor, properties).setRegistryName(References.SCRAPER_MOTOR_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.itemPlatform, properties).setRegistryName(References.ITEM_PLATFORM_REGNAME));
             event.getRegistry().register( new BlockNamedItem(ModBlocks.bedrockWire,properties).setRegistryName(References.BEDROCK_SCRAPE_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfCobble,properties).setRegistryName(References.DF_COOBLE_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfDirt,properties).setRegistryName(References.DF_DIRT_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfGrass,properties).setRegistryName(References.DF_GRASS_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfOakLeave,properties).setRegistryName(References.DF_OAK_LEAVES_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfOakLog,properties).setRegistryName(References.DF_OAK_LOG_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfOakSappling,properties).setRegistryName(References.DF_SAPPLING_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new Staff());
@@ -144,6 +159,14 @@ public class BedrockResources {
             IForgeRegistry<Feature<?>> registry = event.getRegistry();
 
             ModFeatures.registerFeatures(registry);
+
+        }
+
+        @SubscribeEvent
+        public static void onRegisterBIOME(RegistryEvent.Register<Biome> event) {
+            IForgeRegistry<Biome> registry = event.getRegistry();
+
+            registry.register(new DecayingFluxedBiome().setRegistryName("df_biome"));
 
         }
 

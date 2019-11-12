@@ -26,8 +26,16 @@
   "block.bedres.ritual_pedestal": "Enderian Ritual Pedestal",
   "block.bedres.item_platform": "Item Platform",
   "block.bedres.scraper_motor": "Scraper Motor",
+  "block.bedres.decaying_fluxed_dirt": "Decaying Fluxed Dirt",
+  "block.bedres.decaying_fluxed_sappling": "Decaying Fluxed Sappling",
+  "block.bedres.decaying_fluxed_grass": "Decaying Fluxed Grass",
+  "block.bedres.decaying_fluxed_oak_log": "Decaying Fluxed Oak Log",
+  "block.bedres.decaying_fluxed_oak_leave": "Decaying Fluxed Leaves",
+  "block.bedres.decaying_fluxed_cobblestone": "Decaying Fluxed CobbleStone",
 
 
+  "_comment": "Biomes",
+  "biome.bedres.df_biome": "Decaying Fluxed Biome",
 
   "_comment": "Creative Tab",
   "itemGroup.bedres": "Bedrock Resources",

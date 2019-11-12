@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "bedres:blocks/decaying_fluxed_dirt",
+    "down": "bedres:blocks/decaying_fluxed_dirt",
+    "up": "bedres:blocks/decaying_fluxed_grass_top",
+    "north": "bedres:blocks/decaying_fluxed_grass_side",
+    "east": "bedres:blocks/decaying_fluxed_grass_side",
+    "south": "bedres:blocks/decaying_fluxed_grass_side",
+    "west": "bedres:blocks/decaying_fluxed_grass_side"
+  }
+}

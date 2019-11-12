@@ -3,6 +3,7 @@ package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.blocks.*;
+import com.alexvr.bedres.blocks.decayingfluxedblocks.*;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperContainer;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperControllerTile;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
@@ -96,6 +97,19 @@ public class ModBlocks {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPER_MOTOR_REGNAME)
     public static ScraperMotor motor;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_DIRT_REGNAME)
+    public static DFDirt dfDirt;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_COOBLE_REGNAME)
+    public static DFCobble dfCobble;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_GRASS_REGNAME)
+    public static DFGrass dfGrass;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_OAK_LEAVES_REGNAME)
+    public static DFOakLeave dfOakLeave;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_OAK_LOG_REGNAME)
+    public static DFOakLog dfOakLog;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_SAPPLING_REGNAME)
+    public static DFOakSappling dfOakSappling;
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
