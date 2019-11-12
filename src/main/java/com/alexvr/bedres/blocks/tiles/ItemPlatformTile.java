@@ -1,4 +1,4 @@
-package com.alexvr.bedres.tiles;
+package com.alexvr.bedres.blocks.tiles;
 
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.item.ItemStack;
@@ -19,14 +19,14 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnderianRitualPedestalTile extends TileEntity implements ITickableTileEntity {
+public class ItemPlatformTile extends TileEntity implements ITickableTileEntity {
 
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
 
     public String item;
 
-    public EnderianRitualPedestalTile() {
-        super(ModBlocks.enderianRitualPedestalTileTileEntityType);
+    public ItemPlatformTile() {
+        super(ModBlocks.itemPlatformTileTileEntityType);
         item = "";
         createList();
     }
@@ -74,9 +74,6 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
     public void tick() {
     }
 
-
-
-
     private IItemHandler createHandler() {
         return new ItemStackHandler(1) {
 
@@ -93,8 +90,9 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
 
             @Override
             protected void onContentsChanged(int slot) {
-                EnderianRitualPedestalTile.this.item = getStackInSlot(0).getItem().getRegistryName().toString();
-                EnderianRitualPedestalTile.this.sendUpdates();
+                ItemPlatformTile.this.item = getStackInSlot(0).getItem().getRegistryName().toString();
+                ItemPlatformTile.this.sendUpdates();
+
                 super.onContentsChanged(slot);
             }
 
@@ -107,7 +105,7 @@ public class EnderianRitualPedestalTile extends TileEntity implements ITickableT
 
             @Override
             protected void onLoad() {
-                EnderianRitualPedestalTile.this.item = getStackInSlot(0).getItem().getRegistryName().toString();
+                ItemPlatformTile.this.item = getStackInSlot(0).getItem().getRegistryName().toString();
                 super.onLoad();
             }
         };

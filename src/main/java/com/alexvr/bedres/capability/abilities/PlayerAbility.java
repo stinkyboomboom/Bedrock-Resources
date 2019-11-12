@@ -1,6 +1,6 @@
 package com.alexvr.bedres.capability.abilities;
 
-import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
+import com.alexvr.bedres.blocks.tiles.EnderianRitualPedestalTile;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;

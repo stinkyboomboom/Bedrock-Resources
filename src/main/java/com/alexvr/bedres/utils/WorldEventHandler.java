@@ -1,6 +1,7 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.blocks.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.capability.abilities.IPlayerAbility;
 import com.alexvr.bedres.capability.abilities.PlayerAbilityProvider;
 import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
@@ -9,7 +10,6 @@ import com.alexvr.bedres.gui.FluxOracleScreen;
 import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.registry.ModBlocks;
-import com.alexvr.bedres.tiles.EnderianRitualPedestalTile;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -349,6 +349,16 @@ public class WorldEventHandler {
                     iPlayerAbility.getListOfPedestals().remove(0);
                 }
                 if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
+                    BlockPos playerPos = new BlockPos(event.player.posX,event.player.posY,event.player.posZ);
+
+                    for (int x = -3; x < 4; x++) {
+
+                        for (int y = -3; y < 4; y++) {
+                            if (event.player.world.getBlockState(playerPos.east(x).south(y)).getBlock() == ModBlocks.bedrockWire){
+                                player.world.setBlockState(playerPos.east(x).south(y),Blocks.FIRE.getDefaultState());
+                            }
+                        }
+                    }
                     Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
                     Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
                     Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);

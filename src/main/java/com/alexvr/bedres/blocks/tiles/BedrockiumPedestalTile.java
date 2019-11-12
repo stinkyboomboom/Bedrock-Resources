@@ -1,4 +1,4 @@
-package com.alexvr.bedres.tiles;
+package com.alexvr.bedres.blocks.tiles;
 
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModItems;
@@ -92,8 +92,30 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
 
         }};
+
+        ArrayList MOTOR = new ArrayList() {{
+
+            add(new ItemStack(ModBlocks.motor));
+            add(new ArrayList<String>() {{
+
+                add(Item.getItemFromBlock(ModBlocks.enderianBlock).getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Item.getItemFromBlock(ModBlocks.enderianBlock).getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Item.getItemFromBlock(ModBlocks.enderianBlock).getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Item.getItemFromBlock(ModBlocks.enderianBlock).getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+
+            }});
+            add(ModItems.mesh.getRegistryName().toString());
+
+
+        }};
+
         RECEPI.add(EINGOT);
         RECEPI.add(ITEMPLATFORM);
+        RECEPI.add(MOTOR);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.alexvr.bedres.blocks;
 
+import com.alexvr.bedres.blocks.tiles.ScrapeTankTile;
 import com.alexvr.bedres.registry.ModParticles;
-import com.alexvr.bedres.tiles.ScrapeTankTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

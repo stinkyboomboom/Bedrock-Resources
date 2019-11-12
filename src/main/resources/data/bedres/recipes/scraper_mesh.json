@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "bedres:scraper_mesh"
+  },
+  "pattern": [
+    "isi",
+    "sbs",
+    "isi"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "s": {
+      "item": "minecraft:string"
+    },
+    "b": {
+      "item": "minecraft:iron_bars"
+    }
+  }
+}

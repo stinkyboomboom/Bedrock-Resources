@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "bedres:bedrock_scraper_controller"
+  },
+  "pattern": [
+    " bb",
+    " sm",
+    "www"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "m": {
+      "item": "bedres:scraper_motor"
+    },
+    "s": {
+      "item": "bedres:bedrock_scraper_slave"
+    },
+    "b": {
+      "item": "minecraft:slime_ball"
+    },
+    "w": {
+      "item": "bedres:bedrock_scrapes"
+    }
+  }
+}

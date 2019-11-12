@@ -1,4 +1,4 @@
-package com.alexvr.bedres.tiles;
+package com.alexvr.bedres.blocks.tiles;
 
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.item.ItemStack;

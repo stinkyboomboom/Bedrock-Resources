@@ -1,7 +1,7 @@
 package com.alexvr.bedres.containers;
 
+import com.alexvr.bedres.blocks.tiles.ScrapeTankTile;
 import com.alexvr.bedres.registry.ModBlocks;
-import com.alexvr.bedres.tiles.ScrapeTankTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;

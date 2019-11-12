@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "bedres:bedrock_scraper_slave"
+  },
+  "pattern": [
+    " i ",
+    "pii",
+    "ipi"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "i": {
+      "item": "bedres:enderian_ingot"
+    },
+    "p": {
+      "item": "minecraft:glass_pane"
+    }
+  }
+}

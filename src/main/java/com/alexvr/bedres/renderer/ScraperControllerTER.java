@@ -1,7 +1,7 @@
 package com.alexvr.bedres.renderer;
 
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperControllerTile;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.References;
 import com.alexvr.bedres.utils.RendererHelper;

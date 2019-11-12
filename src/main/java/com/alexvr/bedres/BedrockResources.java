@@ -1,22 +1,19 @@
 package com.alexvr.bedres;
 
 import com.alexvr.bedres.blocks.*;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperContainer;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperControllerTile;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
+import com.alexvr.bedres.blocks.tiles.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
-import com.alexvr.bedres.items.EnderianIngot;
-import com.alexvr.bedres.items.FluxOracle;
-import com.alexvr.bedres.items.ScrapeKnife;
-import com.alexvr.bedres.items.Staff;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperContainer;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
+import com.alexvr.bedres.items.*;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
 import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
-import com.alexvr.bedres.tiles.*;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -76,6 +73,7 @@ public class BedrockResources {
             event.getRegistry().register(new ScrapeTank());
             event.getRegistry().register(new EnderianBlock(Material.IRON, SoundType.METAL,16,2, References.ENDERIAN_BLOCK_REGNAME));
             event.getRegistry().register(new EnderianOre(Material.ROCK, SoundType.STONE,16,3,References.ENDERIAN_ORE_REGNAME));
+            event.getRegistry().register(new ScraperMotor(Material.IRON, SoundType.METAL,16,0,References.SCRAPER_MOTOR_REGNAME));
             event.getRegistry().register(new EnderianBrick(Material.ROCK, SoundType.STONE,8,5,References.ENDERIAN_BRICK_REGNAME));
             event.getRegistry().register(new BedrockStair(Material.ROCK, SoundType.STONE,8,5,References.BEDROCK_STAIRS_REGNAME));
             event.getRegistry().register(new BedrockScrapperControllerBlock());
@@ -109,9 +107,11 @@ public class BedrockResources {
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumSpike, properties).setRegistryName(References.SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumTower, properties).setRegistryName(References.BASE_SPIKE_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.bedrociumPedestal, properties).setRegistryName(References.PEDESTAL_REGNAME));
+            event.getRegistry().register(new BlockItem(ModBlocks.motor, properties).setRegistryName(References.SCRAPER_MOTOR_REGNAME));
             event.getRegistry().register(new BlockItem(ModBlocks.itemPlatform, properties).setRegistryName(References.ITEM_PLATFORM_REGNAME));
             event.getRegistry().register( new BlockNamedItem(ModBlocks.bedrockWire,properties).setRegistryName(References.BEDROCK_SCRAPE_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
+            event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new Staff());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());

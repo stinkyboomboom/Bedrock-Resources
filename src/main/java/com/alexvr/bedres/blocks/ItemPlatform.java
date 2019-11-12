@@ -1,8 +1,8 @@
 package com.alexvr.bedres.blocks;
 
+import com.alexvr.bedres.blocks.tiles.BedrockiumPedestalTile;
+import com.alexvr.bedres.blocks.tiles.ItemPlatformTile;
 import com.alexvr.bedres.registry.ModItems;
-import com.alexvr.bedres.tiles.BedrockiumPedestalTile;
-import com.alexvr.bedres.tiles.ItemPlatformTile;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

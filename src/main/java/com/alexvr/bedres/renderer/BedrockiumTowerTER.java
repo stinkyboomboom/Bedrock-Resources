@@ -1,6 +1,6 @@
 package com.alexvr.bedres.renderer;
 
-import com.alexvr.bedres.tiles.BedrockiumTowerTile;
+import com.alexvr.bedres.blocks.tiles.BedrockiumTowerTile;
 import com.alexvr.bedres.utils.RendererHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;

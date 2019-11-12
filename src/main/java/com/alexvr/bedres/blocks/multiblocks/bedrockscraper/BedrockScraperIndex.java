@@ -1,4 +1,4 @@
-package com.alexvr.bedres.multiblocks.bedrockscraper;
+package com.alexvr.bedres.blocks.multiblocks.bedrockscraper;
 
 import net.minecraft.util.IStringSerializable;
 

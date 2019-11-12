@@ -1,4 +1,4 @@
-package com.alexvr.bedres.multiblocks.bedrockscraper;
+package com.alexvr.bedres.blocks.multiblocks.bedrockscraper;
 
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
@@ -12,7 +12,7 @@ import net.minecraft.util.Direction;
 
 import javax.annotation.Nullable;
 
-import static com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock.FACING_HORIZ;
+import static com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperControllerBlock.FACING_HORIZ;
 
 
 public class BedrockScrapperSlaveBlock extends Block {

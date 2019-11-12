@@ -1,5 +1,6 @@
 package com.alexvr.bedres.setup;
 
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperScreen;
 import com.alexvr.bedres.capability.abilities.IPlayerAbility;
 import com.alexvr.bedres.capability.abilities.PlayerAbility;
 import com.alexvr.bedres.capability.abilities.PlayerAbilityStorage;
@@ -7,7 +8,6 @@ import com.alexvr.bedres.capability.bedrock_flux.BedrockFlux;
 import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxStorage;
 import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.gui.ScrapeTankScreen;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperScreen;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.world.ModFlowerFeature;

@@ -1,6 +1,6 @@
 package com.alexvr.bedres.renderer;
 
-import com.alexvr.bedres.tiles.ScrapeTankTile;
+import com.alexvr.bedres.blocks.tiles.ScrapeTankTile;
 import com.alexvr.bedres.utils.RendererHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.Blocks;

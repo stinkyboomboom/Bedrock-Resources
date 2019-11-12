@@ -18,6 +18,7 @@ public class References {
     public static final String SCRAPE_KNIFE_REGNAME = "scrape_knife";
     public static final String FLUX_ORACLE_REGNAME = "flux_oracle";
     public static final String ENDERIAN_INGOT_REGNAME = "enderian_ingot";
+    public static final String SCRAPER_MESH_REGNAME = "scraper_mesh";
     public static final String ITEM_PLATFORM_REGNAME = "item_platform";
     public static final String STAFF_REGNAME = "fire_staff";
 
@@ -36,6 +37,7 @@ public class References {
     public static final String ENDERIAN_RITUAL_PEDESTAL_REGNAME = "ritual_pedestal";
     public static final String BEDROCK_STAIRS_REGNAME = "bedrock_stairs";
     public static final String BEDROCK_WIRE_REGNAME = "bedrock_wire";
+    public static final String SCRAPER_MOTOR_REGNAME = "scraper_motor";
 
 
 }

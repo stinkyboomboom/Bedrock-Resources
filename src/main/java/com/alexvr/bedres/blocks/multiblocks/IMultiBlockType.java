@@ -1,4 +1,4 @@
-package com.alexvr.bedres.multiblocks;
+package com.alexvr.bedres.blocks.multiblocks;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

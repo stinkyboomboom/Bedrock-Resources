@@ -3,13 +3,13 @@ package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.blocks.*;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperContainer;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperControllerTile;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
+import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
+import com.alexvr.bedres.blocks.tiles.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperContainer;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScraperControllerTile;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperControllerBlock;
-import com.alexvr.bedres.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.renderer.*;
-import com.alexvr.bedres.tiles.*;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
@@ -93,6 +93,9 @@ public class ModBlocks {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.ITEM_PLATFORM_REGNAME)
     public static TileEntityType<ItemPlatformTile> itemPlatformTileTileEntityType;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPER_MOTOR_REGNAME)
+    public static ScraperMotor motor;
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {

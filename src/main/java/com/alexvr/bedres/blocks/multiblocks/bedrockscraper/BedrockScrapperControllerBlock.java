@@ -1,4 +1,4 @@
-package com.alexvr.bedres.multiblocks.bedrockscraper;
+package com.alexvr.bedres.blocks.multiblocks.bedrockscraper;
 
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.References;

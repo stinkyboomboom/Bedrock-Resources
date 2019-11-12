@@ -5,6 +5,7 @@
   "item.bedres.flux_oracle": "Flux Oracle",
   "item.bedres.enderian_ingot": "Enderian Ingot",
   "item.bedres.fire_staff": "Fire Staff",
+  "item.bedres.scraper_mesh": "Scraper Mesh",
 
 
 
@@ -24,6 +25,7 @@
   "block.bedres.enderian_brick": "Bedrockium Bricks",
   "block.bedres.ritual_pedestal": "Enderian Ritual Pedestal",
   "block.bedres.item_platform": "Item Platform",
+  "block.bedres.scraper_motor": "Scraper Motor",
 
 
 

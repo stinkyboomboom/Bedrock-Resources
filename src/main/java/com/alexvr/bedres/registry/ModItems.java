@@ -1,10 +1,7 @@
 package com.alexvr.bedres.registry;
 
 import com.alexvr.bedres.BedrockResources;
-import com.alexvr.bedres.items.EnderianIngot;
-import com.alexvr.bedres.items.FluxOracle;
-import com.alexvr.bedres.items.ScrapeKnife;
-import com.alexvr.bedres.items.Staff;
+import com.alexvr.bedres.items.*;
 import com.alexvr.bedres.utils.References;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -24,5 +21,8 @@ public class ModItems {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.STAFF_REGNAME)
     public static Staff staff;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPER_MESH_REGNAME)
+    public static ScraperMesh mesh;
 
 }
