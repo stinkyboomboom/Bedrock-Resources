@@ -78,8 +78,11 @@ public class ScrapeKnife extends SwordItem {
                             playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS, (20 * 15) + playerIn.getActivePotionEffect(Effects.WEAKNESS).getDuration(), 1, true, true));
                         }
                         else{
-                            playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 20 * 15, 2, true, true));
+                            playerIn.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 20 * 15, 1, true, true));
                         }
+                    }else{
+                        playerIn.sendStatusMessage(new StringTextComponent("I dont feel too good, I better not."), false);
+
                     }
                 });
 
