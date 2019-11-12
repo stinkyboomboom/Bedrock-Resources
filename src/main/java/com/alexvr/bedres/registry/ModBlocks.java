@@ -110,6 +110,12 @@ public class ModBlocks {
     public static DFOakLog dfOakLog;
     @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_SAPPLING_REGNAME)
     public static DFOakSappling dfOakSappling;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_OAK_PLANKS_REGNAME)
+    public static DFOakPlanks dfOakPlanks;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_OAK_SLAB_REGNAME)
+    public static DFOakSlabs dfOakSlabs;
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_STRIPPED_OAK_LOG_REGNAME)
+    public static DFOakStrippedLog dfOakStrippedLog;
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {

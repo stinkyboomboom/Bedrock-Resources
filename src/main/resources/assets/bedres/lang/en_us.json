@@ -32,6 +32,9 @@
   "block.bedres.decaying_fluxed_oak_log": "Decaying Fluxed Oak Log",
   "block.bedres.decaying_fluxed_oak_leave": "Decaying Fluxed Leaves",
   "block.bedres.decaying_fluxed_cobblestone": "Decaying Fluxed CobbleStone",
+  "block.bedres.decaying_fluxed_oak_slab": "Decaying Fluxed Oak Slab",
+  "block.bedres.decaying_fluxed_oak_planks": "Decaying Fluxed Oak Planks",
+  "block.bedres.decaying_fluxed_stripped_oak_log": "Decaying Fluxed Stripped Oak",
 
 
   "_comment": "Biomes",

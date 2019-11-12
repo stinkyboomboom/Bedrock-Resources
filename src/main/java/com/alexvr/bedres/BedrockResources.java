@@ -96,6 +96,9 @@ public class BedrockResources {
             event.getRegistry().register(new DFOakLeave());
             event.getRegistry().register(new DFOakLog());
             event.getRegistry().register(new DFOakSappling());
+            event.getRegistry().register(new DFOakPlanks());
+            event.getRegistry().register(new DFOakSlabs());
+            event.getRegistry().register(new DFOakStrippedLog());
         }
 
         @SubscribeEvent
@@ -125,6 +128,9 @@ public class BedrockResources {
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakLeave,properties).setRegistryName(References.DF_OAK_LEAVES_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakLog,properties).setRegistryName(References.DF_OAK_LOG_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakSappling,properties).setRegistryName(References.DF_SAPPLING_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfOakPlanks,properties).setRegistryName(References.DF_OAK_PLANKS_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfOakSlabs,properties).setRegistryName(References.DF_OAK_SLAB_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.dfOakStrippedLog,properties).setRegistryName(References.DF_STRIPPED_OAK_LOG_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new Staff());

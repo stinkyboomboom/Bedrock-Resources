@@ -4,6 +4,7 @@ import com.alexvr.bedres.network.Networking;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.RenderFactory;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +23,7 @@ public class ModSetup {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
         Networking.registerMessages();
         RenderingRegistry.registerEntityRenderingHandler(VillagerEntity.class, new RenderFactory("villager"));
+        RenderingRegistry.registerEntityRenderingHandler(CowEntity.class, new RenderFactory("cow"));
 
     }
 
