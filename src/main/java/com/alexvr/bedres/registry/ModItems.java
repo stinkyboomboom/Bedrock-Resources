@@ -25,4 +25,6 @@ public class ModItems {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPER_MESH_REGNAME)
     public static ScraperMesh mesh;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_CUPCAKE_REGNAME)
+    public static FluxedCupcake fluxedCupcake;
 }

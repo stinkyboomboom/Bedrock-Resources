@@ -20,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -47,16 +46,13 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -90,46 +86,17 @@ public class WorldEventHandler {
     @SubscribeEvent
     public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-
         PlayerEntity player = event.getPlayer();
-
-
-        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
-        abilities.ifPresent(h -> {
-            h.setname(player.getName().toString());
-
-            player.sendStatusMessage(new StringTextComponent("Hello there" + h.getNAme()),false);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",h.getSword())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",h.getAxe())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",h.getShovel())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",h.getHoe())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",h.getPick())),false);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",h.getMiningSpeedBoost())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",h.getJumpBoost())),false);
-
-            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
-            bedrockFlux.ifPresent(flux -> {
-
-                player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
-
-                if (flux.getCrafterFlux()){
-                    flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                    flux.getScreen().flux = flux;
-                    BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
-                }
-
-            });
-
+        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+        bedrockFlux.ifPresent(flux -> {
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
+            if (flux.getCrafterFlux()){
+                flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                flux.getScreen().flux = flux;
+                BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+            }
         });
-
-
-
-
     }
-
 
     static ArrayList RECEPI = new ArrayList(){{
 
@@ -836,61 +803,6 @@ public class WorldEventHandler {
         return lookingAt;
     }
 
-
-    @SubscribeEvent
-    public static void PlayerWakeUpEvent(PlayerSleepInBedEvent event) {
-        PlayerEntity player = event.getEntityPlayer();
-
-        if (player.world.isRemote) return;
-
-        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
-        bedrockFlux.ifPresent(h -> {
-
-            String message = ("You hear whispers as you wake up from bed.");
-            h.fill(100);
-            if(BedrockResources.proxy.getMinecraft().ingameGUI instanceof FluxOracleScreen){
-                h.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                h.getScreen().flux = h;
-            }
-            player.sendStatusMessage(new StringTextComponent(message),true);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.RED + new TranslationTextComponent("message.bedres.whispers").getUnformattedComponentText()), false);
-            player.world.addEntity(new LightningBoltEntity(player.world,player.posX,player.posY,player.posZ,true));
-
-
-        });
-
-    }
-
-    @SubscribeEvent
-    public static void onPlayerFalls(LivingFallEvent event) {
-        Entity entity = event.getEntity();
-
-        if (entity.world.isRemote || !(entity instanceof PlayerEntity) || event.getDistance() < 3) return;
-
-        PlayerEntity player = (PlayerEntity) entity;
-        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
-        bedrockFlux.ifPresent(h -> {
-            float points = h.getBedrockFlux();
-            float cost = event.getDistance() * 2;
-
-            if (points > cost)
-            {
-
-
-                h.consume(cost);
-
-                String number2AsString = new DecimalFormat("#.00").format(cost);
-                String message = String.format("You absorbed fall damage. It costed %s mana, you have %s mana left.", number2AsString, h.getBedrockFluxString());
-                player.sendStatusMessage(new StringTextComponent(message),true);
-
-                event.setCanceled(true);
-            }
-
-        });
-
-    }
 
     /**
      * Copy data from dead player to the new player

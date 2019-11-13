@@ -140,6 +140,7 @@ public class BedrockResources {
             event.getRegistry().register(new Staff());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());
+            event.getRegistry().register(new FluxedCupcake());
 
 
 
