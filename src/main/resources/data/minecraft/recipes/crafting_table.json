@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "minecraft:crafting_table"
+  },
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " ##",
+    " ##"
+  ],
+  "key": {
+    "#": {
+      "item": "bedres:decaying_fluxed_oak_planks"
+    }
+  }
+}

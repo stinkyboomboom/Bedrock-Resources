@@ -681,6 +681,7 @@ public class WorldEventHandler {
 
     @SubscribeEvent
     public static void PlayerRightClickEvent( PlayerInteractEvent.RightClickBlock event) {
+
         if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof SwordItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
                 !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&

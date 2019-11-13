@@ -10,9 +10,8 @@ public class DFOakLeave extends LeavesBlock {
 
 
     public DFOakLeave() {
-        super(Properties.create(Material.PLANTS)
-                .sound(SoundType.PLANT)
-        .hardnessAndResistance(2.0f).variableOpacity());
+        super(Properties.create(Material.LEAVES)
+        .hardnessAndResistance(0.2f).tickRandomly().sound(SoundType.PLANT));
         setRegistryName(References.DF_OAK_LEAVES_REGNAME);
 
     }

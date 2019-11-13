@@ -1,6 +1,7 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.biomes.decayingfluxed.DecayingFluxedBiome;
+import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
@@ -8,8 +9,11 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+
+import java.util.Map;
 
 public class RenderFactory implements IRenderFactory {
 
@@ -94,7 +98,18 @@ public class RenderFactory implements IRenderFactory {
 
     private class ModCatRender  extends CatRenderer {
         private final ResourceLocation CAT_TEXTURES = new ResourceLocation("bedres:textures/entity/cat/cat.png");
-
+        public final Map<Integer, ResourceLocation> field_213425_bD = Util.make(Maps.newHashMap(), (p_213410_0_) -> {
+            p_213410_0_.put(1, new ResourceLocation("bedres:textures/entity/cat/black.png"));
+            p_213410_0_.put(2, new ResourceLocation("bedres:textures/entity/cat/red.png"));
+            p_213410_0_.put(3, new ResourceLocation("bedres:textures/entity/cat/siamese.png"));
+            p_213410_0_.put(4, new ResourceLocation("bedres:textures/entity/cat/black.png"));
+            p_213410_0_.put(5, new ResourceLocation("bedres:textures/entity/cat/red.png"));
+            p_213410_0_.put(6, new ResourceLocation("bedres:textures/entity/cat/siamese.png"));
+            p_213410_0_.put(7, new ResourceLocation("bedres:textures/entity/cat/black.png"));
+            p_213410_0_.put(8, new ResourceLocation("bedres:textures/entity/cat/red.png"));
+            p_213410_0_.put(9, new ResourceLocation("bedres:textures/entity/cat/siamese.png"));
+            p_213410_0_.put(10, new ResourceLocation("bedres:textures/entity/cat/black.png"));
+        });
         public ModCatRender(EntityRendererManager renderManager) {
             super(renderManager);
 
@@ -105,7 +120,7 @@ public class RenderFactory implements IRenderFactory {
          */
         protected ResourceLocation getEntityTexture(CatEntity entity) {
             if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
-                return CAT_TEXTURES;
+                return field_213425_bD.get(entity.getCatType());
             }else{
                 return super.getEntityTexture(entity);
             }
@@ -233,7 +248,7 @@ public class RenderFactory implements IRenderFactory {
     }
 
     private class ModChickenRender  extends ChickenRenderer {
-        private final ResourceLocation COW_TEXTURES = new ResourceLocation("bedres:textures/entity/chicken/chicken.png");
+        private final ResourceLocation COW_TEXTURES = new ResourceLocation("bedres:textures/entity/chicken.png");
 
         public ModChickenRender(EntityRendererManager renderManager) {
             super(renderManager);
