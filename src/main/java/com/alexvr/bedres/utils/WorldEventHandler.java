@@ -1111,7 +1111,7 @@ public class WorldEventHandler {
     @SubscribeEvent
     public static void PlayerAttackEvent( LivingHurtEvent event) {
 
-        if (!(event.getEntityLiving() instanceof  PlayerEntity)) {
+        if (!(event.getEntityLiving() instanceof  PlayerEntity) && event.getSource().getTrueSource() instanceof PlayerEntity) {
             LazyOptional<IPlayerAbility> abilities = event.getSource().getTrueSource().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
             abilities.ifPresent(h -> {
                 System.out.println("Attacked");
