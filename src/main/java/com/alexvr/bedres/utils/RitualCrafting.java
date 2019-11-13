@@ -98,7 +98,33 @@ public class RitualCrafting {
 
     public static ArrayList ACTIVE_HOE_UPGRADE = getUpgradeRecipe("diamond","hoe",TOOLACHEMIZER);
 
-    public static ArrayList ACTIVE_SPEED_UPGRADE = getStatRecipe("speed","sugar",TOOLACHEMIZER);
+    public static ArrayList ACTIVE_SPEED_UPGRADE = new ArrayList() {{
+
+        add("bedres:speedUpgrade");
+
+        add(new ArrayList<String>() {{
+
+            add("wwwbwww");
+            add("w  w  w");
+            add("w rwr w");
+            add("aww wwc");
+            add("w rwr w");
+            add("w  w  w");
+            add("wwwdwww");
+
+        }});
+        add(new ArrayList<String>() {{
+
+            add(WIRE);
+            add("r=bedres:" + References.ENDERIAN_INGOT_REGNAME);
+            add("a=minecraft:sugar");
+            add("b=minecraft:cookie");
+            add("c=bedres:" + References.FLUXED_CUPCAKE_REGNAME);
+            add("d=minecraft:redstone");
+
+        }});
+
+    }};
 
     public static ArrayList ACTIVE_JUMP_UPGRADE = getStatRecipe("jump","piston",TOOLACHEMIZER);
 
