@@ -2,7 +2,7 @@ package com.alexvr.bedres.utils;
 
 import java.util.ArrayList;
 
-class RitalCrafting {
+public class RitualCrafting {
 
     /**
 
@@ -58,6 +58,17 @@ class RitalCrafting {
         }};
     }
 
+    private static ArrayList getStatRecipe(String name, String item, String alchemizeer){
+        return new ArrayList() {{
+
+                add("bedres:" + name + "Upgrade");
+
+            add(TOOL_UPGRADE);
+            add(getPassiveBoosMaterial("p=minecraft:" + item, alchemizeer));
+
+        }};
+    }
+
     public static ArrayList CLEAR_UPGRADE = getUpgradeRecipe("na","stick",TOOLACHEMIZER);
 
 
@@ -87,11 +98,10 @@ class RitalCrafting {
 
     public static ArrayList ACTIVE_HOE_UPGRADE = getUpgradeRecipe("diamond","hoe",TOOLACHEMIZER);
 
-    public static ArrayList ACTIVE_SPEED_UPGRADE = getUpgradeRecipe("na","speed",TOOLACHEMIZER);
+    public static ArrayList ACTIVE_SPEED_UPGRADE = getStatRecipe("speed","sugar",TOOLACHEMIZER);
 
-    public static ArrayList ACTIVE_JUMP_UPGRADE = getUpgradeRecipe("na","jump",TOOLACHEMIZER);
+    public static ArrayList ACTIVE_JUMP_UPGRADE = getStatRecipe("jump","piston",TOOLACHEMIZER);
 
-    public static ArrayList ACTIVE_GRAVITY_UPGRADE = getUpgradeRecipe("na","gravity",TOOLACHEMIZER);
 
 
 }

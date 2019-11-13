@@ -1,15 +1,14 @@
 package com.alexvr.bedres.network.packets;
 
-import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
 import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.gui.FluxOracleScreen;
+import com.alexvr.bedres.utils.WorldEventHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
@@ -72,14 +71,7 @@ import java.util.function.Supplier;
                     PlayerEntity player = ctx.get().getSender();
                     FluxOracleScreen fx = new FluxOracleScreen();
                     LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-                    bedrockFlux.ifPresent(h -> {
-                        h.setCrafterFlux();
-                        fx.flux = h;
-                        h.setScreen(fx);
-                        BedrockResources.proxy.getMinecraft().ingameGUI=fx;
-                        String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
-                        player.sendStatusMessage(new StringTextComponent(message),true);
-                    });
+                    WorldEventHandler.getFluxScreen(player, bedrockFlux, fx);
                 }
                 //entityType.spawn(spawnWorld, null, null, pos, SpawnReason.SPAWN_EGG, true, true);
             });

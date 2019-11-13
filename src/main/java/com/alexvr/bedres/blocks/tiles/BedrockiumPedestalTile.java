@@ -56,7 +56,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         RECEPI = new ArrayList<>();
         ArrayList EINGOT = new ArrayList() {{
 
-            add(new ItemStack(ModItems.enderianIngot,4));
+            add(new ItemStack(ModItems.enderianIngot,8));
             add(new ArrayList<String>() {{
 
                 add(Items.ENDER_PEARL.getRegistryName().toString());

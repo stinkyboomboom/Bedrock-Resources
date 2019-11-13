@@ -13,6 +13,7 @@ public class BedrockFlux implements IBedrockFlux
 {
     private float bedrockflux = 0.0f;
     private float maxbedrockflux = 2500.0F;
+    private float minbedrockflux = 0.0f;
     private boolean crafted = false;
     private FluxOracleScreen screen = null;
     private int timer =0;
@@ -25,6 +26,9 @@ public class BedrockFlux implements IBedrockFlux
         if (this.bedrockflux < 0.0F) this.bedrockflux = 0.0F;
         if (crafted){
             screen.flux = this;
+        }
+        if (bedrockflux<minbedrockflux){
+            bedrockflux=minbedrockflux;
         }
     }
 
@@ -48,6 +52,24 @@ public class BedrockFlux implements IBedrockFlux
         if (crafted){
             screen.flux = this;
         }
+        if (bedrockflux<minbedrockflux){
+            bedrockflux=minbedrockflux;
+        }
+    }
+
+    @Override
+    public void consumeMin(float points) {
+        minbedrockflux-=points;
+    }
+
+    @Override
+    public float fillMin(float points) {
+        return minbedrockflux+=points;
+    }
+
+    @Override
+    public void setMin(float points) {
+        minbedrockflux=points;
     }
 
     public float getBedrockFlux()

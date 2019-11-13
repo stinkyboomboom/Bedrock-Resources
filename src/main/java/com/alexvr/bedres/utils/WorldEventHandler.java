@@ -17,7 +17,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -40,14 +39,15 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -57,7 +57,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-import static com.alexvr.bedres.utils.RitalCrafting.*;
+import static com.alexvr.bedres.utils.RitualCrafting.*;
 
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
@@ -74,29 +74,20 @@ public class WorldEventHandler {
 
     }
 
-    @SubscribeEvent
-    public static void onInitGuiEvent(final InitGuiEvent event) {
-        final Screen gui = event.getGui();
-        if (gui instanceof FluxOracleScreenGui) {
 
-        }
-    }
-
-
-    @SubscribeEvent
-    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
-    {
-        PlayerEntity player = event.getPlayer();
-        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-        bedrockFlux.ifPresent(flux -> {
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
-            if (flux.getCrafterFlux()){
-                flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                flux.getScreen().flux = flux;
-                BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
-            }
-        });
-    }
+//    @SubscribeEvent
+//    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
+//    {
+//        PlayerEntity player = event.getPlayer();
+//        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+//        bedrockFlux.ifPresent(flux -> {
+//            if (flux.getCrafterFlux()){
+//                flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+//                flux.getScreen().flux = flux;
+//                BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+//            }
+//        });
+//    }
 
     static ArrayList RECEPI = new ArrayList(){{
 
@@ -129,8 +120,6 @@ public class WorldEventHandler {
         add(ACTIVE_SPEED_UPGRADE);
 
         add(ACTIVE_JUMP_UPGRADE);
-
-        add(ACTIVE_GRAVITY_UPGRADE);
 
         add(CLEAR_UPGRADE);
 
@@ -229,6 +218,46 @@ public class WorldEventHandler {
         });
     }
 
+    public static float checkForMin(String tool,IPlayerAbility ability,IBedrockFlux flux){
+        float min =0;
+        String tier = "no";
+        switch (tool){
+            case "pick":
+                tier = ability.getPick();
+                break;
+            case "axe":
+                tier = ability.getAxe();
+                break;
+            case "shovel":
+                tier = ability.getShovel();
+                break;
+            case "sword":
+                tier = ability.getSword();
+                break;
+        }
+        switch (tier){
+            case "wood":
+                min = 45;
+                break;
+            case "stone":
+                min = 85;
+                break;
+            case "iron":
+                min = 145;
+                break;
+            case "golden":
+                min = 245;
+                break;
+            case "diamond":
+                min = 400;
+                break;
+            default:
+                min=0;
+                break;
+        }
+        return min;
+    }
+
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
@@ -316,74 +345,193 @@ public class WorldEventHandler {
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                     Minecraft.getInstance().gameSettings.hideGUI = false;
                     Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
-                    if (iPlayerAbility.getRitualCraftingResult().contains("Upgrade")) {
-                        if (iPlayerAbility.getRitualCraftingResult().contains("stickUpgrade")) {
-                            iPlayerAbility.clear();
-                        }else if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
-                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                iPlayerAbility.setPick("wood");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                iPlayerAbility.setPick("iron");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setPick("golden");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                iPlayerAbility.setPick("diamond");
-                            }
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("axeUpgrade")) {
-                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                iPlayerAbility.setAxe("wood");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                iPlayerAbility.setAxe("iron");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setAxe("golden");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                iPlayerAbility.setAxe("diamond");
-                            }
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("shovelUpgrade")) {
-                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                iPlayerAbility.setShovel("wood");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                iPlayerAbility.setShovel("iron");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setShovel("golden");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                iPlayerAbility.setShovel("diamond");
-                            }
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("swordUpgrade")) {
-                            if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                iPlayerAbility.setSword("wood");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                iPlayerAbility.setSword("iron");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                iPlayerAbility.setSword("golden");
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                iPlayerAbility.setSword("diamond");
-                            }
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("hoeUpgrade")) {
-                            iPlayerAbility.setHoe("active");
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("speedUpgrade")) {
-                            iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + 5);
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("gravityUpgrade")) {
-                            iPlayerAbility.setGRavityMultiplier(iPlayerAbility.getGravityMultiplier() + 2.5f);
-                        } else if (iPlayerAbility.getRitualCraftingResult().contains("jumpUpgrade")) {
-                            iPlayerAbility.addJump(1.2f);
-                        }
-                        player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("message.bedres.stat_change").getUnformattedComponentText()), true);
-                        player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",iPlayerAbility.getSword())),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",iPlayerAbility.getAxe())),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",iPlayerAbility.getShovel())),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",iPlayerAbility.getHoe())),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",iPlayerAbility.getPick())),false);
-                        player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",iPlayerAbility.getMiningSpeedBoost())),false);
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",iPlayerAbility.getJumpBoost())),false);
-                        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-                        bedrockFlux.ifPresent(flux -> player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false));
-                    }else{
+                    LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+                    bedrockFlux.ifPresent(flux -> {
+                        if (iPlayerAbility.getRitualCraftingResult().contains("Upgrade")) {
+                            if (iPlayerAbility.getRitualCraftingResult().contains("stickUpgrade")) {
+                                iPlayerAbility.clear();
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
+                                if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(45);
 
-                        InventoryHelper.spawnItemStack(event.player.world,player.posX,player.posY,player.posZ,new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(iPlayerAbility.getRitualCraftingResult()))));
-                    }
+                                    iPlayerAbility.setPick("wood");
+                                    flux.fill(45);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
+                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(85);
+                                    iPlayerAbility.setPick("stone");
+                                    flux.fill(85);
+                                }  else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(145);
+                                    iPlayerAbility.setPick("iron");
+                                    flux.fill(145);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(245);
+                                    iPlayerAbility.setPick("golden");
+                                    flux.fill(245);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(400);
+                                    iPlayerAbility.setPick("diamond");
+                                    flux.fill(400);
+                                }
+
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("axeUpgrade")) {
+                                if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(45);
+                                    iPlayerAbility.setAxe("wood");
+                                    flux.fill(45);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
+                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(85);
+                                    iPlayerAbility.setAxe("stone");
+                                    flux.fill(85);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(145);
+                                    iPlayerAbility.setAxe("iron");
+                                    flux.fill(145);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(245);
+                                    iPlayerAbility.setAxe("golden");
+                                    flux.fill(245);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(400);
+                                    iPlayerAbility.setAxe("diamond");
+                                    flux.fill(400);
+                                }
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("shovelUpgrade")) {
+                                if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(45);
+                                    iPlayerAbility.setShovel("wood");
+                                    flux.fill(45);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
+                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(85);
+                                    iPlayerAbility.setShovel("stone");
+                                    flux.fill(85);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(145);
+                                    iPlayerAbility.setShovel("iron");
+                                    flux.fill(145);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(245);
+                                    iPlayerAbility.setShovel("golden");
+                                    flux.fill(245);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(400);
+                                    iPlayerAbility.setShovel("diamond");
+                                    flux.fill(400);
+                                }
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("swordUpgrade")) {
+                                if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
+                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(45);
+                                    iPlayerAbility.setSword("wood");
+                                    flux.fill(45);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
+                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(85);
+                                    iPlayerAbility.setSword("stone");
+                                    flux.fill(85);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
+                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(145);
+                                    iPlayerAbility.setSword("iron");
+                                    flux.fill(145);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
+                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(245);
+                                    iPlayerAbility.setSword("golden");
+                                    flux.fill(245);
+                                } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
+                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
+                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    }
+                                    flux.fillMin(400);
+                                    iPlayerAbility.setSword("diamond");
+                                    flux.fill(400);
+                                }
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("hoeUpgrade")) {
+                                if (iPlayerAbility.getHoe().equals("active")){
+
+                                    flux.consumeMin(400);
+                                }
+                                flux.fillMin(400);
+                                iPlayerAbility.setHoe("active");
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("speedUpgrade")) {
+                                iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + 5);
+                                flux.fillMin(45 + iPlayerAbility.getMiningSpeedBoost());
+                                flux.fill(45 + iPlayerAbility.getMiningSpeedBoost());
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("jumpUpgrade")) {
+                                iPlayerAbility.addJump(0.2f);
+                                flux.fillMin(55 + iPlayerAbility.getJumpBoost());
+                                flux.fill(55 + iPlayerAbility.getJumpBoost());
+                            }
+                            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("message.bedres.stat_change").getUnformattedComponentText()), true);
+                            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Sword", iPlayerAbility.getSword())), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Axe", iPlayerAbility.getAxe())), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Shovel", iPlayerAbility.getShovel())), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Hoe", iPlayerAbility.getHoe())), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Pickaxe", iPlayerAbility.getPick())), false);
+                            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Speed", iPlayerAbility.getMiningSpeedBoost())), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Jump", iPlayerAbility.getJumpBoost())), false);
+                            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Flux", flux.getBedrockFluxString())), false);
+                        } else {
+
+                            InventoryHelper.spawnItemStack(event.player.world, player.posX, player.posY, player.posZ, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(iPlayerAbility.getRitualCraftingResult()))));
+                        }
+                    });
 
                     iPlayerAbility.setRitualTimer(1);
 
@@ -560,6 +708,97 @@ public class WorldEventHandler {
     }
 
 
+
+
+
+
+
+
+
+
+    @SubscribeEvent
+    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+
+        PlayerEntity player = event.getPlayer();
+
+
+        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+            h.setname(player.getName().getFormattedText());
+
+            player.sendStatusMessage(new StringTextComponent("Hello there" + h.getNAme()),false);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",h.getSword())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",h.getAxe())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",h.getShovel())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",h.getHoe())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",h.getPick())),false);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",h.getMiningSpeedBoost())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",h.getJumpBoost())),false);
+
+            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+
+            bedrockFlux.ifPresent(flux -> {
+
+                player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
+
+                if (flux.getCrafterFlux()){
+                    flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                    flux.getScreen().flux = flux;
+                    BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+                }
+            });
+        });
+    }
+
+
+
+
+    @SubscribeEvent
+    public static void onSleep(PlayerSleepInBedEvent event)
+    {
+        PlayerEntity player = event.getPlayer();
+        LazyOptional<IPlayerAbility> abilities = event.getPlayer().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+            h.setAxe("diamond");
+            h.setPick("diamond");
+            h.setSword("iron");
+            h.setMiningSpeedBoost(0);
+            h.setJumpBoost(0.008f);
+            h.setGRavityMultiplier(1.2f);
+            player.sendStatusMessage(new StringTextComponent("Hello there" + h.getNAme()),false);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",h.getSword())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",h.getAxe())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",h.getShovel())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",h.getHoe())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",h.getPick())),false);
+            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",h.getMiningSpeedBoost())),false);
+            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",h.getJumpBoost())),false);
+            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+
+            bedrockFlux.ifPresent(flux -> {
+
+                player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
+
+                if (flux.getCrafterFlux()){
+                    flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                    flux.getScreen().flux = flux;
+                    BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+                }
+            });
+        });
+    }
+
+
+
+
+
+
+
     /**
      * Cancel the FOV decrease caused by the decreasing speed due to player penalties.
      * Original FOV value given by the event is never used, we start from scratch 1.0F value.
@@ -609,44 +848,74 @@ public class WorldEventHandler {
             PlayerEntity player = event.getPlayer();
             LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
             FluxOracleScreen fx = new FluxOracleScreen();
-            bedrockFlux.ifPresent(h -> {
-                h.setCrafterFlux();
-                fx.flux = h;
-                h.setScreen(fx);
-                BedrockResources.proxy.getMinecraft().ingameGUI=fx;
-                String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
-                player.sendStatusMessage(new StringTextComponent(message),true);
-            });
+            getFluxScreen(player, bedrockFlux, fx);
         }
+    }
+
+    public static void getFluxScreen(PlayerEntity player, LazyOptional<IBedrockFlux> bedrockFlux, FluxOracleScreen fx) {
+        bedrockFlux.ifPresent(h -> {
+            h.setCrafterFlux();
+            fx.flux = h;
+            h.setScreen(fx);
+            BedrockResources.proxy.getMinecraft().ingameGUI=fx;
+            String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
+            player.sendStatusMessage(new StringTextComponent(message),true);
+        });
     }
 
     @SubscribeEvent
     public static void PlayerBreakSpeedEvent(PlayerEvent.BreakSpeed event) {
         PlayerEntity player = event.getPlayer();
+        System.out.println(event.getOriginalSpeed());
+        System.out.println(event.getNewSpeed());
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
+
             if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof SwordItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof PickaxeItem) &&
-                    !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem) &&
-                    event.getState().getHarvestTool() != null) {
+                    !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem)) {
                 float speeed = 0;
 
-                if (event.getState().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())) {
-                    speeed = getSpeed(h.getPick());
-                }else if (event.getState().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())) {
-                    speeed = getSpeed(h.getShovel());
+                if (event.getState().getHarvestTool() == null){
+                    System.out.println(speeed);
+                    System.out.println(event.getState().getMaterial().toString());
+                    System.out.println(Material.WOOD.toString());
+                    if (event.getState().getMaterial().toString().equals(Material.WOOD.toString())){
+                        speeed = getSpeed(h.getAxe());
+                    }else if (event.getState().getMaterial() == Material.ROCK || event.getState().getMaterial() == Material.IRON ||event.getState().getMaterial() == Material.ANVIL){
+                        speeed = getSpeed(h.getPick());
+                    }else if (event.getState().getMaterial() == Material.EARTH || event.getState().getMaterial() == Material.SAND ||event.getState().getMaterial() == Material.SNOW ||event.getState().getMaterial() == Material.CLAY ||event.getState().getMaterial() == Material.ORGANIC){
+                        speeed = getSpeed(h.getShovel());
+                    }else if (event.getState().getMaterial() == Material.WEB || event.getState().getMaterial() == Material.LEAVES ||event.getState().getMaterial() == Material.WOOL ){
+                        speeed = getSpeed(h.getSword());
+                    }
 
-                }else if (event.getState().getHarvestTool().toString().equals(ToolType.AXE.toString())) {
-                    speeed = getSpeed(h.getAxe());
+                }else{
+                    if (event.getState().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())) {
+                        speeed = getSpeed(h.getPick());
+                    }else if (event.getState().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())) {
+                        speeed = getSpeed(h.getShovel());
+
+                    }else if (event.getState().getHarvestTool().toString().equals(ToolType.AXE.toString())) {
+                        speeed = getSpeed(h.getAxe());
+
+                    }
                 }
-                speeed *=1.35;
-                if (event.getState().getMaterial().isToolNotRequired()){
-                    event.setNewSpeed(((event.getOriginalSpeed()+h.getMiningSpeedBoost()+speeed)));
+                speeed+=1;
+                speeed *=1.85;
 
+                if (event.getState().getBlock() == Blocks.STONE){
+                    speeed += 5.5;
+                }
+                if (event.getState().getMaterial().isToolNotRequired() || event.getState().getBlock() == Blocks.STONE){
+                    System.out.println("no tool");
+                    event.setNewSpeed(((event.getOriginalSpeed()+h.getMiningSpeedBoost()+speeed)));
                 }else {
-                    event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost()  + speeed) * (100.0 / 30.0)));
+                    System.out.println("tool");
+
+                    event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost()  + speeed) * (100.0 / 30.0) ));
                 }
 
 
@@ -656,6 +925,10 @@ public class WorldEventHandler {
             }
 
         });
+        System.out.println(event.getNewSpeed());
+        System.out.println();
+
+
     }
 
     private static float getSpeed(String material) {
@@ -803,6 +1076,54 @@ public class WorldEventHandler {
         return lookingAt;
     }
 
+    @SubscribeEvent
+    public static void PlayerJumpEvent( PlayerEvent.LivingJumpEvent event) {
+
+        System.out.println("Jump");
+        System.out.println(event.getEntityLiving().getMotion().y);
+
+        LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+        abilities.ifPresent(h -> {
+            event.getEntityLiving().addVelocity(0, (h.getJumpBoost()), 0);
+            event.getEntityLiving().velocityChanged=true;
+        });
+        System.out.println(event.getEntityLiving().getMotion().y);
+        System.out.println();
+
+    }
+
+    public static float getAttackBoost(String material){
+        switch (material) {
+            case "wood":
+                return ((SwordItem)Items.WOODEN_SWORD).getAttackDamage();
+            case "stone":
+                return  ((SwordItem)Items.STONE_SWORD).getAttackDamage();
+            case "iron":
+                return ((SwordItem)Items.IRON_SWORD).getAttackDamage();
+            case "golden":
+                return ((SwordItem)Items.GOLDEN_SWORD).getAttackDamage();
+            case "diamond":
+                return  ((SwordItem)Items.DIAMOND_SWORD).getAttackDamage();
+        }
+        return 0;
+    }
+
+    @SubscribeEvent
+    public static void PlayerAttackEvent( LivingHurtEvent event) {
+
+        if (!(event.getEntityLiving() instanceof  PlayerEntity)) {
+            LazyOptional<IPlayerAbility> abilities = event.getSource().getTrueSource().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
+            abilities.ifPresent(h -> {
+                System.out.println("Attacked");
+                System.out.println(event.getAmount());
+                System.out.println(getAttackBoost(h.getSword()));
+                System.out.println((h.getSword()));
+                event.setAmount(event.getAmount() + getAttackBoost(h.getSword()));
+                System.out.println(event.getAmount());
+                System.out.println();
+            });
+        }
+    }
 
     /**
      * Copy data from dead player to the new player

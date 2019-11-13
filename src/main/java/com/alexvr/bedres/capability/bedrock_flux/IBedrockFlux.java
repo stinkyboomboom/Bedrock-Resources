@@ -8,6 +8,10 @@ public interface IBedrockFlux {
     float fill(float points);
     void set(float points);
 
+    void consumeMin(float points);
+    float fillMin(float points);
+    void setMin(float points);
+
     float getBedrockFlux();
     float getMaxBedrockFlux();
 
