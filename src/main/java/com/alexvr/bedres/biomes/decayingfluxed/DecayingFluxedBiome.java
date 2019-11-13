@@ -26,7 +26,6 @@ public class DecayingFluxedBiome extends Biome {
     public DecayingFluxedBiome() {
         super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(ModBlocks.dfGrass.getDefaultState(),ModBlocks.dfDirt.getDefaultState(),ModBlocks.dfCobble.getDefaultState())).precipitation(RainType.RAIN).category(Category.SAVANNA).depth(0.1F).scale(0.2F).temperature(0.9F).downfall(0.3F).waterColor(8348619).waterFogColor(6512843).parent((String)null));
         this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
-        this.addStructure(Feature.STRONGHOLD, IFeatureConfig.NO_FEATURE_CONFIG);
         this.addStructure(Feature.VILLAGE, new VillageConfig("village/plains/town_centers", new Random().nextInt(8)+4));
         DefaultBiomeFeatures.addDeadBushes(this);
         DefaultBiomeFeatures.addFossils(this);

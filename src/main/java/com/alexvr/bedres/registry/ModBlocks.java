@@ -117,6 +117,9 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.DF_STRIPPED_OAK_LOG_REGNAME)
     public static DFOakStrippedLog dfOakStrippedLog;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_SPORES_REGNAME)
+    public static FluxedSpores fluxedSpores;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {

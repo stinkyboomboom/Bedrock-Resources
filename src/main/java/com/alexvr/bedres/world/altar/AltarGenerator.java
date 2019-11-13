@@ -116,7 +116,6 @@ public class AltarGenerator extends Structure<NoFeatureConfig> {
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
 
-            System.out.println("init" + templateManagerIn.toString());
             BlockPos blockpos = new BlockPos(chunkX * 16, 90, chunkZ * 16);
             int y = getYPosForStructure(chunkX, chunkZ, generator);
 

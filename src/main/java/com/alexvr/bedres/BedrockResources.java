@@ -1,6 +1,5 @@
 package com.alexvr.bedres;
 
-import com.alexvr.bedres.biomes.decayingfluxed.DecayingFluxedBiome;
 import com.alexvr.bedres.blocks.*;
 import com.alexvr.bedres.blocks.decayingfluxedblocks.*;
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScraperContainer;
@@ -10,6 +9,7 @@ import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperSlaveB
 import com.alexvr.bedres.blocks.tiles.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.items.*;
+import com.alexvr.bedres.registry.ModBiomes;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.setup.ClientProxy;
@@ -28,6 +28,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,6 +101,7 @@ public class BedrockResources {
             event.getRegistry().register(new DFOakPlanks());
             event.getRegistry().register(new DFOakSlabs());
             event.getRegistry().register(new DFOakStrippedLog());
+            event.getRegistry().register(new FluxedSpores());
         }
 
         @SubscribeEvent
@@ -131,6 +134,7 @@ public class BedrockResources {
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakPlanks,properties).setRegistryName(References.DF_OAK_PLANKS_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakSlabs,properties).setRegistryName(References.DF_OAK_SLAB_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakStrippedLog,properties).setRegistryName(References.DF_STRIPPED_OAK_LOG_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.fluxedSpores,properties).setRegistryName(References.FLUXED_SPORES_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new Staff());
@@ -172,7 +176,11 @@ public class BedrockResources {
         public static void onRegisterBIOME(RegistryEvent.Register<Biome> event) {
             IForgeRegistry<Biome> registry = event.getRegistry();
 
-            registry.register(new DecayingFluxedBiome().setRegistryName("df_biome"));
+            registry.register(ModBiomes.dfBiome);
+            ForgeRegistries.BIOMES.register(ModBiomes.dfBiome);
+            BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(ModBiomes.dfBiome,10));
+            BiomeManager.addSpawnBiome(ModBiomes.dfBiome);
+
 
         }
 

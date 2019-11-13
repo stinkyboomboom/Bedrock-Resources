@@ -47,6 +47,7 @@ public class References {
     public static final String DF_OAK_SLAB_REGNAME = "decaying_fluxed_oak_slab";
     public static final String DF_OAK_LEAVES_REGNAME = "decaying_fluxed_oak_leave";
     public static final String DF_COOBLE_REGNAME = "decaying_fluxed_cobblestone";
+    public static final String FLUXED_SPORES_REGNAME = "fluxed_spores";
 
 
 }

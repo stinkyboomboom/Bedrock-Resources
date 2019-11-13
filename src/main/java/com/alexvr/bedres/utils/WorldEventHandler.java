@@ -172,7 +172,6 @@ public class WorldEventHandler {
 
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent event){
-
         BlockPos playerPos = new BlockPos(event.getEntityLiving().posX,event.getEntityLiving().posY,event.getEntityLiving().posZ);
         LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(iPlayerAbility -> {
@@ -181,8 +180,6 @@ public class WorldEventHandler {
                     ArrayList<EnderianRitualPedestalTile> listOfTIles;
                     iPlayerAbility.flipChecking();
                     for (int i =0;i<RECEPI.size();i++) {
-                        System.out.println("Crafting: " + RECEPI.get(i).toString());
-                        System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
 
                         listOfTIles = new ArrayList<>();
                         boolean skip = false;
@@ -194,15 +191,11 @@ public class WorldEventHandler {
                                 if (x==0&&y==0){
                                     continue;
                                 }
-                                System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
                                 Character key = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(1)).get(x+3)).charAt(y+3);
-                                System.out.println("Character Analyzed: " + key);
 
                                 if (key == ' '){
-                                    System.out.println("Spaced Detected at: " + playerPos.east(x).south(y).toString());
 
                                     if (event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y).down()).getBlock() != ModBlocks.enderianBrick ){
-                                        System.out.println("Error: No Brick at: " + playerPos.east(x).south(y).down().toString());
 
                                         skip =true;
                                         break;
@@ -212,57 +205,45 @@ public class WorldEventHandler {
                                 ItemStack stack = ItemStack.EMPTY;
                                 for (int j =0;j<((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).size();j++) {
                                     Character value = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).charAt(0);
-                                    System.out.println("Value Analyzed: " + value);
 
                                     if (key == value){
                                         String ss = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).substring(2);
                                         ResourceLocation locatoin = new ResourceLocation(ss);
-                                        System.out.println("Name to look for: " + ss);
-                                        System.out.println("Resourse Location: " + locatoin.toString());
                                         stack = new ItemStack( ForgeRegistries.ITEMS.getValue(locatoin));
-                                        System.out.println("Stack Found: " + stack.toString());
 
                                         break;
                                     }
                                 }
                                 if (stack == ItemStack.EMPTY || stack.getItem().getRegistryName().equals(ItemStack.EMPTY.getItem().getRegistryName())){
-                                    System.out.println("Error: No stack to match: " + key);
 
                                     skip =true;
                                     break;
                                 }
                                 if (stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.bedrockWire) {
-                                    System.out.println("Error: No Wire at: " + playerPos.east(x).south(y).toString());
 
                                     skip = true;
                                     break;
                                 }
                                 if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.enderianRitualPedestal) {
-                                    System.out.println("Error: No Pedestal at: " + playerPos.east(x).south(y).toString());
                                     skip = true;
                                     break;
                                 }else if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() == ModBlocks.enderianRitualPedestal) {
 
                                     if (event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y)) instanceof EnderianRitualPedestalTile && !((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item.equals(stack.getItem().getRegistryName().toString())){
-                                        System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
 
                                         skip = true;
                                         break;
                                     }else{
-                                        System.out.println("Added Pedestal at: " + playerPos.east(x).south(y).toString() + " with correct item");
 
                                         listOfTIles.add(((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))));
                                     }
                                 }
                             }
                         }
-                        System.out.println();
-                        System.out.println();
+
 
                         if(!skip){
-                            System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
-                            System.out.println();
-                            System.out.println();
+
                             event.getEntityLiving().world.setBlockState(playerPos,Blocks.AIR.getDefaultState());
                             iPlayerAbility.setRitualCraftingResult((String)(((ArrayList)RECEPI.get(i)).get(0)));
                             iPlayerAbility.setRitualPedestals(listOfTIles);
@@ -273,7 +254,6 @@ public class WorldEventHandler {
                             event.getEntityLiving().setFire(0);
                             iPlayerAbility.setLookPos(new Vec3d(listOfTIles.get(0).getPos().getX(),listOfTIles.get(0).getPos().getY()+2,listOfTIles.get(0).getPos().getZ()));
                             event.setCanceled(true);
-                            System.out.println(event.getEntityLiving().getLookVec().toString());
                         }
                     }
                     iPlayerAbility.flipChecking();
@@ -456,13 +436,11 @@ public class WorldEventHandler {
                 h.count();
                 if (h.getTimer() >= h.getMaxTimer()) {
                     h.changeMax();
-                    //int rand = new Random().nextInt(20) + 1;
-                    int rand = 30;
+                    int rand = new Random().nextInt(20) + 1;
+                    //int rand = 30;
                     if (rand <= 4) {
                         if (h.getBedrockFlux()<400){
                             int choice =  new Random().nextInt(5);
-                            System.out.println(choice);
-
                             switch (choice){
                                 case 0:
                                     player.setFire(40);
@@ -482,14 +460,132 @@ public class WorldEventHandler {
                                     player.addPotionEffect(new EffectInstance(Effects.BLINDNESS,100,2));
                                     break;
                                 case 4:
-
+                                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS,100,2));
                                     break;
                             }
 
+                        }else if (h.getBedrockFlux()>=400 && h.getBedrockFlux()<950){
+                            int choice =  new Random().nextInt(5);
+
+                            switch (choice){
+                                case 0:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 1:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 2:
+                                    event.player.world.setBlockState(player.getPosition(),Blocks.FIRE.getDefaultState());
+                                    break;
+                                case 3:
+                                    player.addPotionEffect(new EffectInstance(Effects.POISON,160,3));
+                                    break;
+                                case 4:
+                                    player.addPotionEffect(new EffectInstance(Effects.INSTANT_DAMAGE,2,1));
+                                    player.addPotionEffect(new EffectInstance(Effects.HUNGER,60,2));
+                                    break;
+                            }
+
+                        }else if (h.getBedrockFlux()>=950 && h.getBedrockFlux()<1350){
+                            int choice =  new Random().nextInt(7);
+                            switch (choice){
+                                case 0:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 1:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 2:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfDirt.getDefaultState());
+                                    break;
+                                case 3:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
+                                    break;
+                                case 4:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfCobble.getDefaultState());
+                                    break;
+                                case 5:
+                                    player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,2));
+                                    break;
+                                case 6:
+                                    player.addPotionEffect(new EffectInstance(Effects.UNLUCK,120,4));
+                                    break;
+                                case 7:
+                                    player.addPotionEffect(new EffectInstance(Effects.INSTANT_DAMAGE,2,1));
+                                    player.addPotionEffect(new EffectInstance(Effects.HUNGER,85,3));
+                                    break;
+                            }
+                        }else if (h.getBedrockFlux()>=1350 && h.getBedrockFlux()<1800){
+                            int choice =  new Random().nextInt(9);
+
+                            switch (choice){
+                                case 0:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 1:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 2:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfDirt.getDefaultState());
+                                    break;
+                                case 3:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
+                                    break;
+                                case 4:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfCobble.getDefaultState());
+                                    break;
+                                case 5:
+                                    player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,3));
+                                    break;
+                                case 6:
+                                    player.addPotionEffect(new EffectInstance(Effects.POISON,80,4));
+                                    break;
+                                case 7:
+                                    player.addPotionEffect(new EffectInstance(Effects.LEVITATION,80,4));
+                                    break;
+                                case 8:
+                                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE,80,4));
+                                    break;
+                            }
+                        }else if (h.getBedrockFlux()>=1800 && h.getBedrockFlux()<h.getMaxBedrockFlux()){
+                            int choice =  new Random().nextInt(10);
+
+                            switch (choice){
+                                case 0:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 1:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                                    break;
+                                case 2:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfDirt.getDefaultState());
+                                    break;
+                                case 3:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
+                                    break;
+                                case 4:
+                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfCobble.getDefaultState());
+                                    break;
+                                case 5:
+                                    player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,5));
+                                    break;
+                                case 6:
+                                    player.addPotionEffect(new EffectInstance(Effects.WITHER,120,3));
+                                    break;
+                                case 7:
+                                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE,120,3));
+                                    break;
+                                case 8:
+                                    player.addPotionEffect(new EffectInstance(Effects.HUNGER,120,4));
+                                    break;
+                                case 9:
+                                    player.addPotionEffect(new EffectInstance(Effects.NAUSEA,120,4));
+                                    break;
+                            }
                         }
+                        String message = ("You dont feel well");
+                        player.sendStatusMessage( new StringTextComponent(TextFormatting.RED + message), true);
                     }
-                    String message = ("You dont feel too well");
-                    player.sendStatusMessage(new StringTextComponent(message), true);
                 }
             }
         });

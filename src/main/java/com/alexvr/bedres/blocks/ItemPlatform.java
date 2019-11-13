@@ -108,8 +108,11 @@ public class ItemPlatform extends DirectionalBlock {
             TileEntity te = worldIn.getTileEntity(pos);
             te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
-                    player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
+                    if (!player.isCreative()) {
+                        InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
+                    }else{
+                        h.extractItem(0, 1, false);
+                    }
                     ((ItemPlatformTile) te).item = "none";
                     te.markDirty();
                     ((ItemPlatformTile) te).sendUpdates();
@@ -146,7 +149,11 @@ public class ItemPlatform extends DirectionalBlock {
                     if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.scrapesKnife.getRegistryName())){
 
                         if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
+                            if (!player.isCreative()) {
+                                InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY() + 1, pos.getZ(), h.extractItem(0, 1, false));
+                            }else{
+                                h.extractItem(0, 1, false);
+                            }
                             player.getHeldItemMainhand().damageItem(2, player, (p_220044_0_) -> p_220044_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND));
                             ((ItemPlatformTile) te).item = "none";
                             te.markDirty();
@@ -156,7 +163,9 @@ public class ItemPlatform extends DirectionalBlock {
                         if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                             h.insertItem(0, new ItemStack(player.getHeldItemMainhand().getItem(), 1), false);
                             ((ItemPlatformTile) te).item = player.getHeldItemMainhand().getItem().getRegistryName().toString();
-                            player.getHeldItemMainhand().shrink(1);
+                            if (!player.isCreative()) {
+                                player.getHeldItemMainhand().shrink(1);
+                            }
                             te.markDirty();
                             ((ItemPlatformTile) te).sendUpdates();
                         }
@@ -170,7 +179,9 @@ public class ItemPlatform extends DirectionalBlock {
                         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                             if (h.getStackInSlot(0) == ItemStack.EMPTY) {
                                 h.insertItem(0, new ItemStack(Items.ENDER_PEARL, 1), false);
-                                stack.shrink(1);
+                                if (!player.isCreative()) {
+                                    stack.shrink(1);
+                                }
                                 ((ItemPlatformTile) te).item = stack.getItem().getRegistryName().toString();
                                 te.markDirty();
                                 ((ItemPlatformTile) te).sendUpdates();

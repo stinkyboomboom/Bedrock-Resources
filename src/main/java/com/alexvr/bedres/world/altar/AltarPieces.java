@@ -33,7 +33,6 @@ public class AltarPieces {
 
     public static void addStructure(TemplateManager p_207617_0_, BlockPos blockpos, Rotation p_207617_2_, List<StructurePiece> p_207617_3_, Random p_207617_4_) {
         p_207617_3_.add(new AltarPieces.Piece(p_207617_0_, altar, blockpos, p_207617_2_, 0));
-        System.out.println("add struct " + blockpos.toString());
 
     }
 
