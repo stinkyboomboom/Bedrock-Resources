@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class PlayerAbility implements  IPlayerAbility{
 
     String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no",result="";
-    int speed =0, ritualTimer =1,totalRitual=1;
-    float gravilty = 0,jump=0;
+    int ritualTimer =1,totalRitual=1;
+    float gravilty = 0,jump=0,speed =0;
     boolean ritual = false,checking = false;
     ArrayList<EnderianRitualPedestalTile> pedestals;
     double FOV;
@@ -46,7 +46,7 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public int getMiningSpeedBoost() {
+    public float getMiningSpeedBoost() {
         return speed;
     }
 
@@ -135,7 +135,7 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public void setMiningSpeedBoost(int amount) {
+    public void setMiningSpeedBoost(float amount) {
         speed=amount;
 
     }
@@ -152,7 +152,7 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public void addMiningSpeed(int amount) {
+    public void addMiningSpeed(float amount) {
         speed+=amount;
     }
 

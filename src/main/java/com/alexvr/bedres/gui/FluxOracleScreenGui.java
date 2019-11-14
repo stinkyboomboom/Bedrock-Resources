@@ -33,6 +33,10 @@ public class FluxOracleScreenGui extends Screen {
     private boolean scraper = false;
     private boolean scraper2 = false;
     private boolean flux = false;
+    private boolean itemplat = false;
+    private boolean ritualped = false;
+    private boolean shrum = false;
+    private boolean cupcake = false;
 
     double xOffset = 0, yOffset =0;
     double mouseX = 0, mouseY =0;
@@ -200,6 +204,34 @@ public class FluxOracleScreenGui extends Screen {
                 }
             }));
 
+            add(new ImageButton((int)xOffset+332+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+97+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/item_platform.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("itemplat");
+                }
+            }));
+
+            add(new ImageButton((int)xOffset+355+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+15+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/ritual_platform.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("ritualped");
+                }
+            }));
+
+            add(new ImageButton((int)xOffset+64+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+126+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/fluxed_spores.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("shrum");
+                }
+            }));
+
+            add(new ImageButton((int)xOffset+235+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+143+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/items/fluxed_cupcake.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("cupcake");
+                }
+            }));
+
 
             add(next);
             add(back);
@@ -226,6 +258,10 @@ public class FluxOracleScreenGui extends Screen {
         flux = false;
         scraper = false;
         scraper2 = false;
+        itemplat = false;
+        ritualped = false;
+        shrum = false;
+        cupcake = false;
 
         switch(name){
             case "main":
@@ -269,6 +305,18 @@ public class FluxOracleScreenGui extends Screen {
                 break;
             case "scraper2":
                 scraper2=true;
+                break;
+            case "itemplat":
+                itemplat=true;
+                break;
+            case "ritualped":
+                ritualped=true;
+                break;
+            case "shrum":
+                shrum=true;
+                break;
+            case "cupcake":
+                cupcake=true;
                 break;
             default:
                 main = true;
@@ -328,10 +376,13 @@ public class FluxOracleScreenGui extends Screen {
             next.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
         }else if (scraper2){
+
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
                     new ResourceLocation("bedres", "textures/gui/widget/scraper_in.png"));
+
             drawString(minecraft.fontRenderer,"Bedrock Scrapper:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+
         }else if (blazium){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
@@ -381,6 +432,34 @@ public class FluxOracleScreenGui extends Screen {
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
                     new ResourceLocation("bedres", "textures/gui/widget/flux.png"));
             drawString(minecraft.fontRenderer,"Bedrock Flux:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (itemplat){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/gui/widget/item_platform.png"));
+            drawString(minecraft.fontRenderer,"Item Platform:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (ritualped){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/gui/widget/ritual_platform.png"));
+            drawString(minecraft.fontRenderer,"Enderian Rirual Platform:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (shrum){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/blocks/fluxed_spores.png"));
+            drawString(minecraft.fontRenderer,"Fluxed Spores:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (cupcake){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/items/fluxed_cupcake.png"));
+            drawString(minecraft.fontRenderer,"Fluxed Cupcake:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }

@@ -15,7 +15,7 @@ public interface IPlayerAbility {
     String getSword();
     String getHoe();
 
-    int getMiningSpeedBoost();
+    float getMiningSpeedBoost();
     int getRitualTimer();
     int getRitualTotalTimer();
     ArrayList<EnderianRitualPedestalTile> getListOfPedestals();
@@ -39,11 +39,11 @@ public interface IPlayerAbility {
     void setHoe(String name);
     void setname(String name);
 
-    void setMiningSpeedBoost(int amount);
+    void setMiningSpeedBoost(float amount);
     void setJumpBoost(float amount);
     void setGRavityMultiplier(float amount);
 
-    void addMiningSpeed(int amount);
+    void addMiningSpeed(float amount);
     void addJump(float amount);
     void addGrav(float amount);
 

@@ -47,7 +47,6 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -74,20 +73,19 @@ public class WorldEventHandler {
 
     }
 
-
-//    @SubscribeEvent
-//    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
-//    {
-//        PlayerEntity player = event.getPlayer();
-//        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-//        bedrockFlux.ifPresent(flux -> {
-//            if (flux.getCrafterFlux()){
-//                flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-//                flux.getScreen().flux = flux;
-//                BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
-//            }
-//        });
-//    }
+    @SubscribeEvent
+    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        PlayerEntity player = event.getPlayer();
+        LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
+        bedrockFlux.ifPresent(flux -> {
+            if (flux.getCrafterFlux()){
+                flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
+                flux.getScreen().flux = flux;
+                BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+            }
+        });
+    }
 
     static ArrayList RECEPI = new ArrayList(){{
 
@@ -136,8 +134,8 @@ public class WorldEventHandler {
                     ArrayList<EnderianRitualPedestalTile> listOfTIles;
                     iPlayerAbility.flipChecking();
                     for (int i =0;i<RECEPI.size();i++) {
-                        System.out.println("Crafting: " + RECEPI.get(i).toString());
-                        System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
+//                        System.out.println("Crafting: " + RECEPI.get(i).toString());
+//                        System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
 
                         listOfTIles = new ArrayList<>();
                         boolean skip = false;
@@ -149,15 +147,15 @@ public class WorldEventHandler {
                                 if (x==0&&y==0){
                                     continue;
                                 }
-                                System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
+//                                System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
                                 Character key = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(1)).get(x+3)).charAt(y+3);
-                                System.out.println("Character Analyzed: " + key);
+//                                System.out.println("Character Analyzed: " + key);
 
                                 if (key == ' '){
-                                    System.out.println("Spaced Detected at: " + playerPos.east(x).south(y).toString());
+//                                    System.out.println("Spaced Detected at: " + playerPos.east(x).south(y).toString());
 
                                     if (event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y).down()).getBlock() != ModBlocks.enderianBrick ){
-                                        System.out.println("Error: No Brick at: " + playerPos.east(x).south(y).down().toString());
+//                                        System.out.println("Error: No Brick at: " + playerPos.east(x).south(y).down().toString());
 
                                         skip =true;
                                         break;
@@ -167,57 +165,57 @@ public class WorldEventHandler {
                                 ItemStack stack = ItemStack.EMPTY;
                                 for (int j =0;j<((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).size();j++) {
                                     Character value = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).charAt(0);
-                                    System.out.println("Value Analyzed: " + value);
+//                                    System.out.println("Value Analyzed: " + value);
 
                                     if (key == value){
                                         String ss = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).substring(2);
                                         ResourceLocation locatoin = new ResourceLocation(ss);
-                                        System.out.println("Name to look for: " + ss);
-                                        System.out.println("Resourse Location: " + locatoin.toString());
+//                                        System.out.println("Name to look for: " + ss);
+//                                        System.out.println("Resourse Location: " + locatoin.toString());
                                         stack = new ItemStack( ForgeRegistries.ITEMS.getValue(locatoin));
-                                        System.out.println("Stack Found: " + stack.toString());
+//                                        System.out.println("Stack Found: " + stack.toString());
 
                                         break;
                                     }
                                 }
                                 if (stack == ItemStack.EMPTY || stack.getItem().getRegistryName().equals(ItemStack.EMPTY.getItem().getRegistryName())){
-                                    System.out.println("Error: No stack to match: " + key);
+//                                    System.out.println("Error: No stack to match: " + key);
 
                                     skip =true;
                                     break;
                                 }
                                 if (stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.bedrockWire) {
-                                    System.out.println("Error: No Wire at: " + playerPos.east(x).south(y).toString());
+//                                    System.out.println("Error: No Wire at: " + playerPos.east(x).south(y).toString());
 
                                     skip = true;
                                     break;
                                 }
                                 if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.enderianRitualPedestal) {
-                                    System.out.println("Error: No Pedestal at: " + playerPos.east(x).south(y).toString());
+//                                    System.out.println("Error: No Pedestal at: " + playerPos.east(x).south(y).toString());
                                     skip = true;
                                     break;
                                 }else if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() == ModBlocks.enderianRitualPedestal) {
 
                                     if (event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y)) instanceof EnderianRitualPedestalTile && !((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item.equals(stack.getItem().getRegistryName().toString())){
-                                        System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
+//                                        System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
 
                                         skip = true;
                                         break;
                                     }else{
-                                        System.out.println("Added Pedestal at: " + playerPos.east(x).south(y).toString() + " with correct item");
+//                                        System.out.println("Added Pedestal at: " + playerPos.east(x).south(y).toString() + " with correct item");
 
                                         listOfTIles.add(((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))));
                                     }
                                 }
                             }
                         }
-                        System.out.println();
-                        System.out.println();
+//                        System.out.println();
+//                        System.out.println();
 
                         if(!skip){
-                            System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
-                            System.out.println();
-                            System.out.println();
+//                            System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
+//                            System.out.println();
+//                            System.out.println();
                             event.getEntityLiving().world.setBlockState(playerPos,Blocks.AIR.getDefaultState());
                             iPlayerAbility.setRitualCraftingResult((String)(((ArrayList)RECEPI.get(i)).get(0)));
                             iPlayerAbility.setRitualPedestals(listOfTIles);
@@ -526,15 +524,35 @@ public class WorldEventHandler {
                                 flux.fillMin(400);
                                 iPlayerAbility.setHoe("active");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("speed")) {
-                                iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + 1);
-                                flux.fillMin(45 + iPlayerAbility.getMiningSpeedBoost());
-                                flux.fill(45 + iPlayerAbility.getMiningSpeedBoost());
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("jump")) {
-                                if (iPlayerAbility.getJumpBoost()<0.048) {
-                                    iPlayerAbility.addJump(0.008f);
+                                if (iPlayerAbility.getMiningSpeedBoost() < 1.35) {
+                                    iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + .3f);
+                                    flux.fillMin(45 + iPlayerAbility.getMiningSpeedBoost());
+                                    flux.fill(45 + iPlayerAbility.getMiningSpeedBoost());
+                                }else{
+                                    player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Speed already maxed out."), false);
+
                                 }
-                                flux.fillMin(55 + iPlayerAbility.getJumpBoost());
-                                flux.fill(55 + iPlayerAbility.getJumpBoost());
+
+                            } else if (iPlayerAbility.getRitualCraftingResult().contains("jump")) {
+                                if (iPlayerAbility.getJumpBoost()<=0.2) {
+                                    if (iPlayerAbility.getJumpBoost()==0){
+                                        iPlayerAbility.setJumpBoost(0.015f);
+                                    }else if (iPlayerAbility.getJumpBoost()<=0.016){
+                                        iPlayerAbility.setJumpBoost(0.08f);
+
+                                    }else if (iPlayerAbility.getJumpBoost()<=0.09){
+                                        iPlayerAbility.setJumpBoost(0.15f);
+
+                                    }else if (iPlayerAbility.getJumpBoost()<=0.2){
+                                        iPlayerAbility.setJumpBoost(0.25f);
+                                    }
+                                    flux.fillMin(55 + iPlayerAbility.getJumpBoost());
+                                    flux.fill(55 + iPlayerAbility.getJumpBoost());
+                                }else{
+                                    player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Jump already maxed out."), false);
+
+                                }
+
                             }
                             player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("message.bedres.stat_change").getUnformattedComponentText()), true);
                             player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"), false);
@@ -728,96 +746,6 @@ public class WorldEventHandler {
     }
 
 
-
-
-
-
-
-
-
-
-    @SubscribeEvent
-    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
-    {
-
-        PlayerEntity player = event.getPlayer();
-
-
-        LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
-        abilities.ifPresent(h -> {
-            h.setname(player.getName().getFormattedText());
-
-            player.sendStatusMessage(new StringTextComponent("Hello there" + h.getNAme()),false);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",h.getSword())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",h.getAxe())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",h.getShovel())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",h.getHoe())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",h.getPick())),false);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",h.getMiningSpeedBoost())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",h.getJumpBoost())),false);
-
-            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
-            bedrockFlux.ifPresent(flux -> {
-
-                player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
-
-                if (flux.getCrafterFlux()){
-                    flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                    flux.getScreen().flux = flux;
-                    BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
-                }
-            });
-        });
-    }
-
-
-
-
-    @SubscribeEvent
-    public static void onSleep(PlayerSleepInBedEvent event)
-    {
-        PlayerEntity player = event.getPlayer();
-        LazyOptional<IPlayerAbility> abilities = event.getPlayer().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
-        abilities.ifPresent(h -> {
-            h.setAxe("diamond");
-            h.setPick("diamond");
-            h.setSword("iron");
-            h.setMiningSpeedBoost(0);
-            h.setJumpBoost(0.008f);
-            player.sendStatusMessage(new StringTextComponent("Hello there" + h.getNAme()),false);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Sword",h.getSword())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Axe",h.getAxe())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Shovel",h.getShovel())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Hoe",h.getHoe())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Pickaxe",h.getPick())),false);
-            player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Passive: "),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Speed",h.getMiningSpeedBoost())),false);
-            player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Jump",h.getJumpBoost())),false);
-            LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
-
-            bedrockFlux.ifPresent(flux -> {
-
-                player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED+" Flux",flux.getBedrockFluxString())),false);
-
-                if (flux.getCrafterFlux()){
-                    flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                    flux.getScreen().flux = flux;
-                    BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
-                }
-            });
-        });
-    }
-
-
-
-
-
-
-
     /**
      * Cancel the FOV decrease caused by the decreasing speed due to player penalties.
      * Original FOV value given by the event is never used, we start from scratch 1.0F value.
@@ -885,8 +813,6 @@ public class WorldEventHandler {
     @SubscribeEvent
     public static void PlayerBreakSpeedEvent(PlayerEvent.BreakSpeed event) {
         PlayerEntity player = event.getPlayer();
-        System.out.println(event.getOriginalSpeed());
-        System.out.println(event.getNewSpeed());
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
 
@@ -898,9 +824,7 @@ public class WorldEventHandler {
                 float speeed = 0;
 
                 if (event.getState().getHarvestTool() == null){
-                    System.out.println(speeed);
-                    System.out.println(event.getState().getMaterial().toString());
-                    System.out.println(Material.WOOD.toString());
+
                     if (event.getState().getMaterial().toString().equals(Material.WOOD.toString())){
                         speeed = getSpeed(h.getAxe());
                     }else if (event.getState().getMaterial() == Material.ROCK || event.getState().getMaterial() == Material.IRON ||event.getState().getMaterial() == Material.ANVIL){
@@ -929,11 +853,8 @@ public class WorldEventHandler {
                     speeed += 5.5;
                 }
                 if (event.getState().getMaterial().isToolNotRequired() || event.getState().getBlock() == Blocks.STONE){
-                    System.out.println("no tool");
                     event.setNewSpeed(((event.getOriginalSpeed()+h.getMiningSpeedBoost()+speeed)));
                 }else {
-                    System.out.println("tool");
-
                     event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost()  + speeed) * (100.0 / 30.0) ));
                 }
 
@@ -944,8 +865,6 @@ public class WorldEventHandler {
             }
 
         });
-        System.out.println(event.getNewSpeed());
-        System.out.println();
 
 
     }
@@ -1100,11 +1019,12 @@ public class WorldEventHandler {
 
         System.out.println("Jump");
         System.out.println(event.getEntityLiving().getMotion().y);
-
         LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
-            event.getEntityLiving().addVelocity(0, (h.getJumpBoost()), 0);
-            event.getEntityLiving().velocityChanged=true;
+            if (h.getJumpBoost()>0) {
+                event.getEntityLiving().addVelocity(0, (h.getJumpBoost()), 0);
+                event.getEntityLiving().velocityChanged = true;
+            }
         });
         System.out.println(event.getEntityLiving().getMotion().y);
         System.out.println();

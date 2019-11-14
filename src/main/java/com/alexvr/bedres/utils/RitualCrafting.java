@@ -13,7 +13,8 @@ public class RitualCrafting {
 
     */
 
-
+//in the pattern the top is west, left is north adn right is south
+//yes, i know
     private static  String  WIRE = "w=bedres:bedrock_scrapes";
     private static  String TOOLACHEMIZER = "r=bedres:" + References.ENDERIAN_INGOT_REGNAME;
 
@@ -126,7 +127,32 @@ public class RitualCrafting {
 
     }};
 
-    public static ArrayList ACTIVE_JUMP_UPGRADE = getStatRecipe("jump","piston",TOOLACHEMIZER);
+    public static ArrayList ACTIVE_JUMP_UPGRADE = new ArrayList() {{
+
+        add("bedres:jumpUpgrade");
+
+        add(new ArrayList<String>() {{
+
+            add("wwwbwww");
+            add("w  w  w");
+            add("w rwr w");
+            add("aww wwa");
+            add("w rwr w");
+            add("w  w  w");
+            add("wwwbwww");
+
+        }});
+        add(new ArrayList<String>() {{
+
+            add(WIRE);
+            add("r=bedres:" + References.ENDERIAN_INGOT_REGNAME);
+            add("a=minecraft:rabbit_foot");
+            add("b=minecraft:piston");
+
+
+        }});
+
+    }};
 
 
 
