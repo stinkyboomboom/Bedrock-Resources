@@ -35,6 +35,9 @@ public class FluxOracleScreenGui extends Screen {
     private boolean flux = false;
     private boolean itemplat = false;
     private boolean ritualped = false;
+    private boolean ritualped2 = false;
+    private boolean ritualped3= false;
+    private boolean ritualped4 = false;
     private boolean shrum = false;
     private boolean cupcake = false;
 
@@ -109,6 +112,12 @@ public class FluxOracleScreenGui extends Screen {
                 changePage("altar");
             }else if(scraper2){
                 changePage("scraper");
+            }else if(ritualped2){
+                changePage("ritualped");
+            }else if(ritualped3){
+                changePage("ritualped2");
+            }else if(ritualped4){
+                changePage("ritualped3");
             }
             else {
                 changePage("main");
@@ -121,7 +130,12 @@ public class FluxOracleScreenGui extends Screen {
                 changePage("altar2");
             }else if(scraper){
                 changePage("scraper2");
-
+            }else if(ritualped){
+                changePage("ritualped2");
+            }else if(ritualped2){
+                changePage("ritualped3");
+            }else if(ritualped3){
+                changePage("ritualped4");
             }
         });
 
@@ -260,6 +274,9 @@ public class FluxOracleScreenGui extends Screen {
         scraper2 = false;
         itemplat = false;
         ritualped = false;
+        ritualped2 = false;
+        ritualped3 = false;
+        ritualped4 = false;
         shrum = false;
         cupcake = false;
 
@@ -311,6 +328,15 @@ public class FluxOracleScreenGui extends Screen {
                 break;
             case "ritualped":
                 ritualped=true;
+                break;
+            case "ritualped2":
+                ritualped2=true;
+                break;
+            case "ritualped3":
+                ritualped3=true;
+                break;
+            case "ritualped4":
+                ritualped4=true;
                 break;
             case "shrum":
                 shrum=true;
@@ -448,6 +474,29 @@ public class FluxOracleScreenGui extends Screen {
             drawString(minecraft.fontRenderer,"Enderian Rirual Platform:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped2){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/altar.png"));
+            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped3){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/altar.png"));
+            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped4){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/altar.png"));
+            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
         }else if (shrum){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
