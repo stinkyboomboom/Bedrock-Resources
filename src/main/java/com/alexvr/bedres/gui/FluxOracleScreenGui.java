@@ -2,17 +2,23 @@ package com.alexvr.bedres.gui;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.items.FluxOracle;
+import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.utils.References;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.client.gui.widget.button.ImageButton;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.alexvr.bedres.utils.RendererHelper.drawModalRectWithCustomSizedTexture;
 
@@ -23,6 +29,7 @@ public class FluxOracleScreenGui extends Screen {
     private boolean knife = false;
     private boolean altar = false;
     private boolean altar2 = false;
+    private boolean altar3 = false;
 
     private boolean blazium = false;
     private boolean hush = false;
@@ -110,6 +117,8 @@ public class FluxOracleScreenGui extends Screen {
             scaleX=0;
             if(altar2){
                 changePage("altar");
+            }if(altar3){
+                changePage("altar2");
             }else if(scraper2){
                 changePage("scraper");
             }else if(ritualped2){
@@ -128,6 +137,8 @@ public class FluxOracleScreenGui extends Screen {
                 new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/next.png"),32,32, (button) -> {
             if (altar){
                 changePage("altar2");
+            }else if (altar2){
+                changePage("altar3");
             }else if(scraper){
                 changePage("scraper2");
             }else if(ritualped){
@@ -257,12 +268,16 @@ public class FluxOracleScreenGui extends Screen {
     }
 
     public void changePage(String name){
-
+        materialPick = new Random(System.nanoTime()).nextInt(5);
+        materialAxe = new Random(System.nanoTime()).nextInt(5);
+        materialShovel = new Random(System.nanoTime()).nextInt(5);
+        materialSword = new Random(System.nanoTime()).nextInt(5);
         main = false;
         scrapes = false;
         knife = false;
         altar = false;
         altar2 = false;
+        altar3 = false;
         blazium = false;
         hush = false;
         daize = false;
@@ -295,6 +310,9 @@ public class FluxOracleScreenGui extends Screen {
                 break;
             case "altar2":
                 altar2=true;
+                break;
+            case "altar3":
+                altar3=true;
                 break;
             case "blazium":
                 blazium=true;
@@ -391,7 +409,27 @@ public class FluxOracleScreenGui extends Screen {
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
                     new ResourceLocation("bedres", "textures/gui/altar.png"));
-            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+        }else if (altar3){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawString(minecraft.fontRenderer,"Recipes:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "Currect recipes all follow same convencion, stand in the platform and place item A on the top slot of each tower' face you have direct line of sight to, and item B on the lower slot. Then item C on the pedestal, Once you see the expected output, right click with bedrock scrapes and it will start the crafting.";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+            drawString(minecraft.fontRenderer,"Item A - Item B - Item C -> Output",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/4), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+8,1111111);
+            drawString(minecraft.fontRenderer,"Gold Ingots - Gold Blocks - Ender Pearl -> 8 Item Platforms",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/12)  ,1111111);
+            renderInfusingItems(new ItemStack(Items.GOLD_INGOT),new ItemStack(Blocks.GOLD_BLOCK),new ItemStack(Items.ENDER_PEARL),new ItemStack(ModBlocks.itemPlatform),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/12));
+            drawString(minecraft.fontRenderer,"Obsidian - Ender Pearl - Gold Ingot -> 8 Enderian Ingots",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)-12  ,1111111);
+            renderInfusingItems(new ItemStack(Blocks.OBSIDIAN),new ItemStack(Items.ENDER_PEARL),new ItemStack(Items.GOLD_INGOT),new ItemStack(ModItems.enderianIngot),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)-12);
+            drawString(minecraft.fontRenderer,"Enderian Ingot - Enderian Block - Scraper Mesh -> 1 Scraper Motor",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16  ,1111111);
+            renderInfusingItems(new ItemStack(ModItems.enderianIngot),new ItemStack(ModBlocks.enderianBlock),new ItemStack(ModItems.mesh),new ItemStack(ModBlocks.motor),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16);
+
+
         }else if (scraper){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
@@ -465,57 +503,174 @@ public class FluxOracleScreenGui extends Screen {
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
                     new ResourceLocation("bedres", "textures/gui/widget/item_platform.png"));
             drawString(minecraft.fontRenderer,"Item Platform:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
-            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            String s = "Arcane infused gold blocks were infused into this Item Platform allowing blocks to be held in space. Due to their nature they will place in the direction you are facing, regardless of block face clicked. They seem to shine with arcane essence.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }else if (ritualped){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
                     new ResourceLocation("bedres", "textures/gui/widget/ritual_platform.png"));
             drawString(minecraft.fontRenderer,"Enderian Rirual Platform:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
-            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            String s = "Constructing a pillar of enderian bricks and blocks, with gold bars and an item platform results in a Enderian Ritual Platform, they inherit the ability of the item platform and allows it to infuse a person when channeled correctly.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+           String sw = "Note: Any empty blocks in the ritual area (7x7) must have an Enderian Brick floor to channel correctly, the rest is up to you";
+            renderString(sw,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
             next.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
         }else if (ritualped2){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
-            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
-                    new ResourceLocation("bedres", "textures/gui/altar.png"));
-            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_upgrades.png"));
+            drawString(minecraft.fontRenderer,"General Upgrade Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            renderTitleItem(new ArrayList<Item>(){{add(Items.WOODEN_AXE);add(Items.WOODEN_PICKAXE);add(Items.WOODEN_SWORD);add(Items.WOODEN_SHOVEL);add(Items.DIAMOND_HOE);add(ModItems.enderianIngot);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern seems to be the most used, a pattern where one can put 4 of any tool (any material but all 4 the same) will infuse you with the attributes of the chosen material.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 55);
+            renderString("The hoe seems to be the exception, it'll only accept diamond hoes and infuse you with its ability; besides, whats the use of a wooden hoe.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4));
+            renderString("The diamond Shovel seems to also infuse you with its path making ability",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2) + ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4));
+
             next.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
         }else if (ritualped3){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
-            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
-                    new ResourceLocation("bedres", "textures/gui/altar.png"));
-            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_jump.png"));
+            drawString(minecraft.fontRenderer,"Jump Upgrade Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+
+            renderTitleItem(new ArrayList<Item>(){{add(Items.PISTON);add(Items.RABBIT_FOOT);add(ModItems.enderianIngot);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern came to be by studying the upgrade pattern. It seems placing rabbit foot on the north and south pedestal and pistons on the east and west will grant you the ability to jump an extra half a block",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 55);
+
             next.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
         }else if (ritualped4){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
-            drawModalRectWithCustomSizedTexture(32, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
-                    new ResourceLocation("bedres", "textures/gui/altar.png"));
-            drawString(minecraft.fontRenderer,"Altar:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
-            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_speed.png"));
+            drawString(minecraft.fontRenderer,"Mining Speed Upgrade Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            renderTitleItem(new ArrayList<Item>(){{add(Items.SUGAR);add(Items.REDSTONE);add(Items.COOKIE);add(ModItems.fluxedCupcake);add(ModItems.enderianIngot);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern also came to be by studying the upgrade pattern. It seems placing sugar on the north and a fluxed cupcake on the south pedestal and cookies and redstone on west and east respectively, will make you mine slightly faster.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
+
 
         }else if (shrum){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
                     new ResourceLocation("bedres", "textures/blocks/fluxed_spores.png"));
             drawString(minecraft.fontRenderer,"Fluxed Spores:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
-            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            String s ="It seems that once you have enough flux on your system little spores start detaching from your body and falling off as to try and spread the infection, i should probably pick them up. Maybe i can make something with them to fight the flux in my system.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }else if (cupcake){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
                     new ResourceLocation("bedres", "textures/items/fluxed_cupcake.png"));
             drawString(minecraft.fontRenderer,"Fluxed Cupcake:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
-            String s = "It seems utilizing bedrock as a resource or infusing things with it will cause it to release some particles ill be calling bedrock flux. Im not sure what they cause, but it cant be good. I hope i don't go mad...";
+            String s = "I can combine spores with some sugar and the same components of a cake and mix them in a wooden bowl into a cupcake that might reduce around an eight of my current flux.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }
 
 
         back.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
+
+    }
+
+    public static int materialPick = new Random(System.nanoTime()).nextInt(5);
+    public static int materialSword = new Random(System.nanoTime()).nextInt(5);
+    public static int materialShovel = new Random(System.nanoTime()).nextInt(5);
+    public static int materialAxe = new Random(System.nanoTime()).nextInt(5);
+    private void renderTitleItem(ArrayList<Item> itemStack, int x, int y) {
+        RenderHelper.disableStandardItemLighting();
+        RenderHelper.enableGUIStandardItemLighting();
+        int counter=0;
+        for (Item i: itemStack) {
+            if (i instanceof SwordItem){
+                switch (materialSword){
+                    case 0:
+                        break;
+                    case 1:
+                        i = Items.STONE_SWORD;
+                        break;
+                    case 2:
+                        i = Items.IRON_SWORD;
+                        break;
+                    case 3:
+                        i = Items.GOLDEN_SWORD;
+                        break;
+                    case 4:
+                        i = Items.DIAMOND_SWORD;
+                        break;
+                }
+            }
+            if (i instanceof ShovelItem){
+                switch (materialShovel){
+                    case 0:
+                        break;
+                    case 1:
+                        i = Items.STONE_SHOVEL;
+                        break;
+                    case 2:
+                        i = Items.IRON_SHOVEL;
+                        break;
+                    case 3:
+                        i = Items.GOLDEN_SHOVEL;
+                        break;
+                    case 4:
+                        i = Items.DIAMOND_SHOVEL;
+                        break;
+                }
+            }
+            if (i instanceof AxeItem){
+                switch (materialAxe){
+                    case 0:
+                        break;
+                    case 1:
+                        i = Items.STONE_AXE;
+                        break;
+                    case 2:
+                        i = Items.IRON_AXE;
+                        break;
+                    case 3:
+                        i = Items.GOLDEN_AXE;
+                        break;
+                    case 4:
+                        i = Items.DIAMOND_AXE;
+                        break;
+                }
+            }
+            if (i instanceof PickaxeItem){
+                switch (materialPick){
+                    case 0:
+                        break;
+                    case 1:
+                        i = Items.STONE_PICKAXE;
+                        break;
+                    case 2:
+                        i = Items.IRON_PICKAXE;
+                        break;
+                    case 3:
+                        i = Items.GOLDEN_PICKAXE;
+                        break;
+                    case 4:
+                        i = Items.DIAMOND_PICKAXE;
+                        break;
+                }
+            }
+            Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(i), x+(18 * counter++), y - 16);
+        }
+    }
+
+    private void renderInfusingItems(ItemStack itemStack, ItemStack itemStack1, ItemStack itemStack2, ItemStack itemStack3, int x, int y) {
+        RenderHelper.disableStandardItemLighting();
+        RenderHelper.enableGUIStandardItemLighting();
+        Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack,x+92,y+10);
+        Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack1,x+122,y+10);
+        Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack2,x+152,y+10);
+        Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(itemStack3,x+186,y+10);
+
+        drawString(Minecraft.getInstance().fontRenderer,"+",x+112,y+14,11111);
+        drawString(Minecraft.getInstance().fontRenderer,"+",x+142,y+14,11111);
+        drawString(Minecraft.getInstance().fontRenderer,"->",x+172,y+14,11111);
 
     }
 

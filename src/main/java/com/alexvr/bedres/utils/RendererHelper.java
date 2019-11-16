@@ -133,7 +133,8 @@ public class RendererHelper {
 
 
 
-        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);        RenderHelper.disableStandardItemLighting();
+        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+        RenderHelper.disableStandardItemLighting();
         GlStateManager.popMatrix();
 
     }
