@@ -852,14 +852,14 @@ public class WorldEventHandler {
                 if (event.getState().getBlock() == Blocks.STONE){
                     speeed += 5.5;
                 }
-                if (event.getState().getMaterial().isToolNotRequired() || event.getState().getBlock() == Blocks.STONE){
+                if ((event.getState().getMaterial().isToolNotRequired() || event.getState().getBlock() == Blocks.STONE ) && speeed>0){
                     event.setNewSpeed(((event.getOriginalSpeed()+h.getMiningSpeedBoost()+speeed)));
-                }else {
+                }else if (speeed>0){
                     event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost()  + speeed) * (100.0 / 30.0) ));
                 }
 
 
-            }else{
+            }else if (h.getMiningSpeedBoost()>0){
                 event.setNewSpeed(event.getOriginalSpeed() + h.getMiningSpeedBoost());
 
             }
@@ -913,28 +913,28 @@ public class WorldEventHandler {
             abilities.ifPresent(h -> {
                 boolean flag = false;
                 Block block = event.getTargetBlock().getBlock();
-                if (event.getTargetBlock().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())) {
+                if (event.getTargetBlock().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString()) &&  (!h.getPick().equals("no"))) {
                     int i = getharvestLevel(h.getPick());
                     if (i >= event.getTargetBlock().getHarvestLevel()) {
                         flag = true;
-                    } else if (!h.getPick().equals("no")){
+                    } else {
 
                         Material material = event.getTargetBlock().getMaterial();
                         flag = material == Material.ROCK || material == Material.IRON || material == Material.ANVIL;
                     }
-                }else if (event.getTargetBlock().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())) {
+                }else if (event.getTargetBlock().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())&&!h.getShovel().equals("no")) {
                     int i = getharvestLevel(h.getShovel());
                     if (i >= event.getTargetBlock().getHarvestLevel()) {
                         flag = true;
                     }
-                    if (!flag&&!h.getShovel().equals("no")){
+                    if (!flag){
                         flag= block == Blocks.SNOW || block == Blocks.SNOW_BLOCK;
                     }
-                }else if (event.getTargetBlock().getHarvestTool().toString().equals(ToolType.AXE.toString())) {
+                }else if (event.getTargetBlock().getHarvestTool().toString().equals(ToolType.AXE.toString()) && (!h.getAxe().equals("no"))) {
                     int i = getharvestLevel(h.getAxe());
                     if (i >= event.getTargetBlock().getHarvestLevel()) {
                         flag = true;
-                    } else if (!h.getAxe().equals("no")){
+                    } else{
                         Material material = event.getTargetBlock().getMaterial();
                         flag = material != Material.WOOD && material != Material.PLANTS && material != Material.TALL_PLANTS && material != Material.BAMBOO ;
                     }
