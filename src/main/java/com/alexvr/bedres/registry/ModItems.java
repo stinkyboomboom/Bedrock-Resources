@@ -7,9 +7,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class ModItems {
 
-//    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_SCRAPE_REGNAME)
-//    public static BedrockScrape bedrockScrapes;
-
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SCRAPE_KNIFE_REGNAME)
     public static ScrapeKnife scrapesKnife;
 
@@ -27,4 +24,7 @@ public class ModItems {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_CUPCAKE_REGNAME)
     public static FluxedCupcake fluxedCupcake;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_CREEP_EGG_REGNAME)
+    public static FluxedCreepEggItem fluxedCreepEggItem;
 }

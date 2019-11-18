@@ -8,6 +8,7 @@ import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperContro
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.blocks.tiles.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
+import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepEntity;
 import com.alexvr.bedres.items.*;
 import com.alexvr.bedres.registry.ModBiomes;
 import com.alexvr.bedres.registry.ModBlocks;
@@ -20,6 +21,8 @@ import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockNamedItem;
@@ -137,6 +140,7 @@ public class BedrockResources {
             event.getRegistry().register( new BlockItem(ModBlocks.fluxedSpores,properties).setRegistryName(References.FLUXED_SPORES_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
+            event.getRegistry().register(new FluxedCreepEggItem());
             event.getRegistry().register(new Staff());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());
@@ -176,12 +180,19 @@ public class BedrockResources {
         @SubscribeEvent
         public static void onRegisterBIOME(RegistryEvent.Register<Biome> event) {
             IForgeRegistry<Biome> registry = event.getRegistry();
-
             registry.register(ModBiomes.dfBiome);
             ForgeRegistries.BIOMES.register(ModBiomes.dfBiome);
             BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(ModBiomes.dfBiome,10));
             BiomeManager.addSpawnBiome(ModBiomes.dfBiome);
+        }
 
+        @SubscribeEvent
+        public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
+            IForgeRegistry<EntityType<?>> registry = event.getRegistry();
+            event.getRegistry().register(EntityType.Builder.create(FluxedCreepEntity::new, EntityClassification.MONSTER)
+                    .size(1, 1).immuneToFire()
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build(References.FLUXED_CREEP_REGNAME).setRegistryName(References.FLUXED_CREEP_REGNAME));
 
         }
 

@@ -36,7 +36,6 @@ public class ClientProxy implements IProxy{
         ScreenManager.registerFactory(ModBlocks.bedrockScraperControllerContainer, BedrockScraperScreen::new);
         CapabilityManager.INSTANCE.register(IBedrockFlux.class, new BedrockFluxStorage(), BedrockFlux::new);
         CapabilityManager.INSTANCE.register(IPlayerAbility.class, new PlayerAbilityStorage(), PlayerAbility::new);
-
         for (BiomeManager.BiomeType btype : BiomeManager.BiomeType.values()) {
             for (BiomeManager.BiomeEntry biomeEntry : BiomeManager.getBiomes(btype)) {
                 biomeEntry.biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE,
