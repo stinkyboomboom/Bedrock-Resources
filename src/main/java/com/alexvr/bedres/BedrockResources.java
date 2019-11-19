@@ -12,6 +12,7 @@ import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepEntity;
 import com.alexvr.bedres.items.*;
 import com.alexvr.bedres.registry.ModBiomes;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModEntities;
 import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
@@ -22,13 +23,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.BiomeManager;
@@ -41,6 +45,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,6 +73,18 @@ public class BedrockResources {
         setup.init();
         proxy.init();
         DistExecutor.runWhenOn(Dist.CLIENT, () -> ModBlocks::registerRenderers);
+        EntitySpawnPlacementRegistry.register(ModEntities.FLUXED_CREEP,
+                EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+                (entityType, world, spawnReason, pos, random) -> {
+                    if (entityType != ModEntities.FLUXED_CREEP)
+                        throw new IllegalArgumentException( ModEntities.FLUXED_CREEP.getRegistryName() + " only!");
+
+                    return FluxedCreepEntity.func_223368_b(entityType, world, spawnReason, pos, random);
+                }
+        );
+        Biome biome = RegistryManager.ACTIVE.getRegistry(Biome.class).getValue(new ResourceLocation(MODID, "df_biome"));
+        biome.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(ModEntities.FLUXED_CREEP,144,1,3));
 
     }
 
@@ -170,6 +187,18 @@ public class BedrockResources {
         }
 
         @SubscribeEvent
+        public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
+            ModEntities.FLUXED_CREEP = EntityType.Builder.create(FluxedCreepEntity::new, EntityClassification.MONSTER)
+                    .size(1, 1).immuneToFire()
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build(References.FLUXED_CREEP_REGNAME);
+            ModEntities.FLUXED_CREEP.setRegistryName(References.FLUXED_CREEP_REGNAME);
+            ForgeRegistries.ENTITIES.register(ModEntities.FLUXED_CREEP);
+
+        }
+
+
+        @SubscribeEvent
         public static void onRegisterFeatures(RegistryEvent.Register<Feature<?>> event) {
             IForgeRegistry<Feature<?>> registry = event.getRegistry();
 
@@ -185,16 +214,6 @@ public class BedrockResources {
             BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(ModBiomes.dfBiome,10));
             BiomeManager.addSpawnBiome(ModBiomes.dfBiome);
         }
-
-        @SubscribeEvent
-        public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
-            event.getRegistry().register(EntityType.Builder.create(FluxedCreepEntity::new, EntityClassification.MONSTER)
-                    .size(1, 1).immuneToFire()
-                    .setShouldReceiveVelocityUpdates(true)
-                    .build(References.FLUXED_CREEP_REGNAME).setRegistryName(References.FLUXED_CREEP_REGNAME));
-
-        }
-
 
     }
 

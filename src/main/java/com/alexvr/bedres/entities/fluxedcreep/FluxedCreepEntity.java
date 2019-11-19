@@ -126,6 +126,11 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         return p_223368_1_.getDifficulty() != Difficulty.PEACEFUL && p_223368_4_.nextInt(20) == 0 && func_223315_a(p_223368_0_, p_223368_1_, p_223368_2_, p_223368_3_, p_223368_4_);
     }
 
+    @Override
+    public EntityClassification getClassification(boolean forSpawnCount) {
+        return EntityClassification.MONSTER;
+    }
+
     public int getMaxSpawnedInChunk() {
         return 4;
     }

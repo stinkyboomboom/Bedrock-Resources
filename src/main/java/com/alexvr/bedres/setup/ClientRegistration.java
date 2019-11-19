@@ -15,4 +15,6 @@ public class ClientRegistration {
         event.getItemColors().register((stack, i) -> 0x9e61d8, ModItems.fluxedCreepEggItem);
     }
 
+
+
 }
