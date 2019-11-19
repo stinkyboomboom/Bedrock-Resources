@@ -1,5 +1,6 @@
 package com.alexvr.bedres.utils;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -12,7 +13,7 @@ public class VectorHelper {
         return getLookingAt(player, RayTraceContext.FluidMode.NONE);
     }
 
-    public static BlockRayTraceResult getLookingAt(PlayerEntity player, RayTraceContext.FluidMode rayTraceFluid) {
+    public static BlockRayTraceResult getLookingAt(LivingEntity player, RayTraceContext.FluidMode rayTraceFluid) {
         World world = player.world;
 
         Vec3d look = player.getLookVec();
@@ -24,6 +25,8 @@ public class VectorHelper {
         BlockRayTraceResult result = world.rayTraceBlocks(context);
         return result;
     }
+
+
 
 
 }

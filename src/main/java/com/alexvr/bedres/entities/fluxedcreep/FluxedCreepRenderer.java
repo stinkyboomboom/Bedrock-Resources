@@ -11,7 +11,7 @@ public class FluxedCreepRenderer extends MobRenderer<FluxedCreepEntity, FluxedCr
     private static final ResourceLocation GHAST_TEXTURES =  new ResourceLocation(BedrockResources.MODID, "textures/entity/"+ References.FLUXED_CREEP_REGNAME +".png");
     private static final ResourceLocation GHAST_SHOOTING_TEXTURES = new ResourceLocation(BedrockResources.MODID, "textures/entity/"+ References.FLUXED_CREEP_REGNAME +".png");
     public FluxedCreepRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new FluxedCreepModel<>(), 1.5F);
+        super(renderManagerIn, new FluxedCreepModel<>(), 0.5F);
     }
 
     protected ResourceLocation getEntityTexture(FluxedCreepEntity entity) {
@@ -22,7 +22,9 @@ public class FluxedCreepRenderer extends MobRenderer<FluxedCreepEntity, FluxedCr
         float f = 1.0F;
         float f1 = 4.5F;
         float f2 = 4.5F;
-        GlStateManager.scalef(1, 1, 1);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.scalef(1.5f, 1.5f, 1.5f);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

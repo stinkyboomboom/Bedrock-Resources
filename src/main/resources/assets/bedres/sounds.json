@@ -1,0 +1,6 @@
+{
+  "fluxed_creep_roar": { "sounds": [{ "name": "bedres:fluxed_creep_roar" }]},
+  "fluxed_creep_idle": { "sounds": [{ "name": "bedres:fluxed_creep_idle" }]},
+  "fluxed_creep_idleog": { "sounds": [{ "name": "bedres:fluxed_creep_idleog" }]},
+  "fluxed_creep_roarog": { "sounds": [{ "name": "bedres:fluxed_creep_roarog" }]}
+}

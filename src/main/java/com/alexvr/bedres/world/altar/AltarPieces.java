@@ -88,7 +88,6 @@ public class AltarPieces {
             BlockPos blockpos2 = this.templatePosition;
             this.templatePosition = this.templatePosition.add(0, i - 90 - 1, 0);
             boolean flag = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn, p_74875_4_);
-
             this.templatePosition = blockpos2;
             return flag;
         }

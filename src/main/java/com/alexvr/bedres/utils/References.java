@@ -14,6 +14,8 @@ public class References {
     public static final String FLUX_CAPABILITY_NAME_RESOURCE = "bedrock_flux";
     public static final String PLAYER_ABILITY_CAP_NAME_RESOURCE = "player_ability";
 
+    public static final String FLUXED_CREEP_SOUND_RESOURCE = "fluxed_creep_roar";
+
     public static final String FLUXED_CREEP_REGNAME = "fluxed_creep";
     public static final String FLUXED_CREEP_EGG_REGNAME = "fluxed_creep_egg";
 

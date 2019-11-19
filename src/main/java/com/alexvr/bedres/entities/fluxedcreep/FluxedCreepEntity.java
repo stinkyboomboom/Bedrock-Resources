@@ -1,5 +1,7 @@
 package com.alexvr.bedres.entities.fluxedcreep;
 
+import com.alexvr.bedres.registry.ModSounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
@@ -10,10 +12,10 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -61,6 +63,8 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         if (!this.world.isRemote && this.world.getDifficulty() == Difficulty.PEACEFUL) {
             this.remove();
         }
+        BlockPos pos = new BlockPos(this.getPosition());
+        Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY()+.6,pos.getZ(),0,0,0);
 
     }
 
@@ -91,15 +95,24 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_GHAST_AMBIENT;
+        if (this.getDisplayName().getUnformattedComponentText().contains("Favi")){
+            return ModSounds.FLUXED_CREEP_IDLEOG.getSound();
+        }
+        return ModSounds.FLUXED_CREEP_IDLE.getSound();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_GHAST_HURT;
+        if (this.getDisplayName().getUnformattedComponentText().contains("Favi")){
+            return ModSounds.FLUXED_CREEP_ROAROG.getSound();
+        }
+        return ModSounds.FLUXED_CREEP_ROAR.getSound();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_GHAST_DEATH;
+        if (this.getDisplayName().getUnformattedComponentText().contains("Favi")){
+            return ModSounds.FLUXED_CREEP_ROAROG.getSound();
+        }
+        return ModSounds.FLUXED_CREEP_ROAR.getSound();
     }
 
     /**
@@ -200,7 +213,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
             double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 4.0F);
             double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
         }
     }
 

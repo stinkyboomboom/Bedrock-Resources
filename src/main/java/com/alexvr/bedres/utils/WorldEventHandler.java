@@ -1016,9 +1016,6 @@ public class WorldEventHandler {
 
     @SubscribeEvent
     public static void PlayerJumpEvent( PlayerEvent.LivingJumpEvent event) {
-
-        System.out.println("Jump");
-        System.out.println(event.getEntityLiving().getMotion().y);
         LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
             if (h.getJumpBoost()>0) {
@@ -1026,8 +1023,7 @@ public class WorldEventHandler {
                 event.getEntityLiving().velocityChanged = true;
             }
         });
-        System.out.println(event.getEntityLiving().getMotion().y);
-        System.out.println();
+
 
     }
 
@@ -1053,13 +1049,9 @@ public class WorldEventHandler {
         if (!(event.getEntityLiving() instanceof  PlayerEntity) && event.getSource().getTrueSource() instanceof PlayerEntity) {
             LazyOptional<IPlayerAbility> abilities = event.getSource().getTrueSource().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
             abilities.ifPresent(h -> {
-                System.out.println("Attacked");
-                System.out.println(event.getAmount());
-                System.out.println(getAttackBoost(h.getSword()));
-                System.out.println((h.getSword()));
-                event.setAmount(event.getAmount() + getAttackBoost(h.getSword()));
-                System.out.println(event.getAmount());
-                System.out.println();
+                if (!h.getSword().equals("no")) {
+                    event.setAmount(event.getAmount() + getAttackBoost(h.getSword()));
+                }
             });
         }
     }

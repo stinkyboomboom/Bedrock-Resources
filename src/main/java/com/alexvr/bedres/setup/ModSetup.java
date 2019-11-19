@@ -39,7 +39,6 @@ public class ModSetup {
         RenderingRegistry.registerEntityRenderingHandler(SquidEntity.class, new RenderFactory("squid"));
         RenderingRegistry.registerEntityRenderingHandler(WitchEntity.class, new RenderFactory("witch"));
         RenderingRegistry.registerEntityRenderingHandler(FluxedCreepEntity.class, FluxedCreepRenderer::new);
-
     }
 
 }

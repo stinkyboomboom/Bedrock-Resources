@@ -188,7 +188,6 @@ public class BedrockResources {
 
         @SubscribeEvent
         public static void onRegisterEntity(RegistryEvent.Register<EntityType<?>> event) {
-            IForgeRegistry<EntityType<?>> registry = event.getRegistry();
             event.getRegistry().register(EntityType.Builder.create(FluxedCreepEntity::new, EntityClassification.MONSTER)
                     .size(1, 1).immuneToFire()
                     .setShouldReceiveVelocityUpdates(true)

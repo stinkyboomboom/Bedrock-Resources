@@ -12,8 +12,10 @@ import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModFeatures;
 import com.alexvr.bedres.world.ModFlowerFeature;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
@@ -50,6 +52,11 @@ public class ClientProxy implements IProxy{
         Biomes.NETHER.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION,NetherBiome.createDecoratedFeature(MODFLOWER_FEATURE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(5)));
 
 
+    }
+
+
+    public static void playSound(SoundEvent sound, float pitch) {
+        Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(sound, pitch));
     }
 
     @Override
