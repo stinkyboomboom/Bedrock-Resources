@@ -119,7 +119,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
      * Returns the volume for the sounds this mob makes.
      */
     protected float getSoundVolume() {
-        return 8.0F;
+        return 1.0F;
     }
 
     public static boolean func_223368_b(EntityType<FluxedCreepEntity> p_223368_0_, IWorld p_223368_1_, SpawnReason p_223368_2_, BlockPos p_223368_3_, Random p_223368_4_) {
@@ -218,7 +218,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
             double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 4.0F);
             double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
+            this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.4D);
         }
     }
 

@@ -25,7 +25,7 @@ public class ModFlowerFeature extends FlowersFeature {
 
         switch (new Random().nextInt(6)) {
             case 0:
-                return ModBlocks.blazium.getDefaultState();
+                return ModBlocks.enderHush.getDefaultState();
             case 1:
                 return ModBlocks.enderHush.getDefaultState();
             case 2:

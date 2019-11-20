@@ -8,6 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class DFOakSappling extends SaplingBlock {
 
@@ -15,7 +18,7 @@ public class DFOakSappling extends SaplingBlock {
     public DFOakSappling() {
         super(new DFOakTree(), Properties.create(Material.PLANTS)
                 .sound(SoundType.PLANT)
-        .hardnessAndResistance(2.0f).variableOpacity());
+        .hardnessAndResistance(2.0f).variableOpacity().tickRandomly());
         setRegistryName(References.DF_SAPPLING_REGNAME);
 
     }
@@ -29,6 +32,12 @@ public class DFOakSappling extends SaplingBlock {
     @Override
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        DFBase.Spread(worldIn, pos);
+        super.animateTick(stateIn, worldIn, pos, rand);
     }
 
 

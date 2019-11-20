@@ -10,6 +10,7 @@ import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.gui.ScrapeTankScreen;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModFeatures;
+import com.alexvr.bedres.world.ModBlaziumFeature;
 import com.alexvr.bedres.world.ModFlowerFeature;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -34,6 +35,7 @@ public class ClientProxy implements IProxy{
     @Override
     public void init() {
         FlowersFeature MODFLOWER_FEATURE = new ModFlowerFeature(NoFeatureConfig::deserialize);
+        FlowersFeature MODBLAZIUMFLOWER_FEATURE = new ModBlaziumFeature(NoFeatureConfig::deserialize);
         ScreenManager.registerFactory(ModBlocks.scrapeTankContainerType, ScrapeTankScreen::new);
         ScreenManager.registerFactory(ModBlocks.bedrockScraperControllerContainer, BedrockScraperScreen::new);
         CapabilityManager.INSTANCE.register(IBedrockFlux.class, new BedrockFluxStorage(), BedrockFlux::new);
@@ -49,7 +51,7 @@ public class ClientProxy implements IProxy{
             }
         }
 
-        Biomes.NETHER.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION,NetherBiome.createDecoratedFeature(MODFLOWER_FEATURE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(5)));
+        Biomes.NETHER.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION,NetherBiome.createDecoratedFeature(MODBLAZIUMFLOWER_FEATURE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(5)));
 
 
     }
