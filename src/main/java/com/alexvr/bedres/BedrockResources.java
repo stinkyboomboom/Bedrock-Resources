@@ -122,6 +122,7 @@ public class BedrockResources {
             event.getRegistry().register(new DFOakSlabs());
             event.getRegistry().register(new DFOakStrippedLog());
             event.getRegistry().register(new FluxedSpores());
+            event.getRegistry().register(new FluxedGravityBubble());
         }
 
         @SubscribeEvent
@@ -155,6 +156,7 @@ public class BedrockResources {
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakSlabs,properties).setRegistryName(References.DF_OAK_SLAB_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakStrippedLog,properties).setRegistryName(References.DF_STRIPPED_OAK_LOG_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.fluxedSpores,properties).setRegistryName(References.FLUXED_SPORES_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.fluxedGravityBubble,properties).setRegistryName(References.FLUXED_GRAVITY_BUBBLE_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new FluxedCreepEggItem());
@@ -175,6 +177,7 @@ public class BedrockResources {
             event.getRegistry().register(TileEntityType.Builder.create(BedrockiumPedestalTile::new, ModBlocks.bedrociumPedestal).build(null).setRegistryName(References.PEDESTAL_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(EnderianRitualPedestalTile::new, ModBlocks.enderianRitualPedestal).build(null).setRegistryName(References.ENDERIAN_RITUAL_PEDESTAL_REGNAME));
             event.getRegistry().register(TileEntityType.Builder.create(ItemPlatformTile::new, ModBlocks.itemPlatform).build(null).setRegistryName(References.ITEM_PLATFORM_REGNAME));
+            event.getRegistry().register(TileEntityType.Builder.create(FluxedGravityBubbleTile::new, ModBlocks.fluxedGravityBubble).build(null).setRegistryName(References.FLUXED_GRAVITY_BUBBLE_REGNAME));
 
         }
 

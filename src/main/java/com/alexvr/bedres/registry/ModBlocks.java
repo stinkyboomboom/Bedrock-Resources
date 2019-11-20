@@ -120,6 +120,12 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_SPORES_REGNAME)
     public static FluxedSpores fluxedSpores;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_GRAVITY_BUBBLE_REGNAME)
+    public static FluxedGravityBubble fluxedGravityBubble;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_GRAVITY_BUBBLE_REGNAME)
+    public static TileEntityType<FluxedGravityBubbleTile> fluxedGravityBubbleTileTileEntityType;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {

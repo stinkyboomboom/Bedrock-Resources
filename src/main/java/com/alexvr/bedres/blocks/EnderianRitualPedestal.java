@@ -29,7 +29,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameters;
@@ -137,11 +136,6 @@ public class EnderianRitualPedestal extends Block {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new EnderianRitualPedestalTile();
-    }
-
-    @Override
-    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
-        return 0;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class DFBase extends Block {
 
 
     static void Spread(World worldIn, BlockPos pos) {
-        if (new Random().nextInt(45) < 2){
+        if (new Random().nextInt(1200) < 2){
             BlockPos postition = pos;
             switch (new Random().nextInt(6)){
                 case 0:
