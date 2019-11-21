@@ -126,6 +126,12 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_GRAVITY_BUBBLE_REGNAME)
     public static TileEntityType<FluxedGravityBubbleTile> fluxedGravityBubbleTileTileEntityType;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.RANGE_VIEW_REGNAME)
+    public static RangeView rangeView;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_COMPRESSED_WIRE_REGNAME)
+    public static BedrockCompressedWireBlock bedrockCompressedWireBlock;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {
@@ -135,6 +141,7 @@ public class ModBlocks {
             ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumPedestalTile.class, new BedrockiumPedestalTER());
             ClientRegistry.bindTileEntitySpecialRenderer(EnderianRitualPedestalTile.class, new EnderianRitualPedestalTER());
             ClientRegistry.bindTileEntitySpecialRenderer(ItemPlatformTile.class, new ItemPlatformTER());
+            ClientRegistry.bindTileEntitySpecialRenderer(FluxedGravityBubbleTile.class, new FluxedGravityBubbleTER());
         });
     }
 }

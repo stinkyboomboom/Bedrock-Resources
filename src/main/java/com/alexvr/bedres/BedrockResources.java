@@ -123,6 +123,8 @@ public class BedrockResources {
             event.getRegistry().register(new DFOakStrippedLog());
             event.getRegistry().register(new FluxedSpores());
             event.getRegistry().register(new FluxedGravityBubble());
+            event.getRegistry().register(new RangeView());
+            event.getRegistry().register(new BedrockCompressedWireBlock());
         }
 
         @SubscribeEvent
@@ -157,6 +159,7 @@ public class BedrockResources {
             event.getRegistry().register( new BlockItem(ModBlocks.dfOakStrippedLog,properties).setRegistryName(References.DF_STRIPPED_OAK_LOG_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.fluxedSpores,properties).setRegistryName(References.FLUXED_SPORES_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.fluxedGravityBubble,properties).setRegistryName(References.FLUXED_GRAVITY_BUBBLE_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.bedrockCompressedWireBlock,properties).setRegistryName(References.BEDROCK_COMPRESSED_WIRE_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new FluxedCreepEggItem());

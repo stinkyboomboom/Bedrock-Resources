@@ -47,6 +47,8 @@ public class FluxOracleScreenGui extends Screen {
     private boolean ritualped4 = false;
     private boolean shrum = false;
     private boolean cupcake = false;
+    private boolean compressed = false;
+    private boolean gravityBubble = false;
 
     double xOffset = 0, yOffset =0;
     double mouseX = 0, mouseY =0;
@@ -257,6 +259,20 @@ public class FluxOracleScreenGui extends Screen {
                 }
             }));
 
+            add(new ImageButton((int)xOffset+135+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+165+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/blocks/bedrock_compressed_wire.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("compressed");
+                }
+            }));
+
+            add(new ImageButton((int)xOffset+385+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+143+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/fluxed_gravity_bubble.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("gravityBubble");
+                }
+            }));
+
 
             add(next);
             add(back);
@@ -294,6 +310,8 @@ public class FluxOracleScreenGui extends Screen {
         ritualped4 = false;
         shrum = false;
         cupcake = false;
+        compressed = false;
+        gravityBubble = false;
 
         switch(name){
             case "main":
@@ -362,6 +380,12 @@ public class FluxOracleScreenGui extends Screen {
             case "cupcake":
                 cupcake=true;
                 break;
+            case "compressed":
+                compressed=true;
+                break;
+            case "gravityBubble":
+                gravityBubble=true;
+                break;
             default:
                 main = true;
                 break;
@@ -412,10 +436,10 @@ public class FluxOracleScreenGui extends Screen {
             next.renderButton(p_render_1_, p_render_2_, p_render_3_);
         }else if (altar3){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
-            drawString(minecraft.fontRenderer,"Recipes:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            drawString(minecraft.fontRenderer,"Recipes:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/8),1111111);
             String s = "Currect recipes all follow same convencion, stand in the platform and place item A on the top slot of each tower' face you have direct line of sight to, and item B on the lower slot. Then item C on the pedestal, Once you see the expected output, right click with bedrock scrapes and it will start the crafting.";
-            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
-            drawString(minecraft.fontRenderer,"Item A - Item B - Item C -> Output",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/4), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+8,1111111);
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/8),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+            drawString(minecraft.fontRenderer,"Item A - Item B - Item C -> Output",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/4), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/8),1111111);
             drawString(minecraft.fontRenderer,"Gold Ingots - Gold Blocks - Ender Pearl -> 8 Item Platforms",
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/12)  ,1111111);
             renderInfusingItems(new ItemStack(Items.GOLD_INGOT),new ItemStack(Blocks.GOLD_BLOCK),new ItemStack(Items.ENDER_PEARL),new ItemStack(ModBlocks.itemPlatform),
@@ -428,6 +452,10 @@ public class FluxOracleScreenGui extends Screen {
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16  ,1111111);
             renderInfusingItems(new ItemStack(ModItems.enderianIngot),new ItemStack(ModBlocks.enderianBlock),new ItemStack(ModItems.mesh),new ItemStack(ModBlocks.motor),
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16);
+            drawString(minecraft.fontRenderer,"Magenta Panes - Enderian Ingots - Compressed Wire -> 1 Gravity Bubble",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8  ,1111111);
+            renderInfusingItems(new ItemStack(Items.MAGENTA_STAINED_GLASS_PANE),new ItemStack(ModItems.enderianIngot),new ItemStack(ModBlocks.bedrockCompressedWireBlock),new ItemStack(ModBlocks.fluxedGravityBubble),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8);
 
 
         }else if (scraper){
@@ -551,8 +579,6 @@ public class FluxOracleScreenGui extends Screen {
             renderTitleItem(new ArrayList<Item>(){{add(Items.SUGAR);add(Items.REDSTONE);add(Items.COOKIE);add(ModItems.fluxedCupcake);add(ModItems.enderianIngot);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
             renderString("This pattern also came to be by studying the upgrade pattern. It seems placing sugar on the north and a fluxed cupcake on the south pedestal and cookies and redstone on west and east respectively, will make you mine slightly faster.",
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
-
-
         }else if (shrum){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
@@ -566,6 +592,22 @@ public class FluxOracleScreenGui extends Screen {
                     new ResourceLocation("bedres", "textures/items/fluxed_cupcake.png"));
             drawString(minecraft.fontRenderer,"Fluxed Cupcake:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "I can combine spores with some sugar and the same components of a cake and mix them in a wooden bowl into a cupcake that might reduce around an eight of my current flux.";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (compressed){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/blocks/bedrock_compressed_wire.png"));
+            drawModalRectWithCustomSizedTexture(((Minecraft.getInstance().mainWindow.getScaledWidth()/2)), ((Minecraft.getInstance().mainWindow.getScaledWidth())-32), (((Minecraft.getInstance().mainWindow.getScaledHeight()-64))) + 32, (((Minecraft.getInstance().mainWindow.getScaledHeight()-64))) + 16 - (Minecraft.getInstance().mainWindow.getScaledHeight()/3),
+                    new ResourceLocation("bedres", "textures/gui/compressed_ritual.png"));
+            drawString(minecraft.fontRenderer,"Bedrock Compressed Wire:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "Bedrock scrapes seem to react around the ender hush, maybe making a circle with the scrapes and setting the block in the middle (one y level bellow the wire) on fire and planting the flower on said fire might excite the flower to infuse it with the scrapes resulting in a block of scrapes binded whith the ender ability of the flower. I wonder what this can be used for... ";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (gravityBubble){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/gui/widget/fluxed_gravity_bubble.png"));
+            drawString(minecraft.fontRenderer,"Fluxed Gravity Bubble:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "By combining the bedrock compressed wire with some enderian ingots and magenta panes I seem to be able to create a bubble that can let me control gravity in a defined area. Left clicking with a knife will allow me to see the area of effect, right clicking with anything else will enlarge the area in the direction of the face you clicked (north/south is the Z axis and east/west the X axis) and shift right click will decrease in the same manner. Maybe if i research i can find a way to make the field upgradable (upgrades WIP).";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }
 

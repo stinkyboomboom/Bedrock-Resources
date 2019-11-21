@@ -54,6 +54,26 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
     private void createList() {
         RECEPI = new ArrayList<>();
+
+        ArrayList GRAVITYBUBBLE = new ArrayList() {{
+
+            add(new ItemStack(ModBlocks.fluxedGravityBubble));
+            add(new ArrayList<String>() {{
+
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
+                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
+
+            }});
+            add(ModBlocks.bedrockCompressedWireBlock.getRegistryName().toString());
+
+
+        }};
         ArrayList EINGOT = new ArrayList() {{
 
             add(new ItemStack(ModItems.enderianIngot,8));
@@ -116,6 +136,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         RECEPI.add(EINGOT);
         RECEPI.add(ITEMPLATFORM);
         RECEPI.add(MOTOR);
+        RECEPI.add(GRAVITYBUBBLE);
     }
 
     @Override
@@ -139,8 +160,6 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
                 (world.getBlockState(towerpos4).getBlock().hasTileEntity( world.getBlockState(towerpos4)) && world.getTileEntity(towerpos4) instanceof BedrockiumTowerTile)){
             if(crafting){
                 craftingCurrentTimer++;
-                System.out.println("Timer " + craftingCurrentTimer);
-                System.out.println("Total " + craftingTotalTimer);
                 if (craftingCurrentTimer>=craftingTotalTimer+30){
                     crafting=false;
                     craftingCurrentTimer=0;
@@ -253,7 +272,6 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
                                             g.extractItem(1, g.getStackInSlot(1).getCount(), false);
                                         }
                                         g.insertItem(1, ((ItemStack) ((ArrayList) RECEPI.get(kindex)).get(0)), false);
-                                        System.out.println(g.getStackInSlot(1).toString());
                                         markDirty();
                                         sendUpdates();
                                         shouldErase = false;
@@ -422,16 +440,13 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
     public void craft(ItemStack itemStack) {
         crafting = true;
         craftingCurrentTimer=0;
-        System.out.println(itemStack.toString());
         for (int kindex =0;kindex<RECEPI.size();kindex++) {
-            System.out.println((((ArrayList) RECEPI.get(kindex)).get(0)).toString());
             if ((((ArrayList) RECEPI.get(kindex)).get(0)) == itemStack) {
                 craftingTotalTimer = ((ArrayList) ((ArrayList) RECEPI.get(kindex)).get(1)).size();
                 if (((ArrayList) RECEPI.get(kindex)).size() >= 3) {
                     craftingTotalTimer++;
                 }
                 craftingTotalTimer *= 30;
-                System.out.println(craftingTotalTimer);
                 break;
             }
 
