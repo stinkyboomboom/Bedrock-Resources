@@ -4,7 +4,9 @@ import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
@@ -32,31 +34,31 @@ public class EnderHush extends FlowerBlock {
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-//        Block block = worldIn.getBlockState(pos.down()).getBlock();
-//        if (!worldIn.isRemote && block == Blocks.FIRE){
-//            if (worldIn.getBlockState(pos.east()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.west()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.north()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.south()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.east().north()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.east().south()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.west().north()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
-//                    && worldIn.getBlockState(pos.west().south()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())){
-//                worldIn.setBlockState(pos,ModBlocks.bedrockCompressedWireBlock.getDefaultState());
-//                worldIn.setBlockState(pos.west(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.east(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.north(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.south(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.west().north(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.east().north(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.west().south(),Blocks.FIRE.getDefaultState());
-//                worldIn.setBlockState(pos.east().south(),Blocks.FIRE.getDefaultState());
-//                worldIn.addEntity(new LightningBoltEntity(worldIn,pos.getX(),pos.getY(),pos.getZ(),true));
-//                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0,0);
-//                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0,0);
-//                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0,0);
-//            }
-//        }
+        Block block = worldIn.getBlockState(pos.down()).getBlock();
+        if (!worldIn.isRemote && block == Blocks.FIRE){
+            if (worldIn.getBlockState(pos.east()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.west()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.north()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.south()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.east().north()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.east().south()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.west().north()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())
+                    && worldIn.getBlockState(pos.west().south()).getBlock().getRegistryName().equals(ModBlocks.bedrockWire.getRegistryName())){
+                worldIn.setBlockState(pos,ModBlocks.bedrockCompressedWireBlock.getDefaultState());
+                worldIn.setBlockState(pos.west(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.east(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.north(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.south(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.west().north(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.east().north(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.west().south(),Blocks.FIRE.getDefaultState());
+                worldIn.setBlockState(pos.east().south(),Blocks.FIRE.getDefaultState());
+                worldIn.addEntity(new LightningBoltEntity(worldIn,pos.getX(),pos.getY(),pos.getZ(),true));
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0,0);
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0,0);
+                Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.LARGE_SMOKE,true,pos.getX(),pos.getY(),pos.getZ(),0,0,0);
+            }
+        }
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
