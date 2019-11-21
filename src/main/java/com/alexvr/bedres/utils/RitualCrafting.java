@@ -1,5 +1,12 @@
 package com.alexvr.bedres.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import net.minecraft.client.Minecraft;
+
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class RitualCrafting {
@@ -12,6 +19,105 @@ public class RitualCrafting {
         LEYEND = LIST  OF STRINGS EACH STRING BEING 'CHARACTER=<item/block registry name>'
 
     */
+
+    public static ArrayList generateRecipes(){
+//        return new ArrayList(){{
+//
+//            add(DIAMOND_PICKAXE_UPGRADE);
+//            add(GOLD_PICKAXE_UPGRADE);
+//            add(IRON_PICKAXE_UPGRADE);
+//            add(STONE_PICKAXE_UPGRADE);
+//            add(WOOD_PICKAXE_UPGRADE);
+//
+//            add(DIAMOND_AXE_UPGRADE);
+//            add(GOLD_AXE_UPGRADE);
+//            add(IRON_AXE_UPGRADE);
+//            add(STONE_AXE_UPGRADE);
+//            add(WOOD_AXE_UPGRADE);
+//
+//            add(DIAMOND_SHOVEL_UPGRADE);
+//            add(GOLD_SHOVEL_UPGRADE);
+//            add(IRON_SHOVEL_UPGRADE);
+//            add(STONE_SHOVEL_UPGRADE);
+//            add(WOOD_SHOVEL_UPGRADE);
+//
+//            add(DIAMOND_SWORD_UPGRADE);
+//            add(GOLD_SWORD_UPGRADE);
+//            add(IRON_SWORD_UPGRADE);
+//            add(STONE_SWORD_UPGRADE);
+//            add(WOOD_SWORD_UPGRADE);
+//
+//            add(ACTIVE_HOE_UPGRADE);
+//
+//            add(ACTIVE_SPEED_UPGRADE);
+//
+//            add(ACTIVE_JUMP_UPGRADE);
+//
+//            add(CLEAR_UPGRADE);
+//
+//        }};
+        ArrayList list = new ArrayList();
+        try {
+            FileReader reaser = new FileReader(Minecraft.getInstance().getClass().getClassLoader().getResource("data/bedres/recipes/ritual_recipes.json").getPath());
+            Gson jsonParser = new Gson();
+            JsonReader jsonReader = jsonParser.newJsonReader(reaser);
+            try {
+                return checkJson(jsonReader,list);
+            } finally {
+                jsonReader.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return list;
+    }
+
+    private static ArrayList checkJson(JsonReader reader,ArrayList list) throws IOException {
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            list.add(readElements(reader,list));
+        }
+        reader.endObject();
+        return list;
+    }
+    public static ArrayList readElements(JsonReader reader,ArrayList list) throws IOException {
+        ArrayList list2 = new ArrayList();
+        String result = "";
+        ArrayList pattern = new ArrayList();
+        ArrayList keys = new ArrayList();
+        reader.nextName();
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("result")) {
+                result = reader.nextString();
+            } else if (name.equals("pattern")) {
+                pattern = readStringArray(reader);
+            } else if (name.equals("key") && reader.peek() != JsonToken.NULL) {
+                keys = readStringArray(reader);
+            } else {
+                reader.skipValue();
+            }
+        }
+        list2.add(result);
+        list2.add(pattern);
+        list2.add(keys);
+        reader.endObject();
+        return list2;
+    }
+
+    public static ArrayList<String> readStringArray(JsonReader reader) throws IOException {
+        ArrayList<String> doubles = new ArrayList<>();
+        reader.beginArray();
+        while (reader.hasNext()) {
+            doubles.add(reader.nextString());
+        }
+        reader.endArray();
+        return doubles;
+    }
 
 //in the pattern the top is west, left is north adn right is south
 //yes, i know

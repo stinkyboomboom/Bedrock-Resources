@@ -1,0 +1,36 @@
+{
+  "diamondPick":{
+    "result":  "bedres:diamond_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:diamond_pickaxe"
+    ]
+  },
+  "goldPick":{
+    "result":"bedres:golden_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:golden_pickaxe"
+    ]
+}
+}
