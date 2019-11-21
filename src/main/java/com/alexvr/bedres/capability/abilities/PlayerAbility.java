@@ -1,5 +1,6 @@
 package com.alexvr.bedres.capability.abilities;
 
+import com.alexvr.bedres.Config;
 import com.alexvr.bedres.blocks.tiles.EnderianRitualPedestalTile;
 import net.minecraft.util.math.Vec3d;
 
@@ -7,13 +8,13 @@ import java.util.ArrayList;
 
 public class PlayerAbility implements  IPlayerAbility{
 
-    String axe = "no",pick= "no",shovel= "no",sword= "no",hoe= "no",name = "no",result="";
-    int ritualTimer =1,totalRitual=1;
-    float gravilty = 0,jump=0,speed =0;
-    boolean ritual = false,checking = false;
-    ArrayList<EnderianRitualPedestalTile> pedestals;
-    double FOV;
-    Vec3d lookingAt;
+    private String axe = Config.DEF_AXE.get(),pick= Config.DEF_PICK.get(),shovel= Config.DEF_SHOVEL.get(),sword= Config.DEF_SWORD.get(),hoe= Config.DEF_HOE.get(),name = "no",result="";
+    private int ritualTimer =1,totalRitual=1;
+    private double gravilty = 0,jump=Config.DEF_JUMP.get(),speed =Config.DEF_SPEED.get();
+    private boolean ritual = false,checking = false;
+    private ArrayList<EnderianRitualPedestalTile> pedestals;
+    private double FOV;
+    private Vec3d lookingAt;
 
     @Override
     public String getNAme() {
@@ -46,7 +47,7 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public float getMiningSpeedBoost() {
+    public double getMiningSpeedBoost() {
         return speed;
     }
 
@@ -71,12 +72,12 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public float getJumpBoost() {
+    public double getJumpBoost() {
         return jump;
     }
 
     @Override
-    public float getGravityMultiplier() {
+    public double getGravityMultiplier() {
         return gravilty;
     }
 
@@ -135,34 +136,34 @@ public class PlayerAbility implements  IPlayerAbility{
     }
 
     @Override
-    public void setMiningSpeedBoost(float amount) {
+    public void setMiningSpeedBoost(double amount) {
         speed=amount;
 
     }
 
     @Override
-    public void setJumpBoost(float amount) {
+    public void setJumpBoost(double amount) {
         jump=amount;
 
     }
 
     @Override
-    public void setGRavityMultiplier(float amount) {
+    public void setGRavityMultiplier(double amount) {
         gravilty=amount;
     }
 
     @Override
-    public void addMiningSpeed(float amount) {
+    public void addMiningSpeed(double amount) {
         speed+=amount;
     }
 
     @Override
-    public void addJump(float amount) {
+    public void addJump(double amount) {
         jump+=amount;
     }
 
     @Override
-    public void addGrav(float amount) {
+    public void addGrav(double amount) {
         gravilty+=amount;
     }
 

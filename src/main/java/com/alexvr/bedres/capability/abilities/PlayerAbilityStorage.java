@@ -18,11 +18,11 @@ public class PlayerAbilityStorage implements Capability.IStorage<IPlayerAbility>
         tag.putString("sword",instance.getSword());
         tag.putString("hoe",instance.getHoe());
         tag.putString("result",instance.getRitualCraftingResult());
-        tag.putFloat("speed",instance.getMiningSpeedBoost());
+        tag.putDouble("speed",instance.getMiningSpeedBoost());
         tag.putInt("ritualTimer",instance.getRitualTimer());
         tag.putInt("totalRitual",instance.getRitualTotalTimer());
-        tag.putFloat("gravilty",instance.getGravityMultiplier());
-        tag.putFloat("jump",instance.getJumpBoost());
+        tag.putDouble("gravilty",instance.getGravityMultiplier());
+        tag.putDouble("jump",instance.getJumpBoost());
         tag.putBoolean("ritual",instance.getInRitual());
         tag.putBoolean("checking",instance.getChecking());
         tag.putDouble("FOV",instance.getFOV());
@@ -45,9 +45,9 @@ public class PlayerAbilityStorage implements Capability.IStorage<IPlayerAbility>
         instance.setShovel(((CompoundNBT)nbt).getString("shovel"));
         instance.setSword(((CompoundNBT)nbt).getString("sword"));
         instance.setHoe(((CompoundNBT)nbt).getString("hoe"));
-        instance.setMiningSpeedBoost(((CompoundNBT)nbt).getFloat("speed"));
-        instance.setJumpBoost(((CompoundNBT)nbt).getFloat("jump"));
-        instance.setGRavityMultiplier(((CompoundNBT)nbt).getFloat("gravilty"));
+        instance.setMiningSpeedBoost(((CompoundNBT)nbt).getDouble("speed"));
+        instance.setJumpBoost(((CompoundNBT)nbt).getDouble("jump"));
+        instance.setGRavityMultiplier(((CompoundNBT)nbt).getDouble("gravilty"));
         instance.setRitualTimer(((CompoundNBT)nbt).getInt("ritualTimer"));
         instance.setRitualTotalTimer(((CompoundNBT)nbt).getInt("totalRitual"));
         instance.setRitualCraftingResult(((CompoundNBT)nbt).getString("result"));

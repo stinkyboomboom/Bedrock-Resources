@@ -15,14 +15,14 @@ public interface IPlayerAbility {
     String getSword();
     String getHoe();
 
-    float getMiningSpeedBoost();
+    double getMiningSpeedBoost();
     int getRitualTimer();
     int getRitualTotalTimer();
     ArrayList<EnderianRitualPedestalTile> getListOfPedestals();
     String getRitualCraftingResult();
 
-    float getJumpBoost();
-    float getGravityMultiplier();
+    double getJumpBoost();
+    double getGravityMultiplier();
 
     boolean getInRitual();
     boolean getChecking();
@@ -39,13 +39,13 @@ public interface IPlayerAbility {
     void setHoe(String name);
     void setname(String name);
 
-    void setMiningSpeedBoost(float amount);
-    void setJumpBoost(float amount);
-    void setGRavityMultiplier(float amount);
+    void setMiningSpeedBoost(double amount);
+    void setJumpBoost(double amount);
+    void setGRavityMultiplier(double amount);
 
-    void addMiningSpeed(float amount);
-    void addJump(float amount);
-    void addGrav(float amount);
+    void addMiningSpeed(double amount);
+    void addJump(double amount);
+    void addGrav(double amount);
 
     void flipRitual();
 

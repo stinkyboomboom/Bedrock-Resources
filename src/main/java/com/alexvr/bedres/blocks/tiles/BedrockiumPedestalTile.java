@@ -1,5 +1,6 @@
 package com.alexvr.bedres.blocks.tiles;
 
+import com.alexvr.bedres.Config;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModItems;
 import net.minecraft.block.Blocks;
@@ -41,6 +42,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
 
     int counterCheck = 0;
+    private int ticksPerItem;
 
     public BedrockiumPedestalTile() {
         super(ModBlocks.bedrockiumPedestalType);
@@ -50,6 +52,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         towerpos4= new BlockPos(0,0,0);
         extractFrom= towerpos1;
         createList();
+        ticksPerItem = Config.PEDESTAL_TICKS_PER_ITEM.get();
     }
 
     private void createList() {
@@ -446,7 +449,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
                 if (((ArrayList) RECEPI.get(kindex)).size() >= 3) {
                     craftingTotalTimer++;
                 }
-                craftingTotalTimer *= 30;
+                craftingTotalTimer *= ticksPerItem;
                 break;
             }
 

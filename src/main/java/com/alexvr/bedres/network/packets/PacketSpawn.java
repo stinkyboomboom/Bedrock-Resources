@@ -59,13 +59,13 @@ import java.util.function.Supplier;
                     PlayerEntity player = ctx.get().getSender();
                     LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
                     bedrockFlux.ifPresent(h -> {
-                        h.set(h.getMaxBedrockFlux());
+                        h.set((float) h.getMaxBedrockFlux());
                     });
                 }else if (id.equals("bedres:hflux")){
                     PlayerEntity player = ctx.get().getSender();
                     LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
                     bedrockFlux.ifPresent(h -> {
-                        h.set(h.getMaxBedrockFlux()/2);
+                        h.set((float) (h.getMaxBedrockFlux()/2));
                     });
                 }else if (id.equals("bedres:show")){
                     PlayerEntity player = ctx.get().getSender();

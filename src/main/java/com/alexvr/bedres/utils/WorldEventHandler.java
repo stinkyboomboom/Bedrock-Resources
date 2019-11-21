@@ -1,6 +1,7 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.Config;
 import com.alexvr.bedres.blocks.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.capability.abilities.IPlayerAbility;
 import com.alexvr.bedres.capability.abilities.PlayerAbilityProvider;
@@ -61,6 +62,7 @@ import static com.alexvr.bedres.utils.RitualCrafting.*;
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
 
+    public static final int ticksPerItemRitual = Config.RITUAL_TICKS_PER_ITEM.get();
     public static FluxOracleScreenGui fxG = new FluxOracleScreenGui();
     static Minecraft mc = Minecraft.getInstance();
 
@@ -74,8 +76,7 @@ public class WorldEventHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event)
-    {
+    public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
         bedrockFlux.ifPresent(flux -> {
@@ -220,7 +221,7 @@ public class WorldEventHandler {
                             iPlayerAbility.setRitualCraftingResult((String)(((ArrayList)RECEPI.get(i)).get(0)));
                             iPlayerAbility.setRitualPedestals(listOfTIles);
                             iPlayerAbility.flipRitual();
-                            iPlayerAbility.setRitualTotalTimer(listOfTIles.size()*120);
+                            iPlayerAbility.setRitualTotalTimer(listOfTIles.size()* ticksPerItemRitual);
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
                             event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+6,-0.999));
                             event.getEntityLiving().setFire(0);
@@ -295,9 +296,9 @@ public class WorldEventHandler {
 
                 if (iPlayerAbility.getListOfPedestals().size()>1){
                     BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(1).getPos();
-                    double xDif =((thisblock.getX()-nextblock.getX())/120.0)  ;
-                    double zDif = ((thisblock.getZ()-nextblock.getZ())/120.0)  ;
-                    double speed = ((0.1 * iPlayerAbility.getRitualTimer()%60) /10);
+                    double xDif =((thisblock.getX()-nextblock.getX())/(ticksPerItemRitual+0.0))  ;
+                    double zDif = ((thisblock.getZ()-nextblock.getZ())/(ticksPerItemRitual+0.0))  ;
+                    double speed = ((0.1 * iPlayerAbility.getRitualTimer()%(ticksPerItemRitual/2.0)) /10);
                     if (xDif >= 0) {
                         iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(speed, 0, 0));
                     } else {
@@ -312,9 +313,9 @@ public class WorldEventHandler {
                     player.lookAt(EntityAnchorArgument.Type.EYES,iPlayerAbility.getlookPos());
                 }else{
                     BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(0).getPos().west(2).north(1);
-                    double xDif =((thisblock.getX()-nextblock.getX())/120.0)  ;
-                    double zDif = ((thisblock.getZ()-nextblock.getZ())/120.0)  ;
-                    double speed = ((0.1 * iPlayerAbility.getRitualTimer()%60) /10);
+                    double xDif =((thisblock.getX()-nextblock.getX())/(ticksPerItemRitual+0.0))  ;
+                    double zDif = ((thisblock.getZ()-nextblock.getZ())/(ticksPerItemRitual+0.0))  ;
+                    double speed = ((0.1 * iPlayerAbility.getRitualTimer()%(ticksPerItemRitual/2.0)) /10);
                     if (xDif >= 0) {
                         iPlayerAbility.setLookPos(iPlayerAbility.getlookPos().add(speed, 0, 0));
                     } else {
@@ -331,7 +332,7 @@ public class WorldEventHandler {
 
                 BlockPos particlePos =  iPlayerAbility.getListOfPedestals().get(0).getPos();
                 Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)particlePos.getX()+0.5,(double)particlePos.getY()+.8,(double)particlePos.getZ()+.5,(new Random().nextFloat()-0.7),new Random().nextFloat()-0.7,new Random().nextFloat()-0.7);
-                if (iPlayerAbility.getRitualTimer()%120 == 0){
+                if (iPlayerAbility.getRitualTimer()%(ticksPerItemRitual+0.0) == 0){
                     iPlayerAbility.getListOfPedestals().get(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                             h.extractItem(0,1, false);
@@ -526,8 +527,8 @@ public class WorldEventHandler {
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("speed")) {
                                 if (iPlayerAbility.getMiningSpeedBoost() < 1.35) {
                                     iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + .3f);
-                                    flux.fillMin(45 + iPlayerAbility.getMiningSpeedBoost());
-                                    flux.fill(45 + iPlayerAbility.getMiningSpeedBoost());
+                                    flux.fillMin((float) (45 + iPlayerAbility.getMiningSpeedBoost()));
+                                    flux.fill((float) (45 + iPlayerAbility.getMiningSpeedBoost()));
                                 }else{
                                     player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Speed already maxed out."), false);
 
@@ -546,8 +547,8 @@ public class WorldEventHandler {
                                     }else if (iPlayerAbility.getJumpBoost()<=0.2){
                                         iPlayerAbility.setJumpBoost(0.25f);
                                     }
-                                    flux.fillMin(55 + iPlayerAbility.getJumpBoost());
-                                    flux.fill(55 + iPlayerAbility.getJumpBoost());
+                                    flux.fillMin((float) (55 + iPlayerAbility.getJumpBoost()));
+                                    flux.fill((float) (55 + iPlayerAbility.getJumpBoost()));
                                 }else{
                                     player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Jump already maxed out."), false);
 
@@ -585,7 +586,7 @@ public class WorldEventHandler {
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
 
         bedrockFlux.ifPresent(h -> {
-            if (h.getBedrockFlux()>250.32f) {
+            if (Config.NEG_EFFECTS_ACTIVE.get() && h.getBedrockFlux()>250.32f) {
                 h.count();
                 if (h.getTimer() >= h.getMaxTimer()) {
                     h.changeMax();
@@ -815,58 +816,48 @@ public class WorldEventHandler {
         PlayerEntity player = event.getPlayer();
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(h -> {
-
             if (!(event.getPlayer().getHeldItemMainhand().getItem() instanceof SwordItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof AxeItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof ShovelItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof PickaxeItem) &&
                     !(event.getPlayer().getHeldItemMainhand().getItem() instanceof HoeItem)) {
                 float speeed = 0;
-
                 if (event.getState().getHarvestTool() == null){
-
-                    if (event.getState().getMaterial().toString().equals(Material.WOOD.toString())){
+                    if (event.getState().getMaterial().toString().equals(Material.WOOD.toString()) && !h.getAxe().equals("no")){
                         speeed = getSpeed(h.getAxe());
-                    }else if (event.getState().getMaterial() == Material.ROCK || event.getState().getMaterial() == Material.IRON ||event.getState().getMaterial() == Material.ANVIL){
+                    }else if ((event.getState().getMaterial() == Material.ROCK || event.getState().getMaterial() == Material.IRON ||event.getState().getMaterial() == Material.ANVIL)&& !h.getPick().equals("no")){
                         speeed = getSpeed(h.getPick());
-                    }else if (event.getState().getMaterial() == Material.EARTH || event.getState().getMaterial() == Material.SAND ||event.getState().getMaterial() == Material.SNOW ||event.getState().getMaterial() == Material.CLAY ||event.getState().getMaterial() == Material.ORGANIC){
+                    }else if ((event.getState().getMaterial() == Material.EARTH || event.getState().getMaterial() == Material.SAND ||event.getState().getMaterial() == Material.SNOW ||event.getState().getMaterial() == Material.CLAY ||event.getState().getMaterial() == Material.ORGANIC)&& !h.getShovel().equals("no")){
                         speeed = getSpeed(h.getShovel());
-                    }else if (event.getState().getMaterial() == Material.WEB || event.getState().getMaterial() == Material.LEAVES ||event.getState().getMaterial() == Material.WOOL ){
+                    }else if ((event.getState().getMaterial() == Material.WEB || event.getState().getMaterial() == Material.LEAVES ||event.getState().getMaterial() == Material.WOOL) && !h.getSword().equals("no") ){
                         speeed = getSpeed(h.getSword());
                     }
-
                 }else{
-                    if (event.getState().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())) {
+                    if (event.getState().getHarvestTool().toString().equals(net.minecraftforge.common.ToolType.PICKAXE.toString())&& !h.getPick().equals("no")) {
                         speeed = getSpeed(h.getPick());
-                    }else if (event.getState().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())) {
+                    }else if (event.getState().getHarvestTool().toString().equals(ToolType.SHOVEL.toString())&& !h.getShovel().equals("no")) {
                         speeed = getSpeed(h.getShovel());
 
-                    }else if (event.getState().getHarvestTool().toString().equals(ToolType.AXE.toString())) {
+                    }else if (event.getState().getHarvestTool().toString().equals(ToolType.AXE.toString())&& !h.getAxe().equals("no")) {
                         speeed = getSpeed(h.getAxe());
-
                     }
                 }
-                speeed+=1;
-                speeed *=1.85;
-
-                if (event.getState().getBlock() == Blocks.STONE){
-                    speeed += 5.5;
+                if (speeed!=0) {
+                    speeed += 1;
+                    speeed *= 1.85;
+                    if (event.getState().getBlock() == Blocks.STONE) {
+                        speeed += 5.5;
+                    }
+                    if ((event.getState().getMaterial().isToolNotRequired() || event.getState().getBlock() == Blocks.STONE) && speeed > 0) {
+                        event.setNewSpeed((float) (event.getOriginalSpeed() + h.getMiningSpeedBoost() + speeed));
+                    } else if (speeed > 0) {
+                        event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost() + speeed) * (100.0 / 30.0)));
+                    }
                 }
-                if ((event.getState().getMaterial().isToolNotRequired() || event.getState().getBlock() == Blocks.STONE ) && speeed>0){
-                    event.setNewSpeed(((event.getOriginalSpeed()+h.getMiningSpeedBoost()+speeed)));
-                }else if (speeed>0){
-                    event.setNewSpeed((float) ((event.getOriginalSpeed() + h.getMiningSpeedBoost()  + speeed) * (100.0 / 30.0) ));
-                }
-
-
             }else if (h.getMiningSpeedBoost()>0){
-                event.setNewSpeed(event.getOriginalSpeed() + h.getMiningSpeedBoost());
-
+                event.setNewSpeed((float) (event.getOriginalSpeed() + h.getMiningSpeedBoost()));
             }
-
         });
-
-
     }
 
     private static float getSpeed(String material) {

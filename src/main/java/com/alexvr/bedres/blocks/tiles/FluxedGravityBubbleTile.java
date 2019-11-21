@@ -1,5 +1,6 @@
 package com.alexvr.bedres.blocks.tiles;
 
+import com.alexvr.bedres.Config;
 import com.alexvr.bedres.registry.ModBlocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -18,14 +19,22 @@ public class FluxedGravityBubbleTile extends TileEntity implements ITickableTile
 
 
     public boolean playerInArea = false,render = false;
-    public int xDist = 4,yDist =4,zDist=4;
-    public int maxxDist = 4,maxyDist =4,maxzDist=4;
+    public int xDist,yDist, zDist;
+    public int maxxDist,maxyDist,maxzDist;
     String name = "NA$null";
     int counter = 0;
+    int ticksPerCheck;
 
 
     public FluxedGravityBubbleTile() {
         super(ModBlocks.fluxedGravityBubbleTileTileEntityType);
+        maxxDist = Config.GRAVITY_BUBBLE_MAX_X.get();
+        maxyDist = Config.GRAVITY_BUBBLE_MAX_Y.get();
+        maxzDist = Config.GRAVITY_BUBBLE_MAX_Z.get();
+        xDist = Config.GRAVITY_BUBBLE_MAX_X.get();
+        yDist = Config.GRAVITY_BUBBLE_MAX_Y.get();
+        zDist = Config.GRAVITY_BUBBLE_MAX_Z.get();
+        ticksPerCheck = Config.GRAVITY_BUBBLE_TICKS_PER_CHECK.get();
     }
 
     @Override
@@ -33,7 +42,7 @@ public class FluxedGravityBubbleTile extends TileEntity implements ITickableTile
         if(!world.isRemote) {
             counter++;
             boolean flag = false;
-            if (counter % 2 == 0 ) {
+            if (counter % ticksPerCheck == 0 ) {
                 counter=0;
                 for (int x = -xDist; x < xDist + 1; x++) {
                     for (int y = -yDist; y < yDist + 1; y++) {

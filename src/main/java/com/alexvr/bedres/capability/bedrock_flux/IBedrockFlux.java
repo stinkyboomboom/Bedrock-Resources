@@ -13,7 +13,7 @@ public interface IBedrockFlux {
     void setMin(float points);
 
     float getBedrockFlux();
-    float getMaxBedrockFlux();
+    double getMaxBedrockFlux();
 
     boolean getCrafterFlux();
     void setCrafterFlux();

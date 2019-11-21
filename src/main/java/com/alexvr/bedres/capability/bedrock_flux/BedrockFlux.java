@@ -1,5 +1,6 @@
 package com.alexvr.bedres.capability.bedrock_flux;
 
+import com.alexvr.bedres.Config;
 import com.alexvr.bedres.gui.FluxOracleScreen;
 
 import java.text.DecimalFormat;
@@ -12,12 +13,12 @@ import java.util.concurrent.Callable;
 public class BedrockFlux implements IBedrockFlux
 {
     private float bedrockflux = 0.0f;
-    private float maxbedrockflux = 2500.0F;
+    private double maxbedrockflux = Config.DEF_MAX_FLUX.get();
     private float minbedrockflux = 0.0f;
     private boolean crafted = false;
     private FluxOracleScreen screen = null;
     private int timer =0;
-    private int maxTimer = (20*60) *5;
+    private int maxTimer = Config.DEF_MAX_TIMER.get();
 
     public void consume(float points)
     {
@@ -37,8 +38,8 @@ public class BedrockFlux implements IBedrockFlux
         float residue = 0;
         this.bedrockflux += points;
         if(bedrockflux>maxbedrockflux){
-            residue = bedrockflux-maxbedrockflux;
-            bedrockflux= maxbedrockflux;
+            residue = (float) (bedrockflux-maxbedrockflux);
+            bedrockflux= (float) maxbedrockflux;
         }
         if (crafted){
             screen.flux = this;
@@ -78,7 +79,7 @@ public class BedrockFlux implements IBedrockFlux
     }
 
     @Override
-    public float getMaxBedrockFlux() {
+    public double getMaxBedrockFlux() {
         return maxbedrockflux;
     }
 
