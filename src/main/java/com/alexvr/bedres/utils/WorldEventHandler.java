@@ -98,9 +98,10 @@ public class WorldEventHandler {
                 if (event.getEntityLiving() instanceof PlayerEntity && event.getSource() == DamageSource.IN_FIRE && event.getEntityLiving().world.getBlockState(playerPos.offset(Direction.DOWN)).getBlock() == ModBlocks.enderianBlock){
                     ArrayList<EnderianRitualPedestalTile> listOfTIles;
                     iPlayerAbility.flipChecking();
+                    RitualCrafting.generateRecipes();
                     for (int i =0;i<RECEPI.size();i++) {
-                        System.out.println("Crafting: " + RECEPI.get(i).toString());
-                        System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
+                        //System.out.println("Crafting: " + RECEPI.get(i).toString());
+                        //System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
 
                         listOfTIles = new ArrayList<>();
                         boolean skip = false;
@@ -112,15 +113,15 @@ public class WorldEventHandler {
                                 if (x==0&&y==0){
                                     continue;
                                 }
-                                System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
+                                //System.out.println((((ArrayList)RECEPI.get(i)).get(1)).toString());
                                 Character key = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(1)).get(x+3)).charAt(y+3);
-                                System.out.println("Character Analyzed: " + key);
+                                //System.out.println("Character Analyzed: " + key);
 
                                 if (key == ' '){
-                                    System.out.println("Spaced Detected at: " + playerPos.east(x).south(y).toString());
+                                    //System.out.println("Spaced Detected at: " + playerPos.east(x).south(y).toString());
 
                                     if (event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y).down()).getBlock() != ModBlocks.enderianBrick ){
-                                        System.out.println("Error: No Brick at: " + playerPos.east(x).south(y).down().toString());
+                                        //System.out.println("Error: No Brick at: " + playerPos.east(x).south(y).down().toString());
 
                                         skip =true;
                                         break;
@@ -130,57 +131,57 @@ public class WorldEventHandler {
                                 ItemStack stack = ItemStack.EMPTY;
                                 for (int j =0;j<((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).size();j++) {
                                     Character value = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).charAt(0);
-                                    System.out.println("Value Analyzed: " + value);
+                                    //System.out.println("Value Analyzed: " + value);
 
                                     if (key == value){
                                         String ss = ((String)((ArrayList)((ArrayList)RECEPI.get(i)).get(2)).get(j)).substring(2);
                                         ResourceLocation locatoin = new ResourceLocation(ss);
-                                        System.out.println("Name to look for: " + ss);
-                                        System.out.println("Resourse Location: " + locatoin.toString());
+                                        //System.out.println("Name to look for: " + ss);
+                                        //System.out.println("Resourse Location: " + locatoin.toString());
                                         stack = new ItemStack( ForgeRegistries.ITEMS.getValue(locatoin));
-                                        System.out.println("Stack Found: " + stack.toString());
+                                        //System.out.println("Stack Found: " + stack.toString());
 
                                         break;
                                     }
                                 }
                                 if (stack == ItemStack.EMPTY || stack.getItem().getRegistryName().equals(ItemStack.EMPTY.getItem().getRegistryName())){
-                                    System.out.println("Error: No stack to match: " + key);
+                                    //System.out.println("Error: No stack to match: " + key);
 
                                     skip =true;
                                     break;
                                 }
                                 if (stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.bedrockWire) {
-                                    System.out.println("Error: No Wire at: " + playerPos.east(x).south(y).toString());
+                                    //System.out.println("Error: No Wire at: " + playerPos.east(x).south(y).toString());
 
                                     skip = true;
                                     break;
                                 }
                                 if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() != ModBlocks.enderianRitualPedestal) {
-                                    System.out.println("Error: No Pedestal at: " + playerPos.east(x).south(y).toString());
+                                    //System.out.println("Error: No Pedestal at: " + playerPos.east(x).south(y).toString());
                                     skip = true;
                                     break;
                                 }else if (!stack.getItem().getRegistryName().equals(new ItemStack((ModBlocks.bedrockWire)).getItem().getRegistryName()) &&event.getEntityLiving().world.getBlockState(playerPos.east(x).south(y)).getBlock() == ModBlocks.enderianRitualPedestal) {
 
                                     if (event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y)) instanceof EnderianRitualPedestalTile && !((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item.equals(stack.getItem().getRegistryName().toString())){
-                                        System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
+                                        //System.out.println("Error: Wrong Item in pedestal at: " + playerPos.east(x).south(y).toString() + " | looking for: " + stack.getItem().getRegistryName().toString() + " and found: " + ((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))).item);
 
                                         skip = true;
                                         break;
                                     }else{
-                                        System.out.println("Added Pedestal at: " + playerPos.east(x).south(y).toString() + " with correct item");
+                                        //System.out.println("Added Pedestal at: " + playerPos.east(x).south(y).toString() + " with correct item");
 
                                         listOfTIles.add(((EnderianRitualPedestalTile)event.getEntityLiving().world.getTileEntity(playerPos.east(x).south(y))));
                                     }
                                 }
                             }
                         }
-                        System.out.println();
-                        System.out.println();
+                        //System.out.println();
+                        //System.out.println();
 
                         if(!skip){
-                            System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
-                            System.out.println();
-                            System.out.println();
+                            //System.out.println("Success: Crafted: " + (((ArrayList)RECEPI.get(i)).get(0)));
+                            //System.out.println();
+                            //System.out.println();
                             event.getEntityLiving().world.setBlockState(playerPos,Blocks.AIR.getDefaultState());
                             iPlayerAbility.setRitualCraftingResult((String)(((ArrayList)RECEPI.get(i)).get(0)));
                             iPlayerAbility.setRitualPedestals(listOfTIles);

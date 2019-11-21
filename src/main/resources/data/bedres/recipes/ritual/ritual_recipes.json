@@ -1,0 +1,414 @@
+{
+  "diamondPick":{
+    "result":  "bedres:diamond_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:diamond_pickaxe"
+    ]
+  },
+  "goldPick":{
+    "result":"bedres:golden_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:golden_pickaxe"
+    ]
+},
+  "ironPick":{
+    "result":"bedres:iron_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:iron_pickaxe"
+    ]
+  },
+  "stonePick":{
+    "result":"bedres:stone_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:stone_pickaxe"
+    ]
+  },
+  "woodenPick":{
+    "result":"bedres:wooden_pickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:wooden_pickaxe"
+    ]
+  },
+  "diamondAxe":{
+    "result":  "bedres:diamond_axeUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:diamond_axe"
+    ]
+  },
+  "goldAxe":{
+    "result":"bedres:golden_axeUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:golden_axe"
+    ]
+  },
+  "ironAxe":{
+    "result":"bedres:iron_axeUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:iron_axe"
+    ]
+  },
+  "stoneAxe":{
+    "result":"bedres:stone_axeUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:stone_axe"
+    ]
+  },
+  "woodenAxe":{
+    "result":"bedres:wooden_axeUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:wooden_axe"
+    ]
+  },
+  "diamondShovel":{
+    "result":  "bedres:diamond_shovelUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:diamond_shovel"
+    ]
+  },
+  "goldShovel":{
+    "result":"bedres:golden_shovelUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:golden_shovel"
+    ]
+  },
+  "ironShovel":{
+    "result":"bedres:iron_shovelUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:iron_shovel"
+    ]
+  },
+  "stoneShovel":{
+    "result":"bedres:stone_shovelUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:stone_shovel"
+    ]
+  },
+  "woodenShovel":{
+    "result":"bedres:wooden_shovelUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:wooden_shovel"
+    ]
+  },
+  "diamondSword":{
+    "result":  "bedres:diamond_swordUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:diamond_sword"
+    ]
+  },
+  "goldSword":{
+    "result":"bedres:golden_swordUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:golden_sword"
+    ]
+  },
+  "ironSword":{
+    "result":"bedres:iron_swordUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:iron_sword"
+    ]
+  },
+  "stoneSword":{
+    "result":"bedres:stone_swordUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:stone_sword"
+    ]
+  },
+  "woodenSword":{
+    "result":"bedres:wooden_swordUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:wooden_sword"
+    ]
+  },
+  "diamondHoe":{
+    "result":  "bedres:diamond_hoeUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:diamond_hoe"
+    ]
+  },
+  "clearAll":{
+    "result":  "bedres:na_stickUpgrade",
+    "pattern": [
+      "wwwpwww",
+      "w  w  w",
+      "w rwr w",
+      "pww wwp",
+      "w rwr w",
+      "w  w  w",
+      "wwwpwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "p=minecraft:stick"
+    ]
+  },
+  "speedUpgrade":{
+    "result":  "bedres:speedUpgrade",
+    "pattern": [
+      "wwwbwww",
+      "w  w  w",
+      "w rwr w",
+      "aww wwc",
+      "w rwr w",
+      "w  w  w",
+      "wwwdwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "a=minecraft:sugar",
+      "b=minecraft:cookie",
+      "c=bedres:fluxed_cupcake",
+      "d=minecraft:redstone"
+    ]
+  },
+  "jumpUpgrade":{
+    "result":  "bedres:jumpUpgrade",
+    "pattern": [
+      "wwwbwww",
+      "w  w  w",
+      "w rwr w",
+      "aww wwa",
+      "w rwr w",
+      "w  w  w",
+      "wwwbwww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "r=bedres:enderian_ingot",
+      "a=minecraft:rabbit_foot",
+      "b=minecraft:piston"
+    ]
+  }
+}

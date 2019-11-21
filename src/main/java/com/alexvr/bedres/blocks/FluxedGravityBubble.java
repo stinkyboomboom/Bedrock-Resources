@@ -48,11 +48,7 @@ public class FluxedGravityBubble extends Block{
         if (!worldIn.isRemote() && (worldIn.getTileEntity(pos)) instanceof FluxedGravityBubbleTile) {
             FluxedGravityBubbleTile tile = (FluxedGravityBubbleTile) worldIn.getTileEntity(pos);
             if (player.getHeldItemMainhand().getItem() instanceof ScrapeKnife) {
-                System.out.println("knife");
-                System.out.println(tile.render);
                 tile.render = !tile.render;
-                System.out.println(tile.render);
-                System.out.println();
                 tile.markDirty();
                 tile.sendUpdates();
             }
@@ -65,7 +61,6 @@ public class FluxedGravityBubble extends Block{
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (!worldIn.isRemote() && (worldIn.getTileEntity(pos)) instanceof  FluxedGravityBubbleTile) {
             FluxedGravityBubbleTile tile = (FluxedGravityBubbleTile) worldIn.getTileEntity(pos);
-            System.out.println(hit.getFace());
                 switch (hit.getFace()) {
                     case DOWN://y
                         if (player.isSneaking() && tile.yDist <= tile.maxyDist && tile.yDist > 1) {
