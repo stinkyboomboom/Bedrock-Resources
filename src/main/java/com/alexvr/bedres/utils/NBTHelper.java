@@ -90,9 +90,10 @@ public class NBTHelper {
         }
         if(!nbt.contains(key)) {
             nbt.putInt(key,0);
-        }else {
-            nbt.putInt(key, nbt.getInt(key)+amount);
         }
+
+        nbt.putInt(key, nbt.getInt(key)+amount);
+
         stack.setTag(nbt);
 
     }

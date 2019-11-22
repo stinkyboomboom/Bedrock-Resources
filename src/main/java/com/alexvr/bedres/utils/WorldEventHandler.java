@@ -38,6 +38,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -357,10 +358,14 @@ public class WorldEventHandler {
                             if (iPlayerAbility.getRitualCraftingResult().contains("stickUpgrade")) {
                                 iPlayerAbility.clear();
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("dayUpgrade")) {
-                                event.player.world.getWorldInfo().setGameTime(100);
+                                for(ServerWorld serverworld :  event.player.getServer().getWorlds()) {
+                                    serverworld.setDayTime(1000);
+                                }
                                 flux.fill(10);
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("nightUpgrade")) {
-                                event.player.world.setGameTime(13000);
+                                for(ServerWorld serverworld :  event.player.getServer().getWorlds()) {
+                                    serverworld.setDayTime(13000);
+                                }
                                 flux.fill(10);
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("clearrainUpgrade")) {
                                 event.player.world.getWorldInfo().setRaining(false);

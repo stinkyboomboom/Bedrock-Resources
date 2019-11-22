@@ -4,7 +4,7 @@
   "item.bedres.scrape_knife": "Scraping Knife",
   "item.bedres.flux_oracle": "Flux Oracle",
   "item.bedres.enderian_ingot": "Enderian Ingot",
-  "item.bedres.fire_staff": "Fire Staff",
+  "item.bedres.fire_staff": "Gravity Staff",
   "item.bedres.scraper_mesh": "Scraper Mesh",
   "item.bedres.fluxed_cupcake": "Fluxed Cupcake",
   "item.bedres.fluxed_creep_egg": "Fluxed Creep Spawn Egg",
@@ -40,6 +40,7 @@
   "block.bedres.fluxed_spores": "Fluxed Spores",
   "block.bedres.fluxed_gravity_bubble": "Fluxed Gravity Bubble",
   "block.bedres.bedrock_compressed_wire": "Bedrock Compressed Wire",
+  "block.bedres.void_tears": "Void Tears",
 
 
   "_comment": "Biomes",

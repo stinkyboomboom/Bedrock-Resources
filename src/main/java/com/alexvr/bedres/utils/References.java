@@ -55,6 +55,7 @@ public class References {
     public static final String FLUXED_GRAVITY_BUBBLE_REGNAME = "fluxed_gravity_bubble";
     public static final String RANGE_VIEW_REGNAME = "range_view";
     public static final String BEDROCK_COMPRESSED_WIRE_REGNAME = "bedrock_compressed_wire";
+    public static final String VOID_TEAR_REGNAME = "void_tears";
 
 
 }

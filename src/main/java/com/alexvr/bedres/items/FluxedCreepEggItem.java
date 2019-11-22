@@ -24,7 +24,6 @@ public class FluxedCreepEggItem extends Item {
 
     public FluxedCreepEggItem() {
         super(new Item.Properties()
-                .maxStackSize(1)
                 .group(BedrockResources.setup.itemgroup));
         setRegistryName(References.FLUXED_CREEP_EGG_REGNAME);
     }

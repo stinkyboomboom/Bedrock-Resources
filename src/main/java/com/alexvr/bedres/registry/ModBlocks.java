@@ -132,6 +132,9 @@ public class ModBlocks {
     @ObjectHolder(BedrockResources.MODID+ ":"+References.BEDROCK_COMPRESSED_WIRE_REGNAME)
     public static BedrockCompressedWireBlock bedrockCompressedWireBlock;
 
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.VOID_TEAR_REGNAME)
+    public static VoidTears voidTears;
+
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {

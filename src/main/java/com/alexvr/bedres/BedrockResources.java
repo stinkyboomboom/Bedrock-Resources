@@ -127,6 +127,7 @@ public class BedrockResources {
             event.getRegistry().register(new FluxedGravityBubble());
             event.getRegistry().register(new RangeView());
             event.getRegistry().register(new BedrockCompressedWireBlock());
+            event.getRegistry().register(new VoidTears());
         }
 
         @SubscribeEvent
@@ -162,6 +163,7 @@ public class BedrockResources {
             event.getRegistry().register( new BlockItem(ModBlocks.fluxedSpores,properties).setRegistryName(References.FLUXED_SPORES_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.fluxedGravityBubble,properties).setRegistryName(References.FLUXED_GRAVITY_BUBBLE_REGNAME));
             event.getRegistry().register( new BlockItem(ModBlocks.bedrockCompressedWireBlock,properties).setRegistryName(References.BEDROCK_COMPRESSED_WIRE_REGNAME));
+            event.getRegistry().register( new BlockItem(ModBlocks.voidTears,properties).setRegistryName(References.VOID_TEAR_REGNAME));
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new FluxedCreepEggItem());

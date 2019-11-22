@@ -60,16 +60,16 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
         ArrayList GRAVITYBUBBLE = new ArrayList() {{
 
-            add(new ItemStack(ModBlocks.fluxedGravityBubble));
+            add(new ItemStack(ModBlocks.voidTears));
             add(new ArrayList<String>() {{
 
-                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
-                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
-                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
-                add(ModItems.enderianIngot.getRegistryName().toString());
+                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
 
             }});

@@ -475,8 +475,8 @@
     ],
     "key": [
       "w=bedres:bedrock_scrapes",
-      "b=minecraft:glowstone",
-      "s=bedres:sun_daize"
+      "b=bedres:sun_daize",
+      "s=minecraft:glowstone"
     ]
   }
 }

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:entity",
+  "pools":
+  [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries":
+      [
+        {
+          "type": "minecraft:item",
+          "functions":
+          [
+            {
+              "function": "minecraft:set_count",
+              "count":
+              {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "name": "bedres:void_tears"
+        }
+      ]
+    }
+  ]
+}
