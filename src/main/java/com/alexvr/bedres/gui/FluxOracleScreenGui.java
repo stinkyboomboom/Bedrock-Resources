@@ -454,8 +454,16 @@ public class FluxOracleScreenGui extends Screen {
             drawString(minecraft.fontRenderer,"Recipes:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/8),1111111);
             drawString(minecraft.fontRenderer,"Item A - Item B - Item C -> Output",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/4), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/8),1111111);
 
+            drawString(minecraft.fontRenderer,"Magenta Panes - Compressed Wire - Void Tears -> 1 Gravity Bubble",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
+                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8  ,1111111);
+            renderInfusingItems(new ItemStack(Items.MAGENTA_STAINED_GLASS_PANE),new ItemStack(ModBlocks.bedrockCompressedWireBlock),new ItemStack(ModBlocks.voidTears),new ItemStack(ModBlocks.fluxedGravityBubble),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
+                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8);
+
+
             drawString(minecraft.fontRenderer,"Gold Ingots - Gold Blocks - Ender Pearl -> 8 Item Platforms",
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/5),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
                     (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/12)  ,1111111);
             renderInfusingItems(new ItemStack(Items.GOLD_INGOT),new ItemStack(Blocks.GOLD_BLOCK),new ItemStack(Items.ENDER_PEARL),new ItemStack(ModBlocks.itemPlatform),
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
@@ -475,10 +483,10 @@ public class FluxOracleScreenGui extends Screen {
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
                     (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16);
 
-            drawString(minecraft.fontRenderer,"Magenta Panes - Compressed Wire - Void Tears -> 1 Gravity Bubble",
+            drawString(minecraft.fontRenderer,"Blazium - Void Tears - Gold Block -> 1 Gravity Staff",
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
                     ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8  ,1111111);
-            renderInfusingItems(new ItemStack(Items.MAGENTA_STAINED_GLASS_PANE),new ItemStack(ModBlocks.bedrockCompressedWireBlock),new ItemStack(ModBlocks.voidTears),new ItemStack(ModBlocks.fluxedGravityBubble),
+            renderInfusingItems(new ItemStack(ModBlocks.blazium),new ItemStack(ModBlocks.voidTears),new ItemStack(Blocks.GOLD_BLOCK),new ItemStack(ModItems.staff),
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
                     ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8);
 

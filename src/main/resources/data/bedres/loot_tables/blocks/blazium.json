@@ -36,6 +36,18 @@
             }
           ],
           "name": "minecraft:blaze_powder"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "item": "minecraft:shears"
+              }
+            }
+          ],
+          "name": "bedres:blazium"
         }
       ],
       "conditions": [

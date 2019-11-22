@@ -60,23 +60,44 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
 
         ArrayList GRAVITYBUBBLE = new ArrayList() {{
 
-            add(new ItemStack(ModBlocks.voidTears));
+            add(new ItemStack(ModBlocks.fluxedGravityBubble));
             add(new ArrayList<String>() {{
 
-                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
+                add(ModBlocks.bedrockCompressedWireBlock.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
-                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
+                add(ModBlocks.bedrockCompressedWireBlock.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
-                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
+                add(ModBlocks.bedrockCompressedWireBlock.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
-                add(ModBlocks.fluxedGravityBubble.getRegistryName().toString());
+                add(ModBlocks.bedrockCompressedWireBlock.getRegistryName().toString());
                 add(Items.MAGENTA_STAINED_GLASS_PANE.getRegistryName().toString());
 
             }});
-            add(ModBlocks.bedrockCompressedWireBlock.getRegistryName().toString());
+            add(ModBlocks.voidTears.getRegistryName().toString());
 
 
         }};
+
+        ArrayList GRAVITYSTAFF = new ArrayList() {{
+
+            add(new ItemStack(ModItems.staff));
+            add(new ArrayList<String>() {{
+
+                add(ModBlocks.voidTears.getRegistryName().toString());
+                add(ModBlocks.blazium.getRegistryName().toString());
+                add(ModBlocks.voidTears.getRegistryName().toString());
+                add(ModBlocks.blazium.getRegistryName().toString());
+                add(ModBlocks.voidTears.getRegistryName().toString());
+                add(ModBlocks.blazium.getRegistryName().toString());
+                add(ModBlocks.voidTears.getRegistryName().toString());
+                add(ModBlocks.blazium.getRegistryName().toString());
+
+            }});
+            add(Blocks.GOLD_BLOCK.getRegistryName().toString());
+
+
+        }};
+
         ArrayList EINGOT = new ArrayList() {{
 
             add(new ItemStack(ModItems.enderianIngot,8));
@@ -140,6 +161,7 @@ public class BedrockiumPedestalTile extends TileEntity implements ITickableTileE
         RECEPI.add(ITEMPLATFORM);
         RECEPI.add(MOTOR);
         RECEPI.add(GRAVITYBUBBLE);
+        RECEPI.add(GRAVITYSTAFF);
     }
 
     @Override
