@@ -410,5 +410,73 @@
       "a=minecraft:rabbit_foot",
       "b=minecraft:piston"
     ]
+  },
+  "rainUpgrade":{
+    "result":  "bedres:rainUpgrade",
+    "pattern": [
+      "ww b ww",
+      "wswwwsw",
+      " w w w ",
+      "bww wwb",
+      " w w w ",
+      "wswwwsw",
+      "ww b ww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "b=minecraft:water_bucket",
+      "s=minecraft:kelp"
+    ]
+  },
+  "clearrainUpgrade":{
+  "result":  "bedres:clearrainUpgrade",
+  "pattern": [
+    "ww b ww",
+    "wswwwsw",
+    " w w w ",
+    "bww wwb",
+    " w w w ",
+    "wswwwsw",
+    "ww b ww"
+  ],
+  "key": [
+    "w=bedres:bedrock_scrapes",
+    "b=minecraft:bucket",
+    "s=minecraft:dried_kelp"
+    ]
+  },
+  "nightUpgrade":{
+    "result":  "bedres:nightUpgrade",
+    "pattern": [
+      "ww b ww",
+      "wswwwsw",
+      " w w w ",
+      "bww wwb",
+      " w w w ",
+      "wswwwsw",
+      "ww b ww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "b=bedres:decaying_fluxed_sappling",
+      "s=minecraft:ink_sac"
+    ]
+  },
+  "dayUpgrade":{
+    "result":  "bedres:dayUpgrade",
+    "pattern": [
+      "ww b ww",
+      "wswwwsw",
+      " w w w ",
+      "bww wwb",
+      " w w w ",
+      "wswwwsw",
+      "ww b ww"
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "b=minecraft:glowstone",
+      "s=bedres:sun_daize"
+    ]
   }
 }

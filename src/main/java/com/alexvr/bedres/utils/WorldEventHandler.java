@@ -310,7 +310,21 @@ public class WorldEventHandler {
                 if (iPlayerAbility.getRitualTimer()%(ticksPerItemRitual+0.0) == 0){
                     iPlayerAbility.getListOfPedestals().get(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (h.getStackInSlot(0) != ItemStack.EMPTY) {
-                            h.extractItem(0,1, false);
+                            if (h.getStackInSlot(0).getItem() == Items.WATER_BUCKET){
+                                h.extractItem(0,1, false);
+                                h.insertItem(0,new ItemStack(Items.BUCKET),false);
+                            }else if (h.getStackInSlot(0).getItem() == Items.BUCKET && iPlayerAbility.getRitualCraftingResult().contains("clearrainUpgrade")){
+                                h.extractItem(0,1, false);
+                                h.insertItem(0,new ItemStack(Items.WATER_BUCKET),false);
+                            }else if (h.getStackInSlot(0).getItem() == Items.DRIED_KELP && iPlayerAbility.getRitualCraftingResult().contains("clearrainUpgrade")){
+                                h.extractItem(0,1, false);
+                                h.insertItem(0,new ItemStack(Items.KELP),false);
+                            }else if (h.getStackInSlot(0).getItem() == Items.KELP && iPlayerAbility.getRitualCraftingResult().contains("rainUpgrade")){
+                                h.extractItem(0,1, false);
+                                h.insertItem(0,new ItemStack(Items.DRIED_KELP),false);
+                            }else {
+                                h.extractItem(0, 1, false);
+                            }
                             ( iPlayerAbility.getListOfPedestals().get(0)).markDirty();
                             ( iPlayerAbility.getListOfPedestals().get(0)).sendUpdates();
                         }
@@ -342,7 +356,18 @@ public class WorldEventHandler {
                         if (iPlayerAbility.getRitualCraftingResult().contains("Upgrade")) {
                             if (iPlayerAbility.getRitualCraftingResult().contains("stickUpgrade")) {
                                 iPlayerAbility.clear();
-                            } else if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
+                            }else if (iPlayerAbility.getRitualCraftingResult().contains("dayUpgrade")) {
+                                event.player.world.getWorldInfo().setGameTime(100);
+                                flux.fill(10);
+                            }else if (iPlayerAbility.getRitualCraftingResult().contains("nightUpgrade")) {
+                                event.player.world.setGameTime(13000);
+                                flux.fill(10);
+                            }else if (iPlayerAbility.getRitualCraftingResult().contains("clearrainUpgrade")) {
+                                event.player.world.getWorldInfo().setRaining(false);
+                            }else if (iPlayerAbility.getRitualCraftingResult().contains("rainUpgrade")) {
+                                event.player.world.getWorldInfo().setRaining(true);
+                                flux.fill(10);
+                            }else if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
                                 if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
                                     if (checkForMin("pick",iPlayerAbility,flux) >= 0){
                                         flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
