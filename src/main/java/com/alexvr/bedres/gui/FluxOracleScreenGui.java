@@ -50,6 +50,7 @@ public class FluxOracleScreenGui extends Screen {
     private boolean cupcake = false;
     private boolean compressed = false;
     private boolean gravityBubble = false;
+    private boolean staff = false;
 
     double xOffset = 0, yOffset =0;
     double mouseX = 0, mouseY =0;
@@ -112,7 +113,7 @@ public class FluxOracleScreenGui extends Screen {
     @Override
     protected void init() {
 
-        back = new ImageButton(15+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-48)),32,32,0,0,0,
+        back = new ImageButton(((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/18), ((Minecraft.getInstance().mainWindow.getScaledHeight()-48)),32,32,0,0,0,
                 new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/back.png"),32,32, (button) -> {
             xOffset=0;
             yOffset=5;
@@ -138,7 +139,7 @@ public class FluxOracleScreenGui extends Screen {
             }
         });
 
-        next = new ImageButton(76+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-48)),32,32,0,0,0,
+        next = new ImageButton(((Minecraft.getInstance().mainWindow.getScaledWidth()-64)), ((Minecraft.getInstance().mainWindow.getScaledHeight()-48)),32,32,0,0,0,
                 new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/next.png"),32,32, (button) -> {
             if (altar){
                 changePage("altar2");
@@ -278,6 +279,12 @@ public class FluxOracleScreenGui extends Screen {
                 }
             }));
 
+            add(new ImageButton((int)xOffset+305+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+173+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/fire_staff.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("staff");
+                }
+            }));
 
             add(next);
             add(back);
@@ -318,6 +325,7 @@ public class FluxOracleScreenGui extends Screen {
         cupcake = false;
         compressed = false;
         gravityBubble = false;
+        staff = false;
 
         switch(name){
             case "main":
@@ -395,6 +403,9 @@ public class FluxOracleScreenGui extends Screen {
             case "gravityBubble":
                 gravityBubble=true;
                 break;
+            case "staff":
+                staff=true;
+                break;
             default:
                 main = true;
                 break;
@@ -455,41 +466,40 @@ public class FluxOracleScreenGui extends Screen {
             drawString(minecraft.fontRenderer,"Item A - Item B - Item C -> Output",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/4), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/8),1111111);
 
             drawString(minecraft.fontRenderer,"Magenta Panes - Compressed Wire - Void Tears -> 1 Gravity Bubble",
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8  ,1111111);
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)-8  ,1111111);
             renderInfusingItems(new ItemStack(Items.MAGENTA_STAINED_GLASS_PANE),new ItemStack(ModBlocks.bedrockCompressedWireBlock),new ItemStack(ModBlocks.voidTears),new ItemStack(ModBlocks.fluxedGravityBubble),
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8);
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)-8);
 
 
             drawString(minecraft.fontRenderer,"Gold Ingots - Gold Blocks - Ender Pearl -> 8 Item Platforms",
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/12)  ,1111111);
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/10)  ,1111111);
             renderInfusingItems(new ItemStack(Items.GOLD_INGOT),new ItemStack(Blocks.GOLD_BLOCK),new ItemStack(Items.ENDER_PEARL),new ItemStack(ModBlocks.itemPlatform),
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/12));
-
-            drawString(minecraft.fontRenderer,"Obsidian - Ender Pearl - Gold Ingot -> 8 Enderian Ingots",
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)-12  ,1111111);
-            renderInfusingItems(new ItemStack(Blocks.OBSIDIAN),new ItemStack(Items.ENDER_PEARL),new ItemStack(Items.GOLD_INGOT),new ItemStack(ModItems.enderianIngot),
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)-12);
-
-            drawString(minecraft.fontRenderer,"Enderian Ingot - Enderian Block - Scraper Mesh -> 1 Scraper Motor",
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16  ,1111111);
-            renderInfusingItems(new ItemStack(ModItems.enderianIngot),new ItemStack(ModBlocks.enderianBlock),new ItemStack(ModItems.mesh),new ItemStack(ModBlocks.motor),
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+16);
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/10));
 
             drawString(minecraft.fontRenderer,"Blazium - Void Tears - Gold Block -> 1 Gravity Staff",
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8  ,1111111);
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)  ,1111111);
             renderInfusingItems(new ItemStack(ModBlocks.blazium),new ItemStack(ModBlocks.voidTears),new ItemStack(Blocks.GOLD_BLOCK),new ItemStack(ModItems.staff),
-                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/6),
-                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)-8);
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2));
 
+            drawString(minecraft.fontRenderer,"Obsidian - Ender Pearl - Gold Ingot -> 8 Enderian Ingots",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/5)-12  ,1111111);
+            renderInfusingItems(new ItemStack(Blocks.OBSIDIAN),new ItemStack(Items.ENDER_PEARL),new ItemStack(Items.GOLD_INGOT),new ItemStack(ModItems.enderianIngot),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/5)-12);
+
+            drawString(minecraft.fontRenderer,"Enderian Ingot - Enderian Block - Scraper Mesh -> 1 Scraper Motor",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+8  ,1111111);
+            renderInfusingItems(new ItemStack(ModItems.enderianIngot),new ItemStack(ModBlocks.enderianBlock),new ItemStack(ModItems.mesh),new ItemStack(ModBlocks.motor),
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/9),
+                    (((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2)+ (Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4 )+8);
 
         }else if (scraper){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
@@ -640,7 +650,14 @@ public class FluxOracleScreenGui extends Screen {
             drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
                     new ResourceLocation("bedres", "textures/gui/widget/fluxed_gravity_bubble.png"));
             drawString(minecraft.fontRenderer,"Fluxed Gravity Bubble:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
-            String s = "By combining the bedrock compressed wire with some enderian ingots and magenta panes I seem to be able to create a bubble that can let me control gravity in a defined area. Left clicking with a knife will allow me to see the area of effect, right clicking with anything else will enlarge the area in the direction of the face you clicked (north/south is the Z axis and east/west the X axis) and shift right click will decrease in the same manner. Maybe if i research i can find a way to make the field upgradable (upgrades WIP).";
+            String s = "By combining the bedrock compressed wire with some Void Tears from the creatures of the fluxed biome and magenta glass panes I seem to be able to create a bubble that can let me control gravity in a defined area, also it seems to prevent fall damage to a degree in its radius, around 150 block drop by default. Left clicking with a knife will allow me to see the area of effect, right clicking with anything else will enlarge the area in the direction of the face you clicked (north/south is the Z axis and east/west the X axis) and shift right click will decrease in the same manner. Maybe if i research i can find a way to make the field upgradable (upgrades WIP).";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (staff){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/gui/widget/fire_staff.png"));
+            drawString(minecraft.fontRenderer,"Gravity Staff:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "By combining Void Tears from the creatures of the fluxed biome with some blazium and a gold block I seem to be able to create a staff that can let me control gravity to a certain degree. When activated it seems to ocacionally infuse some flux into me but it seems to be very small, after using it for a while i get hungry, and week and i cant activate it again until it passes. Regardless when its activated my vertical velocity is suspended and the height i had fallen is reduced by half (damage wise), significantly diminishing the damaged i would have taken. ";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }
 
