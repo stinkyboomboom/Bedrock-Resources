@@ -2,6 +2,7 @@ package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.Config;
+import com.alexvr.bedres.blocks.decayingfluxedblocks.DFBase;
 import com.alexvr.bedres.blocks.tiles.EnderianRitualPedestalTile;
 import com.alexvr.bedres.capability.abilities.IPlayerAbility;
 import com.alexvr.bedres.capability.abilities.PlayerAbilityProvider;
@@ -88,7 +89,6 @@ public class WorldEventHandler {
     }
 
     static ArrayList RECEPI = RitualCrafting.generateRecipes();
-
 
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent event){
@@ -240,7 +240,6 @@ public class WorldEventHandler {
         }
         return min;
     }
-
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
@@ -635,6 +634,8 @@ public class WorldEventHandler {
                                     break;
                                 case 2:
                                     event.player.world.setBlockState(player.getPosition(),Blocks.FIRE.getDefaultState());
+                                    transformArea(event.player.world,event.player.getPosition(),5);
+
                                     break;
                                 case 3:
                                     player.addPotionEffect(new EffectInstance(Effects.POISON,160,3));
@@ -661,7 +662,7 @@ public class WorldEventHandler {
                                     event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
                                     break;
                                 case 4:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfCobble.getDefaultState());
+                                    transformArea(event.player.world,event.player.getPosition(),10);
                                     break;
                                 case 5:
                                     player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,2));
@@ -691,7 +692,7 @@ public class WorldEventHandler {
                                     event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
                                     break;
                                 case 4:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfCobble.getDefaultState());
+                                    transformArea(event.player.world,event.player.getPosition(),15);
                                     break;
                                 case 5:
                                     player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,3));
@@ -723,7 +724,7 @@ public class WorldEventHandler {
                                     event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
                                     break;
                                 case 4:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfCobble.getDefaultState());
+                                    transformArea(event.player.world,event.player.getPosition(),20);
                                     break;
                                 case 5:
                                     player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,5));
@@ -749,6 +750,17 @@ public class WorldEventHandler {
             }
         });
 
+    }
+
+    private static void transformArea(World world,BlockPos pos, int radius){
+        for (int x =-radius;x<=radius;x++){
+            for (int y =-radius;y<=radius;y++){
+                for (int z =-radius;z<=radius;z++){
+                    BlockPos position =(pos.north(x).up(y).west(z));
+                    DFBase.transform(world,position);
+                }
+            }
+        }
     }
 
 

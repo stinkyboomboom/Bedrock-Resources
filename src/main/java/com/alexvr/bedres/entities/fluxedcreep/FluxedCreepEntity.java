@@ -36,7 +36,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
 
     public FluxedCreepEntity(EntityType<? extends FluxedCreepEntity> p_i50206_1_, World p_i50206_2_) {
         super(p_i50206_1_, p_i50206_2_);
-        this.experienceValue = 5;
+        this.experienceValue = 8;
         this.moveController = new FluxedCreepEntity.MoveHelperController(this);
     }
 

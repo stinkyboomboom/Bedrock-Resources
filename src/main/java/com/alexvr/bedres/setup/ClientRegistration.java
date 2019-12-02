@@ -13,6 +13,7 @@ public class ClientRegistration {
     @SubscribeEvent
     public static void onItemColor(ColorHandlerEvent.Item event) {
         event.getItemColors().register((stack, i) -> 0x9e61d8, ModItems.fluxedCreepEggItem);
+        event.getItemColors().register((stack, i) -> 0x9e61d8, ModItems.sporeDeityEggItem);
     }
 
 

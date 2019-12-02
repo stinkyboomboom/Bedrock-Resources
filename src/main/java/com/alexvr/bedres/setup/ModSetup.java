@@ -2,6 +2,8 @@ package com.alexvr.bedres.setup;
 
 import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepEntity;
 import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepRenderer;
+import com.alexvr.bedres.entities.sporedeity.SporeDeityEntity;
+import com.alexvr.bedres.entities.sporedeity.SporeDeityRenderer;
 import com.alexvr.bedres.network.Networking;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.RenderFactory;
@@ -39,6 +41,7 @@ public class ModSetup {
         RenderingRegistry.registerEntityRenderingHandler(SquidEntity.class, new RenderFactory("squid"));
         RenderingRegistry.registerEntityRenderingHandler(WitchEntity.class, new RenderFactory("witch"));
         RenderingRegistry.registerEntityRenderingHandler(FluxedCreepEntity.class, FluxedCreepRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(SporeDeityEntity.class, SporeDeityRenderer::new);
     }
 
 }

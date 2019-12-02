@@ -9,6 +9,7 @@ import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperSlaveB
 import com.alexvr.bedres.blocks.tiles.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
 import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepEntity;
+import com.alexvr.bedres.entities.sporedeity.SporeDeityEntity;
 import com.alexvr.bedres.items.*;
 import com.alexvr.bedres.registry.ModBiomes;
 import com.alexvr.bedres.registry.ModBlocks;
@@ -167,6 +168,7 @@ public class BedrockResources {
             event.getRegistry().register(new ScrapeKnife());
             event.getRegistry().register(new ScraperMesh());
             event.getRegistry().register(new FluxedCreepEggItem());
+            event.getRegistry().register(new SporeDeityEggItem());
             event.getRegistry().register(new Staff());
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());
@@ -204,6 +206,14 @@ public class BedrockResources {
                     .build(References.FLUXED_CREEP_REGNAME);
             ModEntities.FLUXED_CREEP.setRegistryName(References.FLUXED_CREEP_REGNAME);
             ForgeRegistries.ENTITIES.register(ModEntities.FLUXED_CREEP);
+
+            ModEntities.sporeDeityEntityEntityType = EntityType.Builder.create(SporeDeityEntity::new, EntityClassification.MONSTER)
+                    .size(1, 2).immuneToFire()
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build(References.SPORE_DEITY_REGNAME);
+            ModEntities.sporeDeityEntityEntityType.setRegistryName(References.SPORE_DEITY_REGNAME);
+            ForgeRegistries.ENTITIES.register(ModEntities.sporeDeityEntityEntityType);
+
 
         }
 

@@ -56,49 +56,56 @@ public class DFBase extends Block {
                     break;
             }
 
-            if (worldIn.getBlockState(postition).getBlock() == Blocks.GRASS_BLOCK){
-                System.out.println("grass");
-                worldIn.setBlockState(postition, ModBlocks.dfGrass.getDefaultState());
-                particle(postition);
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.DIRT){
-                System.out.println("dirt");
-                worldIn.setBlockState(postition, ModBlocks.dfDirt.getDefaultState());
-                particle(postition);
+            transform(worldIn,postition);
 
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.COBBLESTONE){
-                System.out.println("cobble");
-                worldIn.setBlockState(postition, ModBlocks.dfCobble.getDefaultState());
-                particle(postition);
 
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_LOG){
-                System.out.println("oak");
-                worldIn.setBlockState(postition, ModBlocks.dfOakLog.getDefaultState());
-                particle(postition);
-
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_PLANKS){
-                System.out.println("plank");
-                worldIn.setBlockState(postition, ModBlocks.dfOakPlanks.getDefaultState());
-                particle(postition);
-
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_LEAVES){
-                System.out.println("leaves");
-                worldIn.setBlockState(postition, ModBlocks.dfOakLeave.getDefaultState());
-                particle(postition);
-
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_SLAB){
-                System.out.println("slab");
-                worldIn.setBlockState(postition, ModBlocks.dfOakSlabs.getDefaultState());
-                particle(postition);
-
-            }else if (worldIn.getBlockState(postition).getBlock() == Blocks.STRIPPED_OAK_LOG){
-                System.out.println("stripped");
-                worldIn.setBlockState(postition, ModBlocks.dfOakStrippedLog.getDefaultState());
-                particle(postition);
-            }
         }
     }
 
-    static void particle(BlockPos pos){
+    public static void transform(World worldIn, BlockPos postition) {
+        if (worldIn.getBlockState(postition).getBlock() == Blocks.GRASS_BLOCK){
+            System.out.println("grass");
+            worldIn.setBlockState(postition, ModBlocks.dfGrass.getDefaultState());
+            particle(postition);
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.DIRT){
+            System.out.println("dirt");
+            worldIn.setBlockState(postition, ModBlocks.dfDirt.getDefaultState());
+            particle(postition);
+
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.COBBLESTONE){
+            System.out.println("cobble");
+            worldIn.setBlockState(postition, ModBlocks.dfCobble.getDefaultState());
+            particle(postition);
+
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_LOG){
+            System.out.println("oak");
+            worldIn.setBlockState(postition, ModBlocks.dfOakLog.getDefaultState());
+            particle(postition);
+
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_PLANKS){
+            System.out.println("plank");
+            worldIn.setBlockState(postition, ModBlocks.dfOakPlanks.getDefaultState());
+            particle(postition);
+
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_LEAVES){
+            System.out.println("leaves");
+            worldIn.setBlockState(postition, ModBlocks.dfOakLeave.getDefaultState());
+            particle(postition);
+
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.OAK_SLAB){
+            System.out.println("slab");
+            worldIn.setBlockState(postition, ModBlocks.dfOakSlabs.getDefaultState());
+            particle(postition);
+
+        }else if (worldIn.getBlockState(postition).getBlock() == Blocks.STRIPPED_OAK_LOG){
+            System.out.println("stripped");
+            worldIn.setBlockState(postition, ModBlocks.dfOakStrippedLog.getDefaultState());
+            particle(postition);
+        }
+    }
+
+
+        static void particle(BlockPos pos){
         int multiplier = 0;
         for (int i =0; i< 16; i++){
             Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,true,pos.getX()+0.5f-(new Random().nextFloat()-0.5),pos.getY()+1,pos.getZ()+0.5f-(new Random().nextFloat()-0.5),new Random().nextFloat()*multiplier,new Random().nextFloat()*multiplier,new Random().nextFloat()*multiplier);

@@ -27,4 +27,7 @@ public class ModItems {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.FLUXED_CREEP_EGG_REGNAME)
     public static FluxedCreepEggItem fluxedCreepEggItem;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.SPORE_DEITY_EGG_REGNAME)
+    public static SporeDeityEggItem sporeDeityEggItem;
 }

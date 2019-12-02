@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -74,6 +75,37 @@ public class RendererHelper {
         net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
         long i = blockTexture.getPositionRandom(te.getPos());
         dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(), bufferBuilder, true,new Random(),i);
+        tessellator.draw();
+
+        GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+
+        GlStateManager.popMatrix();
+    }
+
+    public static void drawCubeAt(BlockState blockTexture, World world, LivingEntity entity, double xtranslate, double ytranslate, double ztranslate, double xScale, double yScale, double zScale, boolean rotate, double xrotation, double yrotation, double zrotation, int rotationSpeed) {
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translated(xtranslate,ytranslate,ztranslate);
+        GlStateManager.scaled(xScale,yScale,zScale);
+        if(rotate) {
+
+            long angle = (System.currentTimeMillis() / rotationSpeed) %360;
+            GlStateManager.rotated(angle, xrotation, yrotation, zrotation);
+        }
+        GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+
+        // Translate back to local view coordinates so that we can do the acual rendering here
+        GlStateManager.translated(-entity.getPosition().getX(), -entity.getPosition().getY(), -entity.getPosition().getZ());
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+        IBakedModel model = dispatcher.getModelForState(blockTexture);
+        net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(world, entity.getPosition());
+        long i = blockTexture.getPositionRandom(entity.getPosition());
+        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, entity.getPosition(), bufferBuilder, true,new Random(),i);
         tessellator.draw();
 
         GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
