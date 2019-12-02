@@ -353,6 +353,7 @@ public class WorldEventHandler {
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                     Minecraft.getInstance().gameSettings.hideGUI = false;
                     Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
+                    Minecraft.getInstance().getSoundHandler().stop(new ResourceLocation(BedrockResources.MODID, "realm_of_fantasy_ritual"),SoundCategory.AMBIENT);
                     LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
                     bedrockFlux.ifPresent(flux -> {
                         if (iPlayerAbility.getRitualCraftingResult().contains("Upgrade")) {
