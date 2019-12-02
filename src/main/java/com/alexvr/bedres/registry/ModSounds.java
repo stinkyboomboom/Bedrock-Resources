@@ -36,6 +36,14 @@ public enum ModSounds {
         ClientProxy.playSound(sound, pitch);
     }
 
+    public void stopSound() {
+        stopSound(1.0F);
+    }
+
+    public void stopSound(float pitch) {
+        ClientProxy.stopSound(sound, pitch);
+    }
+
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
         for (ModSounds sound : values()) {

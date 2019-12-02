@@ -61,6 +61,10 @@ public class ClientProxy implements IProxy{
         Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(sound, pitch));
     }
 
+    public static void stopSound(SoundEvent sound, float pitch) {
+        Minecraft.getInstance().getSoundHandler().stop(SimpleSound.master(sound, pitch));
+    }
+
     @Override
     public World getClientWorld() {
         return Minecraft.getInstance().world;

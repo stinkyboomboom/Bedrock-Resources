@@ -1,8 +1,6 @@
 package com.alexvr.bedres.entities.sporedeity;
 
-import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.registry.ModSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
@@ -13,7 +11,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,7 +63,8 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     public void tick() {
         if (!this.world.isRemote && this.world.getDifficulty() == Difficulty.PEACEFUL) {
-            Minecraft.getInstance().getSoundHandler().stop(new ResourceLocation(BedrockResources.MODID, "into_battle"),SoundCategory.AMBIENT);
+            ModSounds.DEITY_FIGHT.stopSound();
+
         }
         super.tick();
 
@@ -92,7 +94,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     @Override
     public void onDeath(DamageSource cause) {
         super.onDeath(cause);
-        Minecraft.getInstance().getSoundHandler().stop(new ResourceLocation(BedrockResources.MODID, ModSounds.DEITY_FIGHT.name()),SoundCategory.AMBIENT);
+        ModSounds.DEITY_FIGHT.stopSound();
     }
 
     protected void registerAttributes() {
@@ -107,7 +109,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     }
 
     public SoundCategory getSoundCategory() {
-        return SoundCategory.AMBIENT;
+        return SoundCategory.MASTER;
     }
 
     protected SoundEvent getAmbientSound() {
