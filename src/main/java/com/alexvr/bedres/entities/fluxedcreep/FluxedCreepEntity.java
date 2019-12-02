@@ -33,7 +33,6 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
 
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(FluxedCreepEntity.class, DataSerializers.BOOLEAN);
 
-
     public FluxedCreepEntity(EntityType<? extends FluxedCreepEntity> p_i50206_1_, World p_i50206_2_) {
         super(p_i50206_1_, p_i50206_2_);
         this.experienceValue = 8;
@@ -43,8 +42,8 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(5, new FluxedCreepEntity.RandomFlyGoal(this));
         this.goalSelector.addGoal(7, new FluxedCreepEntity.LookAroundGoal(this));
-        this.goalSelector.addGoal(4, new FluxedCreepEntity.FireballAttackGoal(this));
-        this.goalSelector.addGoal(2, new FluxedCreepEntity.AttackGoal(this));
+        this.goalSelector.addGoal(7, new FluxedCreepEntity.FireballAttackGoal(this));
+        this.goalSelector.addGoal(7, new FluxedCreepEntity.AttackGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> {
             return Math.abs(p_213812_1_.posY - this.posY) <= 4.0D;
         }));
@@ -78,17 +77,17 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (source.getImmediateSource() instanceof FireballEntity && source.getTrueSource() instanceof PlayerEntity) {
-            super.attackEntityFrom(source, 1000.0F);
-            return true;
-        } else {
+        }else {
             return super.attackEntityFrom(source, amount);
         }
     }
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(75.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(1.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(1.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(3.0D);
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
     }
 
@@ -296,14 +295,14 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         public void tick() {
             LivingEntity livingentity = this.parentEntity.getAttackTarget();
             double d0 = 64.0D;
-            if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
+            if (livingentity.getDistanceSq(this.parentEntity) > 1028.0D && livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
                 World world = this.parentEntity.world;
                 ++this.attackTimer;
                 if (this.attackTimer == 10) {
                     world.playEvent((PlayerEntity)null, 1015, new BlockPos(this.parentEntity), 0);
                 }
 
-                if (this.attackTimer == 40) {
+                if (this.attackTimer == 20) {
                     double d1 = 4.0D;
                     Vec3d vec3d = this.parentEntity.getLook(1.0F);
                     double d2 = livingentity.posX - (this.parentEntity.posX + vec3d.x * 4.0D);
@@ -351,33 +350,22 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         public void resetTask() {
             this.parentEntity.setAttacking(false);
         }
-
         /**
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
             LivingEntity livingentity = this.parentEntity.getAttackTarget();
-            double d0 = 64.0D;
             if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
-                if (livingentity.getDistanceSq(this.parentEntity)<1){
-                    livingentity.attackEntityFrom(DamageSource.MAGIC,2);
-                }
-                World world = this.parentEntity.world;
-                ++this.attackTimer;
-                if (this.attackTimer == 10) {
-                    world.playEvent((PlayerEntity)null, 1015, new BlockPos(this.parentEntity), 0);
-                }
-
-                if (this.attackTimer == 20) {
-                    BlockPos pos= livingentity.getPosition().offset(livingentity.getHorizontalFacing().getOpposite());
-                    this.parentEntity.getMoveHelper().setMoveTo(pos.getX(), pos.getY()-1, pos.getZ(), 0.7D);
+                if (livingentity.getDistanceSq(this.parentEntity) < 1) {
+                    livingentity.attackEntityFrom(DamageSource.MAGIC, 4);
+                    this.parentEntity.setAttacking(false);
 
                 }
-            } else if (this.attackTimer > 0) {
-                --this.attackTimer;
+                this.parentEntity.setAttacking(true);
+                BlockPos pos = livingentity.getPosition().offset(livingentity.getHorizontalFacing().getOpposite());
+                this.parentEntity.getMoveHelper().setMoveTo(pos.getX(), pos.getY(), pos.getZ(), 25D);
+
             }
-
-            this.parentEntity.setAttacking(this.attackTimer > 10);
         }
     }
 

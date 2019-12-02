@@ -87,7 +87,7 @@ public class BedrockResources {
                 }
         );
         Biome biome = RegistryManager.ACTIVE.getRegistry(Biome.class).getValue(new ResourceLocation(MODID, "df_biome"));
-        biome.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(ModEntities.FLUXED_CREEP,144,1,3));
+        biome.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(ModEntities.FLUXED_CREEP,100,1,3));
 
     }
 

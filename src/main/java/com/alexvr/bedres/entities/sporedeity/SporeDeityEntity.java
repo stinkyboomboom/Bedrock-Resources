@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -14,9 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,6 +26,9 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(SporeDeityEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<String> SUMMONER = EntityDataManager.createKey(SporeDeityEntity.class, DataSerializers.STRING);
+
+    private final ServerBossInfo bossInfo = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
+
 
 
     public SporeDeityEntity(EntityType<? extends SporeDeityEntity> type, World p_i48553_2_) {
@@ -78,8 +80,13 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(1000.0D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(600.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(6.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(4.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+        this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(12.0D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
     }
 
     public SoundCategory getSoundCategory() {
@@ -127,5 +134,24 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
         return 1.75F;
     }
+
+    @Override
+    protected void updateAITasks() {
+        super.updateAITasks();
+        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+    }
+
+    public void addTrackingPlayer(ServerPlayerEntity player) {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    public void removeTrackingPlayer(ServerPlayerEntity player) {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
+    }
+
+    public boolean isNonBoss() {
+        return false;}
 
 }

@@ -8,6 +8,7 @@
   "item.bedres.scraper_mesh": "Scraper Mesh",
   "item.bedres.fluxed_cupcake": "Fluxed Cupcake",
   "item.bedres.fluxed_creep_egg": "Fluxed Creep Spawn Egg",
+  "item.bedres.spore_deity_egg": "Spore Deity Spawn Egg",
 
 
 
@@ -48,6 +49,9 @@
 
   "_comment": "Creative Tab",
   "itemGroup.bedres": "Bedrock Resources",
+
+  "_comment": "Entities",
+  "entity.bedres.spore_deity": "Spore Deity",
 
   "_comment": "Messeges",
   "message.bedres.invalidblock": "Only Bedrock can be scraped",

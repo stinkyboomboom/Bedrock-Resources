@@ -13,7 +13,10 @@ public enum ModSounds {
     FLUXED_CREEP_ROAROG("fluxed_creep_roarog"),
     FLUXED_CREEP_IDLEOG("fluxed_creep_idleog"),
     FLUXED_CREEP_ROAR("fluxed_creep_roar"),
-    FLUXED_CREEP_IDLE("fluxed_creep_idle");
+    FLUXED_CREEP_IDLE("fluxed_creep_idle"),
+    DRAGON_FIGHT("fantasy_forest_dragon_battle"),
+    RITUAL_AMBIENT("realm_of_fantasy_ritual"),
+    DEITY_FIGHT("into_battle");
     private SoundEvent sound;
 
     ModSounds(String name) {
