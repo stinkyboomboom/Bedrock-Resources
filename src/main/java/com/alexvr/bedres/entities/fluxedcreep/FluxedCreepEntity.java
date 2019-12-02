@@ -43,6 +43,8 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(5, new FluxedCreepEntity.RandomFlyGoal(this));
         this.goalSelector.addGoal(7, new FluxedCreepEntity.LookAroundGoal(this));
+        this.goalSelector.addGoal(4, new FluxedCreepEntity.FireballAttackGoal(this));
+        this.goalSelector.addGoal(2, new FluxedCreepEntity.AttackGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> {
             return Math.abs(p_213812_1_.posY - this.posY) <= 4.0D;
         }));
@@ -256,6 +258,126 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
                 }
             }
 
+        }
+    }
+
+    static class FireballAttackGoal extends Goal {
+        private final FluxedCreepEntity parentEntity;
+        public int attackTimer;
+
+        public FireballAttackGoal(FluxedCreepEntity ghast) {
+            this.parentEntity = ghast;
+        }
+
+        /**
+         * Returns whether the EntityAIBase should begin execution.
+         */
+        public boolean shouldExecute() {
+            return this.parentEntity.getAttackTarget() != null;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            this.attackTimer = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void resetTask() {
+            this.parentEntity.setAttacking(false);
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            LivingEntity livingentity = this.parentEntity.getAttackTarget();
+            double d0 = 64.0D;
+            if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
+                World world = this.parentEntity.world;
+                ++this.attackTimer;
+                if (this.attackTimer == 10) {
+                    world.playEvent((PlayerEntity)null, 1015, new BlockPos(this.parentEntity), 0);
+                }
+
+                if (this.attackTimer == 40) {
+                    double d1 = 4.0D;
+                    Vec3d vec3d = this.parentEntity.getLook(1.0F);
+                    double d2 = livingentity.posX - (this.parentEntity.posX + vec3d.x * 4.0D);
+                    double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight() / 2.0F) - (0.5D + this.parentEntity.posY + (double)(this.parentEntity.getHeight() / 2.0F));
+                    double d4 = livingentity.posZ - (this.parentEntity.posZ + vec3d.z * 4.0D);
+                    world.playEvent((PlayerEntity)null, 1016, new BlockPos(this.parentEntity), 0);
+                    FireballEntity fireballentity = new FireballEntity(world, this.parentEntity, d2, d3, d4);
+                    fireballentity.explosionPower = 1;
+                    fireballentity.posX = this.parentEntity.posX + vec3d.x * 4.0D;
+                    fireballentity.posY = this.parentEntity.posY + (double)(this.parentEntity.getHeight() / 2.0F) + 0.5D;
+                    fireballentity.posZ = this.parentEntity.posZ + vec3d.z * 4.0D;
+                    world.addEntity(fireballentity);
+                    this.attackTimer = -40;
+                }
+            } else if (this.attackTimer > 0) {
+                --this.attackTimer;
+            }
+
+            this.parentEntity.setAttacking(this.attackTimer > 10);
+        }
+    }
+
+
+    static class AttackGoal extends Goal {
+        private final FluxedCreepEntity parentEntity;
+        public int attackTimer;
+
+        public AttackGoal(FluxedCreepEntity ghast) {
+            this.parentEntity = ghast;
+        }
+        public boolean shouldExecute() {
+            return this.parentEntity.getAttackTarget() != null;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            this.attackTimer = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void resetTask() {
+            this.parentEntity.setAttacking(false);
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            LivingEntity livingentity = this.parentEntity.getAttackTarget();
+            double d0 = 64.0D;
+            if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
+                if (livingentity.getDistanceSq(this.parentEntity)<1){
+                    livingentity.attackEntityFrom(DamageSource.MAGIC,2);
+                }
+                World world = this.parentEntity.world;
+                ++this.attackTimer;
+                if (this.attackTimer == 10) {
+                    world.playEvent((PlayerEntity)null, 1015, new BlockPos(this.parentEntity), 0);
+                }
+
+                if (this.attackTimer == 20) {
+                    BlockPos pos= livingentity.getPosition().offset(livingentity.getHorizontalFacing().getOpposite());
+                    this.parentEntity.getMoveHelper().setMoveTo(pos.getX(), pos.getY()-1, pos.getZ(), 0.7D);
+
+                }
+            } else if (this.attackTimer > 0) {
+                --this.attackTimer;
+            }
+
+            this.parentEntity.setAttacking(this.attackTimer > 10);
         }
     }
 
