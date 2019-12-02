@@ -12,6 +12,7 @@ import com.alexvr.bedres.gui.FluxOracleScreen;
 import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModSounds;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
@@ -68,7 +69,7 @@ public class WorldEventHandler {
 
     @SubscribeEvent
     static void renderWorldLastEvent(RenderWorldLastEvent evt) {
-        if(mc.player.getHeldItemMainhand().getItem() instanceof FluxOracle && ((FluxOracle)mc.player.getHeldItemMainhand().getItem()).beingUsed) {
+        if(mc.player.getHeldItemMainhand().getItem() instanceof FluxOracle && NBTHelper.getBoolean( (BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand()),"active")) {
             mc.displayGuiScreen(fxG);
 
         }
@@ -191,6 +192,7 @@ public class WorldEventHandler {
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
                             event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+6,-0.999));
                             event.getEntityLiving().setFire(0);
+                            ModSounds.RITUAL_AMBIENT.playSound();
                             iPlayerAbility.setLookPos(new Vec3d(listOfTIles.get(0).getPos().getX(),listOfTIles.get(0).getPos().getY()+2,listOfTIles.get(0).getPos().getZ()));
                             event.setCanceled(true);
                         }
@@ -372,162 +374,198 @@ public class WorldEventHandler {
                                 event.player.world.getWorldInfo().setRaining(true);
                                 flux.fill(10);
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("pickUpgrade")) {
+                                if (checkForMin("pick",iPlayerAbility,flux) >= 0){
+                                    flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                }
                                 if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getPick().equals("wood")){
+                                        iPlayerAbility.setPick("no");
+                                    }else {
+                                        iPlayerAbility.setPick("wood");
+                                        flux.fillMin(45);
+                                        flux.fill(45);
                                     }
-                                    flux.fillMin(45);
-
-                                    iPlayerAbility.setPick("wood");
-                                    flux.fill(45);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
-                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getPick().equals("stone")){
+                                        iPlayerAbility.setPick("no");
+                                    }else {
+                                        flux.fillMin(85);
+                                        iPlayerAbility.setPick("stone");
+                                        flux.fill(85);
                                     }
-                                    flux.fillMin(85);
-                                    iPlayerAbility.setPick("stone");
-                                    flux.fill(85);
                                 }  else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getPick().equals("iron")){
+                                        iPlayerAbility.setPick("no");
+                                    }else {
+                                        flux.fillMin(145);
+                                        iPlayerAbility.setPick("iron");
+                                        flux.fill(145);
                                     }
-                                    flux.fillMin(145);
-                                    iPlayerAbility.setPick("iron");
-                                    flux.fill(145);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getPick().equals("golden")){
+                                        iPlayerAbility.setPick("no");
+                                    }else {
+                                        flux.fillMin(245);
+                                        iPlayerAbility.setPick("golden");
+                                        flux.fill(245);
                                     }
-                                    flux.fillMin(245);
-                                    iPlayerAbility.setPick("golden");
-                                    flux.fill(245);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                    if (checkForMin("pick",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("pick",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getPick().equals("diamond")){
+                                        iPlayerAbility.setPick("no");
+                                    }else {
+                                        flux.fillMin(400);
+                                        iPlayerAbility.setPick("diamond");
+                                        flux.fill(400);
                                     }
-                                    flux.fillMin(400);
-                                    iPlayerAbility.setPick("diamond");
-                                    flux.fill(400);
                                 }
 
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("axeUpgrade")) {
+                                if (checkForMin("axe",iPlayerAbility,flux) >= 0){
+                                    flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                }
                                 if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getAxe().equals("wood")){
+                                        iPlayerAbility.setAxe("no");
+                                    }else {
+                                        flux.fillMin(45);
+                                        iPlayerAbility.setAxe("wood");
+                                        flux.fill(45);
                                     }
-                                    flux.fillMin(45);
-                                    iPlayerAbility.setAxe("wood");
-                                    flux.fill(45);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
-                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getAxe().equals("stone")){
+                                        iPlayerAbility.setAxe("no");
+                                    }else {
+                                       flux.fillMin(85);
+                                       iPlayerAbility.setAxe("stone");
+                                       flux.fill(85);
                                     }
-                                    flux.fillMin(85);
-                                    iPlayerAbility.setAxe("stone");
-                                    flux.fill(85);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getAxe().equals("iron")){
+                                        iPlayerAbility.setAxe("no");
+                                    }else {
+                                       flux.fillMin(145);
+                                       iPlayerAbility.setAxe("iron");
+                                       flux.fill(145);
                                     }
-                                    flux.fillMin(145);
-                                    iPlayerAbility.setAxe("iron");
-                                    flux.fill(145);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getAxe().equals("golden")){
+                                        iPlayerAbility.setAxe("no");
+                                    }else {
+                                       flux.fillMin(245);
+                                       iPlayerAbility.setAxe("golden");
+                                       flux.fill(245);
                                     }
-                                    flux.fillMin(245);
-                                    iPlayerAbility.setAxe("golden");
-                                    flux.fill(245);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                    if (checkForMin("axe",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("axe",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getAxe().equals("diamond")){
+                                        iPlayerAbility.setAxe("no");
+                                    }else {
+                                       flux.fillMin(400);
+                                       iPlayerAbility.setAxe("diamond");
+                                       flux.fill(400);
                                     }
-                                    flux.fillMin(400);
-                                    iPlayerAbility.setAxe("diamond");
-                                    flux.fill(400);
                                 }
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("shovelUpgrade")) {
+                                if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
+                                    flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                }
                                 if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getShovel().equals("wood")){
+                                        iPlayerAbility.setShovel("no");
+                                    }else {
+
+
                                     }
                                     flux.fillMin(45);
                                     iPlayerAbility.setShovel("wood");
                                     flux.fill(45);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
-                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getShovel().equals("stone")){
+                                        iPlayerAbility.setShovel("no");
+                                    }else {
+                                        flux.fillMin(85);
+                                        iPlayerAbility.setShovel("stone");
+                                        flux.fill(85);
                                     }
-                                    flux.fillMin(85);
-                                    iPlayerAbility.setShovel("stone");
-                                    flux.fill(85);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getShovel().equals("iron")){
+                                        iPlayerAbility.setShovel("no");
+                                    }else {
+                                       flux.fillMin(145);
+                                       iPlayerAbility.setShovel("iron");
+                                       flux.fill(145);
                                     }
-                                    flux.fillMin(145);
-                                    iPlayerAbility.setShovel("iron");
-                                    flux.fill(145);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getShovel().equals("golden")){
+                                        iPlayerAbility.setShovel("no");
+                                    }else {
+                                       flux.fillMin(245);
+                                       iPlayerAbility.setShovel("golden");
+                                       flux.fill(245);
                                     }
-                                    flux.fillMin(245);
-                                    iPlayerAbility.setShovel("golden");
-                                    flux.fill(245);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                    if (checkForMin("shovel",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("shovel",iPlayerAbility,flux));
+                                   if (iPlayerAbility.getShovel().equals("diamond")){
+                                        iPlayerAbility.setShovel("no");
+                                    }else {
+                                       flux.fillMin(400);
+                                       iPlayerAbility.setShovel("diamond");
+                                       flux.fill(400);
                                     }
-                                    flux.fillMin(400);
-                                    iPlayerAbility.setShovel("diamond");
-                                    flux.fill(400);
                                 }
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("swordUpgrade")) {
+                                if (checkForMin("sword",iPlayerAbility,flux) >= 0){
+                                    flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                }
                                 if (iPlayerAbility.getRitualCraftingResult().contains("wood")) {
-                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getSword().equals("wood")){
+                                        iPlayerAbility.setSword("no");
+                                    }else {
+                                        flux.fillMin(45);
+                                        iPlayerAbility.setSword("wood");
+                                        flux.fill(45);
                                     }
-                                    flux.fillMin(45);
-                                    iPlayerAbility.setSword("wood");
-                                    flux.fill(45);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("stone")) {
-                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getSword().equals("stone")){
+                                        iPlayerAbility.setSword("no");
+                                    }else {
+                                        flux.fillMin(85);
+                                        iPlayerAbility.setSword("stone");
+                                        flux.fill(85);
                                     }
-                                    flux.fillMin(85);
-                                    iPlayerAbility.setSword("stone");
-                                    flux.fill(85);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("iron")) {
-                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getSword().equals("iron")){
+                                        iPlayerAbility.setSword("no");
+                                    }else {
+                                        flux.fillMin(145);
+                                        iPlayerAbility.setSword("iron");
+                                        flux.fill(145);
                                     }
-                                    flux.fillMin(145);
-                                    iPlayerAbility.setSword("iron");
-                                    flux.fill(145);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("gold")) {
-                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getSword().equals("golden")){
+                                        iPlayerAbility.setSword("no");
+                                    }else {
+                                        flux.fillMin(245);
+                                        iPlayerAbility.setSword("golden");
+                                        flux.fill(245);
                                     }
-                                    flux.fillMin(245);
-                                    iPlayerAbility.setSword("golden");
-                                    flux.fill(245);
                                 } else if (iPlayerAbility.getRitualCraftingResult().contains("diamond")) {
-                                    if (checkForMin("sword",iPlayerAbility,flux) >= 0){
-                                        flux.consumeMin(checkForMin("sword",iPlayerAbility,flux));
+                                    if (iPlayerAbility.getSword().equals("diamond")){
+                                        iPlayerAbility.setSword("no");
+                                    }else {
+                                        flux.fillMin(400);
+                                        iPlayerAbility.setSword("diamond");
+                                        flux.fill(400);
                                     }
-                                    flux.fillMin(400);
-                                    iPlayerAbility.setSword("diamond");
-                                    flux.fill(400);
                                 }
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("hoeUpgrade")) {
                                 if (iPlayerAbility.getHoe().equals("active")){
-
                                     flux.consumeMin(400);
+                                    iPlayerAbility.setHoe("no");
+
+                                }else {
+                                    flux.fillMin(400);
+                                    iPlayerAbility.setHoe("active");
+                                    flux.fill(400);
                                 }
-                                flux.fillMin(400);
-                                iPlayerAbility.setHoe("active");
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("speed")) {
                                 if (iPlayerAbility.getMiningSpeedBoost() < 1.35) {
                                     iPlayerAbility.setMiningSpeedBoost(iPlayerAbility.getMiningSpeedBoost() + .3f);
@@ -535,19 +573,15 @@ public class WorldEventHandler {
                                     flux.fill((float) (45 + iPlayerAbility.getMiningSpeedBoost()));
                                 }else{
                                     player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Speed already maxed out."), false);
-
                                 }
-
                             } else if (iPlayerAbility.getRitualCraftingResult().contains("jump")) {
                                 if (iPlayerAbility.getJumpBoost()<=0.2) {
                                     if (iPlayerAbility.getJumpBoost()==0){
                                         iPlayerAbility.setJumpBoost(0.015f);
                                     }else if (iPlayerAbility.getJumpBoost()<=0.016){
                                         iPlayerAbility.setJumpBoost(0.08f);
-
                                     }else if (iPlayerAbility.getJumpBoost()<=0.09){
                                         iPlayerAbility.setJumpBoost(0.15f);
-
                                     }else if (iPlayerAbility.getJumpBoost()<=0.2){
                                         iPlayerAbility.setJumpBoost(0.25f);
                                     }
@@ -555,9 +589,7 @@ public class WorldEventHandler {
                                     flux.fill((float) (55 + iPlayerAbility.getJumpBoost()));
                                 }else{
                                     player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Jump already maxed out."), false);
-
                                 }
-
                             }
                             player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + new TranslationTextComponent("message.bedres.stat_change").getUnformattedComponentText()), true);
                             player.sendStatusMessage(new StringTextComponent(TextFormatting.DARK_RED + "Skills is:"), false);
@@ -571,7 +603,6 @@ public class WorldEventHandler {
                             player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Jump", iPlayerAbility.getJumpBoost())), false);
                             player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Flux", flux.getBedrockFluxString())), false);
                         } else {
-
                             InventoryHelper.spawnItemStack(event.player.world, player.posX, player.posY, player.posZ, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(iPlayerAbility.getRitualCraftingResult()))));
                         }
                     });

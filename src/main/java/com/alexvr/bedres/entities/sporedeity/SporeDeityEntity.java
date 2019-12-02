@@ -1,5 +1,6 @@
 package com.alexvr.bedres.entities.sporedeity;
 
+import com.alexvr.bedres.registry.ModSounds;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
@@ -94,7 +95,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.AMBIENT_CAVE;
+        return ModSounds.DEITY_FIGHT.getSound();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

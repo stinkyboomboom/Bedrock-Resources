@@ -4,6 +4,7 @@ import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.registry.ModItems;
+import com.alexvr.bedres.utils.NBTHelper;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -103,8 +104,8 @@ public class FluxOracleScreenGui extends Screen {
 
     @Override
     public boolean shouldCloseOnEsc() {
-        if(BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand().getItem() instanceof FluxOracle && ((FluxOracle)BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand().getItem()).beingUsed) {
-            ((FluxOracle)BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand().getItem()).beingUsed = false;
+        if(BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand().getItem() instanceof FluxOracle && NBTHelper.getBoolean( (BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand()),"active")) {
+            NBTHelper.setBoolean( (BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand()),"active",false);
             changePage("main");
         }
         return true;
