@@ -53,6 +53,10 @@
   "_comment": "Entities",
   "entity.bedres.spore_deity": "Spore Deity",
 
+  "_comment": "Keys",
+  "key.categories.bedres": "Bedrock Resources",
+  "bedres.key.toggleOverlay": "Toggle Flux Overlay",
+
   "_comment": "Messeges",
   "message.bedres.invalidblock": "Only Bedrock can be scraped",
   "message.bedres.stat_change": "Stats Changed",

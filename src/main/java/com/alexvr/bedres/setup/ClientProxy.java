@@ -32,6 +32,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class ClientProxy implements IProxy{
 
+
     @Override
     public void init() {
         FlowersFeature MODFLOWER_FEATURE = new ModFlowerFeature(NoFeatureConfig::deserialize);
@@ -57,8 +58,8 @@ public class ClientProxy implements IProxy{
     }
 
 
-    public static void playSound(SoundEvent sound, float pitch) {
-        Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(sound, pitch));
+    public static void playSound(SoundEvent sound, float pitch,float volume) {
+        Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(sound, pitch,volume));
     }
 
     public static void stopSound(SoundEvent sound, float pitch) {

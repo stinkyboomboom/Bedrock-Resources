@@ -1,6 +1,8 @@
 package com.alexvr.bedres.entities.sporedeity;
 
 import com.alexvr.bedres.registry.ModSounds;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
@@ -26,9 +28,8 @@ import java.util.Random;
 public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(SporeDeityEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<String> SUMMONER = EntityDataManager.createKey(SporeDeityEntity.class, DataSerializers.STRING);
 
-    private final ServerBossInfo bossInfo = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
+    private final ServerBossInfo bossInfo = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.NOTCHED_20)).setDarkenSky(true).setCreateFog(true).setPlayEndBossMusic(true);
 
 
 
@@ -52,20 +53,8 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
         this.dataManager.set(ATTACKING, attacking);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public String getSummoner() {
-        return this.dataManager.get(SUMMONER);
-    }
-
-    public void setSummoner(String name) {
-        this.dataManager.set(SUMMONER, name);
-    }
 
     public void tick() {
-        if (!this.world.isRemote && this.world.getDifficulty() == Difficulty.PEACEFUL) {
-            ModSounds.DEITY_FIGHT.stopSound();
-
-        }
         super.tick();
 
     }
@@ -73,7 +62,6 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(ATTACKING, false);
-        this.dataManager.register(SUMMONER, "");
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -85,17 +73,8 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     }
 
 
-    @Override
-    public void onAddedToWorld() {
-        super.onAddedToWorld();
-        ModSounds.DEITY_FIGHT.playSound();
-    }
 
-    @Override
-    public void onDeath(DamageSource cause) {
-        super.onDeath(cause);
-        ModSounds.DEITY_FIGHT.stopSound();
-    }
+
 
     protected void registerAttributes() {
         super.registerAttributes();
@@ -113,15 +92,15 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.BLOCK_PORTAL_AMBIENT;
+        return SoundEvents.AMBIENT_CAVE;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_PLAYER_HURT;
+        return SoundEvents.ENTITY_ENDER_DRAGON_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_PLAYER_DEATH;
+        return ModSounds.FLUXED_CREEP_ROAR.getSound();
     }
 
     /**
@@ -138,6 +117,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.ENTITY_ENDER_DRAGON_GROWL,4,3));
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -147,7 +127,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     }
 
     public int getMaxSpawnedInChunk() {
-        return 4;
+        return 1;
     }
 
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {

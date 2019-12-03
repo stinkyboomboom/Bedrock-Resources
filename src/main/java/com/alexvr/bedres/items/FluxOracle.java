@@ -7,6 +7,8 @@ import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
 import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
 import com.alexvr.bedres.utils.NBTHelper;
 import com.alexvr.bedres.utils.References;
+import com.alexvr.bedres.utils.WorldEventHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,7 +18,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
-
 
 public class FluxOracle extends Item {
     public FluxOracle() {
@@ -45,10 +46,13 @@ public class FluxOracle extends Item {
                         playerIn.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Speed", iPlayerAbility.getMiningSpeedBoost())), false);
                         playerIn.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Jump", iPlayerAbility.getJumpBoost())), false);
                         playerIn.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Flux", flux.getBedrockFluxString())), false);
+                        playerIn.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Minimum Flux", flux.getMin())), false);
+                        playerIn.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Max Flux", flux.getMaxBedrockFlux())), false);
                     });
                 });
             }else{
                 NBTHelper.flipBoolean(playerIn.getHeldItemMainhand(),"active");
+                Minecraft.getInstance().displayGuiScreen(WorldEventHandler.fxG);
 
             }
         }

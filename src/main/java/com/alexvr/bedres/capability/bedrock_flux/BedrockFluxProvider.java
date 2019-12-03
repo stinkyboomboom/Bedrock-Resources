@@ -1,6 +1,6 @@
 package com.alexvr.bedres.capability.bedrock_flux;
 
-import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -17,19 +17,16 @@ import javax.annotation.Nullable;
  * attach their own provider with implementation that returns another
  * implementation of IBedrockFlux to the target's (Entity, TE, ItemStack, etc.) disposal.
  */
-public class BedrockFluxProvider implements ICapabilitySerializable<INBT>
+public class BedrockFluxProvider implements ICapabilitySerializable<CompoundNBT>
 {
     @CapabilityInject(IBedrockFlux.class)
     public static final Capability<IBedrockFlux> BEDROCK_FLUX_CAPABILITY = null;
 
-
     private IBedrockFlux instance = BEDROCK_FLUX_CAPABILITY.getDefaultInstance();
 
-    public boolean hasCapability(Capability<?> capability, Direction facing)
-    {
+    public boolean hasCapability(Capability<?> capability, Direction facing) {
         return capability == BEDROCK_FLUX_CAPABILITY;
     }
-
 
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -39,19 +36,13 @@ public class BedrockFluxProvider implements ICapabilitySerializable<INBT>
         return LazyOptional.empty();
     }
 
-
-
-
-
     @Override
-    public INBT serializeNBT()
-    {
-        return BEDROCK_FLUX_CAPABILITY.getStorage().writeNBT(BEDROCK_FLUX_CAPABILITY, this.instance, null);
+    public CompoundNBT serializeNBT() {
+        return (CompoundNBT)(BEDROCK_FLUX_CAPABILITY.getStorage().writeNBT(BEDROCK_FLUX_CAPABILITY, this.instance, null));
     }
 
     @Override
-    public void deserializeNBT(INBT nbt)
-    {
+    public void deserializeNBT(CompoundNBT nbt) {
         BEDROCK_FLUX_CAPABILITY.getStorage().readNBT(BEDROCK_FLUX_CAPABILITY, this.instance, null, nbt);
     }
 }

@@ -19,6 +19,7 @@ import com.alexvr.bedres.setup.ClientProxy;
 import com.alexvr.bedres.setup.IProxy;
 import com.alexvr.bedres.setup.ModSetup;
 import com.alexvr.bedres.setup.ServerProxy;
+import com.alexvr.bedres.utils.KeyBindings;
 import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -52,6 +53,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 
 
+
 @Mod(BedrockResources.MODID)
 public class BedrockResources {
 
@@ -70,6 +72,9 @@ public class BedrockResources {
 
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("bedres-client.toml"));
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("bedres-common.toml"));
+
+
+        DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart());
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -89,8 +94,11 @@ public class BedrockResources {
         Biome biome = RegistryManager.ACTIVE.getRegistry(Biome.class).getValue(new ResourceLocation(MODID, "df_biome"));
         biome.getSpawns(EntityClassification.MONSTER).add(new Biome.SpawnListEntry(ModEntities.FLUXED_CREEP,100,1,3));
 
-    }
 
+    }
+    private static void clientStart() {
+        KeyBindings.init();
+    }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)

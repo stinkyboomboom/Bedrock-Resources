@@ -29,11 +29,11 @@ public enum ModSounds {
     }
 
     public void playSound() {
-        playSound(1.0F);
+        playSound(1.0F,1.0F);
     }
 
-    public void playSound(float pitch) {
-        ClientProxy.playSound(sound, pitch);
+    public void playSound(float pitch,float volume) {
+        ClientProxy.playSound(sound, pitch,volume);
     }
 
     public void stopSound() {

@@ -15,14 +15,11 @@ public class PlayerAbilityProvider implements ICapabilitySerializable<CompoundNB
     @CapabilityInject(IPlayerAbility.class)
     public static final Capability<IPlayerAbility> PLAYER_ABILITY_CAPABILITY = null;
 
-
     private IPlayerAbility instance = PLAYER_ABILITY_CAPABILITY.getDefaultInstance();
 
-    public boolean hasCapability(Capability<?> capability, Direction facing)
-    {
+    public boolean hasCapability(Capability<?> capability, Direction facing) {
         return capability == PLAYER_ABILITY_CAPABILITY;
     }
-
 
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -32,21 +29,13 @@ public class PlayerAbilityProvider implements ICapabilitySerializable<CompoundNB
         return LazyOptional.empty();
     }
 
-
-
-
-
     @Override
-    public CompoundNBT serializeNBT()
-    {
+    public CompoundNBT serializeNBT() {
         return (CompoundNBT)(PLAYER_ABILITY_CAPABILITY.getStorage()).writeNBT(PLAYER_ABILITY_CAPABILITY, this.instance, null);
     }
 
-
-
     @Override
-    public void deserializeNBT(CompoundNBT nbt)
-    {
+    public void deserializeNBT(CompoundNBT nbt) {
         PLAYER_ABILITY_CAPABILITY.getStorage().readNBT(PLAYER_ABILITY_CAPABILITY, this.instance, null, nbt);
     }
 }

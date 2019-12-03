@@ -43,7 +43,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
@@ -60,21 +59,17 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import static com.alexvr.bedres.utils.KeyBindings.toggleOverlay;
+
 @EventBusSubscriber(modid = BedrockResources.MODID, value = Dist.CLIENT)
 public class WorldEventHandler {
 
     public static final int ticksPerItemRitual = Config.RITUAL_TICKS_PER_ITEM.get();
     public static FluxOracleScreenGui fxG = new FluxOracleScreenGui();
     static Minecraft mc = Minecraft.getInstance();
+    public static boolean displayOverLay = true;
 
-    @SubscribeEvent
-    static void renderWorldLastEvent(RenderWorldLastEvent evt) {
-        if(mc.player.getHeldItemMainhand().getItem() instanceof FluxOracle && NBTHelper.getBoolean( (BedrockResources.proxy.getMinecraft().player.getHeldItemMainhand()),"active")) {
-            mc.displayGuiScreen(fxG);
 
-        }
-
-    }
 
     @SubscribeEvent
     public static void onPlayerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
@@ -82,8 +77,6 @@ public class WorldEventHandler {
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
         bedrockFlux.ifPresent(flux -> {
             if (flux.getCrafterFlux()){
-                flux.setScreen((FluxOracleScreen)BedrockResources.proxy.getMinecraft().ingameGUI);
-                flux.getScreen().flux = flux;
                 BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
             }
         });
@@ -192,7 +185,7 @@ public class WorldEventHandler {
                             iPlayerAbility.setFOV(Minecraft.getInstance().gameSettings.fov);
                             event.getEntityLiving().lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(.999,event.getEntityLiving().getLookVec().y+6,-0.999));
                             event.getEntityLiving().setFire(0);
-                            ModSounds.RITUAL_AMBIENT.playSound();
+                            ModSounds.RITUAL_AMBIENT.playSound(1,3);
                             iPlayerAbility.setLookPos(new Vec3d(listOfTIles.get(0).getPos().getX(),listOfTIles.get(0).getPos().getY()+2,listOfTIles.get(0).getPos().getZ()));
                             event.setCanceled(true);
                         }
@@ -246,8 +239,10 @@ public class WorldEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
         PlayerEntity player = event.player;
-
         if (player.world.isRemote) return;
+        if (toggleOverlay.isPressed()) {
+            WorldEventHandler.displayOverLay =! WorldEventHandler.displayOverLay;
+        }
         LazyOptional<IPlayerAbility> abilities = player.getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(iPlayerAbility -> {
             if (iPlayerAbility.getInRitual()){
@@ -284,7 +279,7 @@ public class WorldEventHandler {
                     }
                     player.lookAt(EntityAnchorArgument.Type.EYES,iPlayerAbility.getlookPos());
                 }else{
-                    BlockPos nextblock = iPlayerAbility.getListOfPedestals().get(0).getPos().west(2).north(1);
+                    BlockPos nextblock = player.getPosition().west(2).north(3);
                     double xDif =((thisblock.getX()-nextblock.getX())/(ticksPerItemRitual+0.0))  ;
                     double zDif = ((thisblock.getZ()-nextblock.getZ())/(ticksPerItemRitual+0.0))  ;
                     double speed = ((0.1 * iPlayerAbility.getRitualTimer()%(ticksPerItemRitual/2.0)) /10);

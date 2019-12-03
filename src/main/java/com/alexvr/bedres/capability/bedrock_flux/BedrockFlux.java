@@ -73,6 +73,11 @@ public class BedrockFlux implements IBedrockFlux
         minbedrockflux=points;
     }
 
+    @Override
+    public float getMin() {
+        return minbedrockflux;
+    }
+
     public float getBedrockFlux()
     {
         return this.bedrockflux;
@@ -84,6 +89,12 @@ public class BedrockFlux implements IBedrockFlux
     }
 
     @Override
+    public void setMaxBedrockFlux(double amount) {
+         maxbedrockflux = amount;
+    }
+
+
+    @Override
     public boolean getCrafterFlux() {
         return crafted;
     }
@@ -91,6 +102,12 @@ public class BedrockFlux implements IBedrockFlux
     @Override
     public void setCrafterFlux() {
         crafted = true;
+
+    }
+
+    @Override
+    public void setCrafterFlux(boolean b) {
+        crafted = b;
 
     }
 
@@ -119,6 +136,17 @@ public class BedrockFlux implements IBedrockFlux
     public int getMaxTimer() {
         return maxTimer;
     }
+
+    @Override
+    public void setTimer(int x) {
+        timer = x;
+    }
+
+    @Override
+    public void setMaxTimer(int x) {
+        maxTimer=x;
+    }
+
 
     @Override
     public void count() {
