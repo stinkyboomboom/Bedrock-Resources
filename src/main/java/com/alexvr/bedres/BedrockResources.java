@@ -8,6 +8,7 @@ import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperContro
 import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperSlaveBlock;
 import com.alexvr.bedres.blocks.tiles.*;
 import com.alexvr.bedres.containers.ScrapeTankContainer;
+import com.alexvr.bedres.entities.effectball.EffectBallEntity;
 import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepEntity;
 import com.alexvr.bedres.entities.sporedeity.SporeDeityEntity;
 import com.alexvr.bedres.items.*;
@@ -221,6 +222,10 @@ public class BedrockResources {
                     .build(References.SPORE_DEITY_REGNAME);
             ModEntities.sporeDeityEntityEntityType.setRegistryName(References.SPORE_DEITY_REGNAME);
             ForgeRegistries.ENTITIES.register(ModEntities.sporeDeityEntityEntityType);
+
+            ModEntities.effectBallEntityEntityType =EntityType.Builder.<EffectBallEntity>create(EffectBallEntity::new, EntityClassification.MISC).size(1.0F, 1.0F).build(References.EFFECT_BALL_REGNAME);
+            ModEntities.effectBallEntityEntityType.setRegistryName(References.EFFECT_BALL_REGNAME);
+            ForgeRegistries.ENTITIES.register(ModEntities.effectBallEntityEntityType);
 
 
         }

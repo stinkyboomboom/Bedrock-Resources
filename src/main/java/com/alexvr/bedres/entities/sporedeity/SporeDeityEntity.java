@@ -1,5 +1,6 @@
 package com.alexvr.bedres.entities.sporedeity;
 
+import com.alexvr.bedres.entities.effectball.EffectBallEntity;
 import com.alexvr.bedres.registry.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -18,6 +19,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -56,6 +58,41 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     public void tick() {
         super.tick();
+        if (this.getAttackTarget() != null) {
+            LivingEntity livingentity = this.getAttackTarget();
+
+            if (new Random().nextInt(100) + 1 <= 1) {
+                System.out.println("effect");
+                double d1 = 4.0D;
+                Vec3d vec3d = this.getLook(1.0F);
+                double d2 = livingentity.posX - (posX + vec3d.x * 2.0D);
+                double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight()) - (0.5D + posY + (double)(getHeight()));
+                double d4 = livingentity.posZ - (posZ + vec3d.z * 2.0D);
+                world.playEvent((PlayerEntity)null, 1016, new BlockPos(this), 0);
+                EffectBallEntity fireballentity = new EffectBallEntity(world, this, d2, d3, d4);
+                fireballentity.explosionPower = 0;
+                fireballentity.posX = this.posX + vec3d.x * 2.0D;
+                fireballentity.posY = this.posY + (double)(this.getHeight())  + 0.5D;
+                fireballentity.posZ = this.posZ + vec3d.z * 2.0D;
+                world.addEntity(fireballentity);
+            }
+//            else if (new Random().nextInt(100) + 1 <= 1) {
+//                System.out.println("fireball");
+//                double d1 = 4.0D;
+//                Vec3d vec3d = this.getLook(1.0F);
+//                double d2 = livingentity.posX - (posX + vec3d.x * 2.0D);
+//                double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight()) - (0.5D + posY + (double)(getHeight()));
+//                double d4 = livingentity.posZ - (posZ + vec3d.z * 2.0D);
+//                world.playEvent((PlayerEntity)null, 1016, new BlockPos(this), 0);
+//                FireballEntity fireballentity = new FireballEntity(world, this, d2, d3, d4);
+//                fireballentity.explosionPower = 1;
+//                fireballentity.posX = this.posX + vec3d.x * 2.0D;
+//                fireballentity.posY = this.posY + (double)(this.getHeight())  + 0.5D;
+//                fireballentity.posZ = this.posZ + vec3d.z * 2.0D;
+//                world.addEntity(fireballentity);
+//            }
+
+        }
 
     }
 

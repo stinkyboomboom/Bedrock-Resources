@@ -779,7 +779,7 @@ public class WorldEventHandler {
 
     }
 
-    private static void transformArea(World world,BlockPos pos, int radius){
+    public static void transformArea(World world,BlockPos pos, int radius){
         for (int x =-radius;x<=radius;x++){
             for (int y =-radius;y<=radius;y++){
                 for (int z =-radius;z<=radius;z++){

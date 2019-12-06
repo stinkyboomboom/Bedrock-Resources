@@ -18,6 +18,8 @@ public class References {
     public static final String FLUXED_CREEP_EGG_REGNAME = "fluxed_creep_egg";
     public static final String SPORE_DEITY_REGNAME = "spore_deity";
     public static final String SPORE_DEITY_EGG_REGNAME = "spore_deity_egg";
+    public static final String EFFECT_BALL_REGNAME = "effect_ball";
+
 
     public static final String BEDROCK_SCRAPE_REGNAME = "bedrock_scrapes";
     public static final String SCRAPE_KNIFE_REGNAME = "scrape_knife";
