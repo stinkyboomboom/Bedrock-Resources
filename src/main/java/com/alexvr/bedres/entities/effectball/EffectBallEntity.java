@@ -293,7 +293,7 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
             LivingEntity livingentity = this.parentEntity.getAttackTarget();
             if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D) {
                 if (livingentity.getDistanceSq(this.parentEntity) < 1) {
-                    livingentity.attackEntityFrom(DamageSource.MAGIC, 4);
+                    livingentity.attackEntityFrom(DamageSource.MAGIC, 8);
                     this.parentEntity.setAttacking(false);
                     if (((DyeItem)this.parentEntity.getDye().getItem()).getDyeColor().getId() == DyeColor.BLACK.getId()){
                         livingentity.addPotionEffect(new EffectInstance(Effects.WITHER,120,3));

@@ -20,6 +20,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -74,9 +77,26 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
             else if (new Random().nextInt(chance) <= 6) {
                 teleport();
             }
+            else if (new Random().nextInt(chance*2) <= 1) {
+                AOECloud(livingentity.posX,livingentity.posY,livingentity.posZ);
+            }
 
         }
 
+    }
+
+    private void AOECloud(double x,double y, double z) {
+        AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, x,y,z);
+        areaeffectcloudentity.setOwner(this);
+        areaeffectcloudentity.setParticleData(ParticleTypes.FLAME);
+        areaeffectcloudentity.setRadius(3.0F);
+        areaeffectcloudentity.setDuration(600);
+        areaeffectcloudentity.setRadiusPerTick((7.0F - areaeffectcloudentity.getRadius()) / (float)areaeffectcloudentity.getDuration());
+        areaeffectcloudentity.addEffect(new EffectInstance(Effects.WITHER, 60, 4));
+        areaeffectcloudentity.setColor(8421504);
+        areaeffectcloudentity.setPosition(x, y, z);
+        this.world.playEvent(2006, new BlockPos(this.posX, this.posY, this.posZ), 0);
+        this.world.addEntity(areaeffectcloudentity);
     }
 
     private void spawnRandomEffectBall(LivingEntity livingentity) {
