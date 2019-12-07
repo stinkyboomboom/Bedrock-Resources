@@ -1,8 +1,8 @@
 package com.alexvr.bedres.entities.fluxedcreep;
 
 import com.alexvr.bedres.BedrockResources;
+import com.alexvr.bedres.entities.effectball.EffectBallRenderer;
 import com.alexvr.bedres.utils.References;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -19,12 +19,6 @@ public class FluxedCreepRenderer extends MobRenderer<FluxedCreepEntity, FluxedCr
     }
 
     protected void preRenderCallback(FluxedCreepEntity entitylivingbaseIn, float partialTickTime) {
-        float f = 1.0F;
-        float f1 = 4.5F;
-        float f2 = 4.5F;
-        GlStateManager.enableBlend();
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.scalef(1.5f, 1.5f, 1.5f);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        EffectBallRenderer.preRenderCallbackTransparentEntity();
     }
 }

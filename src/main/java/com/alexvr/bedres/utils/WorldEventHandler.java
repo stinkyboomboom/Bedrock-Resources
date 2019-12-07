@@ -67,7 +67,7 @@ public class WorldEventHandler {
     public static final int ticksPerItemRitual = Config.RITUAL_TICKS_PER_ITEM.get();
     public static FluxOracleScreenGui fxG = new FluxOracleScreenGui();
     static Minecraft mc = Minecraft.getInstance();
-    public static boolean displayOverLay = true;
+    public static boolean displayOverLay = false;
 
 
 
@@ -841,6 +841,7 @@ public class WorldEventHandler {
             LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
             FluxOracleScreen fx = new FluxOracleScreen();
             getFluxScreen(player, bedrockFlux, fx);
+            displayOverLay = true;
         }
     }
 

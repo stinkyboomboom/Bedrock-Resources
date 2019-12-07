@@ -1,23 +1,26 @@
 package com.alexvr.bedres.entities.sporedeity;
 
 import com.alexvr.bedres.entities.effectball.EffectBallEntity;
+import com.alexvr.bedres.registry.ModEntities;
 import com.alexvr.bedres.registry.ModSounds;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
@@ -58,42 +61,97 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     public void tick() {
         super.tick();
-        if (this.getAttackTarget() != null) {
+        if (!world.isRemote && this.getAttackTarget() != null) {
             LivingEntity livingentity = this.getAttackTarget();
-
-            if (new Random().nextInt(100) + 1 <= 1) {
-                System.out.println("effect");
-                double d1 = 4.0D;
-                Vec3d vec3d = this.getLook(1.0F);
-                double d2 = livingentity.posX - (posX + vec3d.x * 2.0D);
-                double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight()) - (0.5D + posY + (double)(getHeight()));
-                double d4 = livingentity.posZ - (posZ + vec3d.z * 2.0D);
-                world.playEvent((PlayerEntity)null, 1016, new BlockPos(this), 0);
-                EffectBallEntity fireballentity = new EffectBallEntity(world, this, d2, d3, d4);
-                fireballentity.explosionPower = 0;
-                fireballentity.posX = this.posX + vec3d.x * 2.0D;
-                fireballentity.posY = this.posY + (double)(this.getHeight())  + 0.5D;
-                fireballentity.posZ = this.posZ + vec3d.z * 2.0D;
-                world.addEntity(fireballentity);
+            lookAt(EntityAnchorArgument.Type.EYES,new Vec3d(livingentity.posX,livingentity.posY,livingentity.posZ));
+            int chance = 400;
+            if (new Random().nextInt(chance)  <= 3) {
+                spawnRandomEffectBall(livingentity);
             }
-//            else if (new Random().nextInt(100) + 1 <= 1) {
-//                System.out.println("fireball");
-//                double d1 = 4.0D;
-//                Vec3d vec3d = this.getLook(1.0F);
-//                double d2 = livingentity.posX - (posX + vec3d.x * 2.0D);
-//                double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight()) - (0.5D + posY + (double)(getHeight()));
-//                double d4 = livingentity.posZ - (posZ + vec3d.z * 2.0D);
-//                world.playEvent((PlayerEntity)null, 1016, new BlockPos(this), 0);
-//                FireballEntity fireballentity = new FireballEntity(world, this, d2, d3, d4);
-//                fireballentity.explosionPower = 1;
-//                fireballentity.posX = this.posX + vec3d.x * 2.0D;
-//                fireballentity.posY = this.posY + (double)(this.getHeight())  + 0.5D;
-//                fireballentity.posZ = this.posZ + vec3d.z * 2.0D;
-//                world.addEntity(fireballentity);
-//            }
+            else if (new Random().nextInt(chance) <= 4) {
+                spawnFireBall(livingentity);
+            }
+            else if (new Random().nextInt(chance) <= 6) {
+                teleport();
+            }
 
         }
 
+    }
+
+    private void spawnRandomEffectBall(LivingEntity livingentity) {
+        Vec3d vec3d = this.getLook(1.0F);
+        world.playEvent(null, 1016, new BlockPos(this), 0);
+        EffectBallEntity fireballentity = new EffectBallEntity(ModEntities.effectBallEntityEntityType,world,livingentity);
+        fireballentity.setDye(new ItemStack(Items.MAGENTA_DYE));
+        fireballentity.explosionPower = 0;
+        fireballentity.posX = this.posX + vec3d.x * 2.0D + (new Random().nextInt(4)-2);
+        fireballentity.posY = this.posY + (double)(this.getHeight())  + 1.5D;
+        fireballentity.posZ = this.posZ + vec3d.z * 2.0D + (new Random().nextInt(4)-2);
+        ItemStack stack = new ItemStack(Items.MAGENTA_DYE);
+        stack = getRandomDye(stack);
+        ((EffectBallEntity)ModEntities.effectBallEntityEntityType.spawn(world, null,(PlayerEntity) livingentity, fireballentity.getPosition(), SpawnReason.SPAWN_EGG, true, true)).setDye(stack);
+    }
+
+    private ItemStack getRandomDye(ItemStack stack) {
+        switch (new Random().nextInt(8)+1){
+            case 1:
+                stack = new ItemStack(Items.MAGENTA_DYE);
+                break;
+            case 2:
+                stack = new ItemStack(Items.BLACK_DYE);
+                break;
+            case 3:
+                stack = new ItemStack(Items.GREEN_DYE);
+                break;
+            case 4:
+                stack = new ItemStack(Items.WHITE_DYE);
+                break;
+            case 5:
+                stack = new ItemStack(Items.BROWN_DYE);
+                break;
+            case 6:
+                stack = new ItemStack(Items.PURPLE_DYE);
+                break;
+            case 7:
+                stack = new ItemStack(Items.YELLOW_DYE);
+                break;
+            case 8:
+                stack = new ItemStack(Items.RED_DYE);
+                break;
+
+        }
+        return stack;
+    }
+
+    private void teleport() {
+        for (int i = 0; i<50;i++){
+            BlockPos pos = getPosition().south(new Random().nextInt(3)-3).east(new Random().nextInt(3)-3);
+            if (world.getBlockState(pos.offset(Direction.DOWN)).getBlock() == Blocks.AIR){
+                setPosition(pos.getX(),pos.getY(),pos.getZ());
+                this.world.playSound(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 2.5F, 1.0F, false);
+
+                break;
+            }else if (world.getBlockState(pos).getBlock() == Blocks.AIR){
+                setPosition(pos.getX(),pos.getY()+1,pos.getZ());
+                this.world.playSound(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 2.5F, 1.0F, false);
+                break;
+            }
+        }
+    }
+
+    private void spawnFireBall(LivingEntity livingentity) {
+        Vec3d vec3d = this.getLook(1.0F);
+        double d2 = livingentity.posX - (posX + vec3d.x * 2.0D);
+        double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight() / 2.0F) - (0.5D + this.posY + (double)(this.getHeight() / 2.0F));
+        double d4 = livingentity.posZ - (posZ + vec3d.z * 2.0D);
+        world.playEvent(null, 1016, new BlockPos(this), 0);
+        FireballEntity fireballentity = new FireballEntity(world, this, d2, d3, d4);
+        fireballentity.explosionPower = 1;
+        fireballentity.posX = this.posX + vec3d.x * 2.0D;
+        fireballentity.posY = this.posY + (double)(this.getHeight())  + 0.5D;
+        fireballentity.posZ = this.posZ + vec3d.z * 2.0D;
+        world.addEntity(fireballentity);
     }
 
     protected void registerData() {

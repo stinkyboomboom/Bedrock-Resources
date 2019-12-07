@@ -260,6 +260,49 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         }
     }
 
+    static class AttackGoal extends Goal {
+        private final FluxedCreepEntity parentEntity;
+        public int attackTimer;
+
+        public AttackGoal(FluxedCreepEntity ghast) {
+            this.parentEntity = ghast;
+        }
+        public boolean shouldExecute() {
+            return this.parentEntity.getAttackTarget() != null;
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            this.attackTimer = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void resetTask() {
+            this.parentEntity.setAttacking(false);
+        }
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            LivingEntity livingentity = this.parentEntity.getAttackTarget();
+            if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
+                if (livingentity.getDistanceSq(this.parentEntity) < 1) {
+                    livingentity.attackEntityFrom(DamageSource.MAGIC, 4);
+                    this.parentEntity.setAttacking(false);
+
+                }
+                this.parentEntity.setAttacking(true);
+                BlockPos pos = livingentity.getPosition().offset(livingentity.getHorizontalFacing().getOpposite());
+                this.parentEntity.getMoveHelper().setMoveTo(pos.getX(), pos.getY(), pos.getZ(), 25D);
+
+            }
+        }
+    }
+
     static class FireballAttackGoal extends Goal {
         private final FluxedCreepEntity parentEntity;
         public int attackTimer;
@@ -322,50 +365,6 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
             }
 
             this.parentEntity.setAttacking(this.attackTimer > 10);
-        }
-    }
-
-
-    static class AttackGoal extends Goal {
-        private final FluxedCreepEntity parentEntity;
-        public int attackTimer;
-
-        public AttackGoal(FluxedCreepEntity ghast) {
-            this.parentEntity = ghast;
-        }
-        public boolean shouldExecute() {
-            return this.parentEntity.getAttackTarget() != null;
-        }
-
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
-        public void startExecuting() {
-            this.attackTimer = 0;
-        }
-
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
-        public void resetTask() {
-            this.parentEntity.setAttacking(false);
-        }
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
-        public void tick() {
-            LivingEntity livingentity = this.parentEntity.getAttackTarget();
-            if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
-                if (livingentity.getDistanceSq(this.parentEntity) < 1) {
-                    livingentity.attackEntityFrom(DamageSource.MAGIC, 4);
-                    this.parentEntity.setAttacking(false);
-
-                }
-                this.parentEntity.setAttacking(true);
-                BlockPos pos = livingentity.getPosition().offset(livingentity.getHorizontalFacing().getOpposite());
-                this.parentEntity.getMoveHelper().setMoveTo(pos.getX(), pos.getY(), pos.getZ(), 25D);
-
-            }
         }
     }
 
