@@ -88,7 +88,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     private void AOECloud(double x,double y, double z) {
         AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, x,y,z);
         areaeffectcloudentity.setOwner(this);
-        areaeffectcloudentity.setParticleData(ParticleTypes.FLAME);
+        areaeffectcloudentity.setParticleData(ParticleTypes.SQUID_INK);
         areaeffectcloudentity.setRadius(3.0F);
         areaeffectcloudentity.setDuration(600);
         areaeffectcloudentity.setRadiusPerTick((7.0F - areaeffectcloudentity.getRadius()) / (float)areaeffectcloudentity.getDuration());
@@ -147,12 +147,12 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
     private void teleport() {
         for (int i = 0; i<50;i++){
             BlockPos pos = getPosition().south(new Random().nextInt(3)-3).east(new Random().nextInt(3)-3);
-            if (world.getBlockState(pos.offset(Direction.DOWN)).getBlock() == Blocks.AIR){
+            if (world.getBlockState(pos).getBlock() == Blocks.AIR){
                 setPosition(pos.getX(),pos.getY(),pos.getZ());
                 this.world.playSound(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 2.5F, 1.0F, false);
 
                 break;
-            }else if (world.getBlockState(pos).getBlock() == Blocks.AIR){
+            }else if (world.getBlockState(pos.offset(Direction.UP)).getBlock() == Blocks.AIR){
                 setPosition(pos.getX(),pos.getY()+1,pos.getZ());
                 this.world.playSound(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 2.5F, 1.0F, false);
                 break;
