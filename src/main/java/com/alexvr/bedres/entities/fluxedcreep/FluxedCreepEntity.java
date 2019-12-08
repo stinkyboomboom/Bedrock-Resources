@@ -1,6 +1,7 @@
 package com.alexvr.bedres.entities.fluxedcreep;
 
 import com.alexvr.bedres.registry.ModSounds;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 import java.util.Random;
 
@@ -44,17 +46,15 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         this.goalSelector.addGoal(7, new FluxedCreepEntity.LookAroundGoal(this));
         this.goalSelector.addGoal(7, new FluxedCreepEntity.FireballAttackGoal(this));
         this.goalSelector.addGoal(7, new FluxedCreepEntity.AttackGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> {
-            return Math.abs(p_213812_1_.posY - this.posY) <= 4.0D;
-        }));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> Math.abs(p_213812_1_.posY - this.posY) <= 4.0D));
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isAttacking() {
+    boolean isAttacking() {
         return this.dataManager.get(ATTACKING);
     }
 
-    public void setAttacking(boolean attacking) {
+    private void setAttacking(boolean attacking) {
         this.dataManager.set(ATTACKING, attacking);
     }
 
@@ -74,6 +74,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         this.dataManager.register(ATTACKING, false);
     }
 
+    @ParametersAreNonnullByDefault
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
@@ -91,6 +92,8 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
     }
 
+    @Override
+    @MethodsReturnNonnullByDefault
     public SoundCategory getSoundCategory() {
         return SoundCategory.HOSTILE;
     }
@@ -124,7 +127,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     }
 
     public static boolean func_223368_b(EntityType<FluxedCreepEntity> p_223368_0_, IWorld p_223368_1_, SpawnReason p_223368_2_, BlockPos p_223368_3_, Random p_223368_4_) {
-        return p_223368_1_.getDifficulty() != Difficulty.PEACEFUL && p_223368_4_.nextInt(20) == 0 && func_223315_a(p_223368_0_, p_223368_1_, p_223368_2_, p_223368_3_, p_223368_4_);
+        return p_223368_1_.getDifficulty() != Difficulty.PEACEFUL && p_223368_4_.nextInt(20) == 0 && canSpawnOn(p_223368_0_, p_223368_1_, p_223368_2_, p_223368_3_, p_223368_4_);
     }
 
     @Override
@@ -144,7 +147,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         private final FluxedCreepEntity parentEntity;
         private int courseChangeCooldown;
 
-        public MoveHelperController(FluxedCreepEntity ghast) {
+        MoveHelperController(FluxedCreepEntity ghast) {
             super(ghast);
             this.parentEntity = ghast;
         }
@@ -162,7 +165,6 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
                         this.action = MovementController.Action.WAIT;
                     }
                 }
-
             }
         }
 
@@ -183,7 +185,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     static class RandomFlyGoal extends Goal {
         private final FluxedCreepEntity parentEntity;
 
-        public RandomFlyGoal(FluxedCreepEntity ghast) {
+        RandomFlyGoal(FluxedCreepEntity ghast) {
             this.parentEntity = ghast;
             this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
         }
@@ -226,7 +228,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
     static class LookAroundGoal extends Goal {
         private final FluxedCreepEntity parentEntity;
 
-        public LookAroundGoal(FluxedCreepEntity ghast) {
+        LookAroundGoal(FluxedCreepEntity ghast) {
             this.parentEntity = ghast;
             this.setMutexFlags(EnumSet.of(Goal.Flag.LOOK));
         }
@@ -262,9 +264,9 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
 
     static class AttackGoal extends Goal {
         private final FluxedCreepEntity parentEntity;
-        public int attackTimer;
+        int attackTimer;
 
-        public AttackGoal(FluxedCreepEntity ghast) {
+        AttackGoal(FluxedCreepEntity ghast) {
             this.parentEntity = ghast;
         }
         public boolean shouldExecute() {
@@ -289,7 +291,8 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
          */
         public void tick() {
             LivingEntity livingentity = this.parentEntity.getAttackTarget();
-            if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
+            assert livingentity != null;
+            if ((livingentity.getDistanceSq(this.parentEntity) < 4096.0D) && this.parentEntity.canEntityBeSeen(livingentity)) {
                 if (livingentity.getDistanceSq(this.parentEntity) < 1) {
                     livingentity.attackEntityFrom(DamageSource.MAGIC, 4);
                     this.parentEntity.setAttacking(false);
@@ -305,9 +308,9 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
 
     static class FireballAttackGoal extends Goal {
         private final FluxedCreepEntity parentEntity;
-        public int attackTimer;
+        int attackTimer;
 
-        public FireballAttackGoal(FluxedCreepEntity ghast) {
+        FireballAttackGoal(FluxedCreepEntity ghast) {
             this.parentEntity = ghast;
         }
 
@@ -337,21 +340,20 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
          */
         public void tick() {
             LivingEntity livingentity = this.parentEntity.getAttackTarget();
-            double d0 = 64.0D;
+            assert livingentity != null;
             if (livingentity.getDistanceSq(this.parentEntity) > 1028.0D && livingentity.getDistanceSq(this.parentEntity) < 4096.0D && this.parentEntity.canEntityBeSeen(livingentity)) {
                 World world = this.parentEntity.world;
                 ++this.attackTimer;
                 if (this.attackTimer == 10) {
-                    world.playEvent((PlayerEntity)null, 1015, new BlockPos(this.parentEntity), 0);
+                    world.playEvent(null, 1015, new BlockPos(this.parentEntity), 0);
                 }
 
                 if (this.attackTimer == 20) {
-                    double d1 = 4.0D;
                     Vec3d vec3d = this.parentEntity.getLook(1.0F);
                     double d2 = livingentity.posX - (this.parentEntity.posX + vec3d.x * 4.0D);
                     double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight() / 2.0F) - (0.5D + this.parentEntity.posY + (double)(this.parentEntity.getHeight() / 2.0F));
                     double d4 = livingentity.posZ - (this.parentEntity.posZ + vec3d.z * 4.0D);
-                    world.playEvent((PlayerEntity)null, 1016, new BlockPos(this.parentEntity), 0);
+                    world.playEvent(null, 1016, new BlockPos(this.parentEntity), 0);
                     FireballEntity fireballentity = new FireballEntity(world, this.parentEntity, d2, d3, d4);
                     fireballentity.explosionPower = 1;
                     fireballentity.posX = this.parentEntity.posX + vec3d.x * 4.0D;

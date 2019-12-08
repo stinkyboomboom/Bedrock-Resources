@@ -22,13 +22,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 
 public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeityModel<SporeDeityEntity>> {
 
     public SporeDeityRenderer(EntityRendererManager renderManager) {
         super(renderManager,new SporeDeityModel<>(0.0F, false), 0.5F);
-        this.addLayer(new BipedArmorLayer<>(this, new BipedModel(0.5F), new BipedModel(1.0F)));
+        this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(1.0F)));
         this.addLayer(new HeldItemLayer<>(this));
         this.addLayer(new ArrowLayer<>(this));
         this.addLayer(new HeadLayer<>(this));
@@ -36,6 +37,7 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
         this.addLayer(new BodyLayer<>(this));
     }
 
+    @ParametersAreNonnullByDefault
     public ResourceLocation getEntityTexture(SporeDeityEntity entity) {
         ResourceLocation resourcelocation;
         Minecraft minecraft = Minecraft.getInstance();
@@ -49,7 +51,7 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
         return resourcelocation;
     }
 
-
+    @ParametersAreNonnullByDefault
     public void doRender(SporeDeityEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
             double d0 = y;
             if (entity.shouldRenderSneaking()) {
@@ -139,8 +141,8 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
 
             Vec3d vec3d = entityLiving.getLook(partialTicks);
             Vec3d vec3d1 = entityLiving.getMotion();
-            double d0 = Entity.func_213296_b(vec3d1);
-            double d1 = Entity.func_213296_b(vec3d);
+            double d0 = Entity.horizontalMag(vec3d1);
+            double d1 = Entity.horizontalMag(vec3d);
             if (d0 > 0.0D && d1 > 0.0D) {
                 double d2 = (vec3d1.x * vec3d.x + vec3d1.z * vec3d.z) / (Math.sqrt(d0) * Math.sqrt(d1));
                 double d3 = vec3d1.x * vec3d.z - vec3d1.z * vec3d.x;
@@ -151,7 +153,7 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
             float f3 = entityLiving.isInWater() ? -90.0F - entityLiving.rotationPitch : -90.0F;
             float f4 = MathHelper.lerp(f, 0.0F, f3);
             GlStateManager.rotatef(f4, 1.0F, 0.0F, 0.0F);
-            if (entityLiving.func_213314_bj()) {
+            if (entityLiving.isActualySwimming()) {
                 GlStateManager.translatef(0.0F, -1.0F, 0.3F);
             }
         } else {

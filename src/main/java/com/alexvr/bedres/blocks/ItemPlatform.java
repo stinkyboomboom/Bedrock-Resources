@@ -62,7 +62,7 @@ public class ItemPlatform extends DirectionalBlock {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof ItemPlatformTile) {
             ItemPlatformTile itemPlatformTile = (ItemPlatformTile)tileentity;
-            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.CONTENTS, (p_220168_1_, p_220168_2_) -> {
                 itemPlatformTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                         p_220168_2_.accept(h.getStackInSlot(0));
@@ -200,41 +200,17 @@ public class ItemPlatform extends DirectionalBlock {
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         switch(state.get(FACING)) {
             case DOWN:
-                if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.AIR){
-                    return false;
-                }else{
-                    return true;
-                }
+                return worldIn.getBlockState(pos.down()).getBlock() != Blocks.AIR;
             case UP:
-                if (worldIn.getBlockState(pos.up()).getBlock() == Blocks.AIR){
-                    return false;
-                }else{
-                    return true;
-                }
+                return worldIn.getBlockState(pos.up()).getBlock() != Blocks.AIR;
             case NORTH:
-                if (worldIn.getBlockState(pos.north()).getBlock() == Blocks.AIR){
-                    return false;
-                }else{
-                    return true;
-                }
+                return worldIn.getBlockState(pos.north()).getBlock() != Blocks.AIR;
             case SOUTH:
-                if (worldIn.getBlockState(pos.south()).getBlock() == Blocks.AIR){
-                    return false;
-                }else{
-                    return true;
-                }
+                return worldIn.getBlockState(pos.south()).getBlock() != Blocks.AIR;
             case WEST:
-                if (worldIn.getBlockState(pos.west()).getBlock() == Blocks.AIR){
-                    return false;
-                }else{
-                    return true;
-                }
+                return worldIn.getBlockState(pos.west()).getBlock() != Blocks.AIR;
             case EAST:
-                if (worldIn.getBlockState(pos.east()).getBlock() == Blocks.AIR){
-                    return false;
-                }else{
-                    return true;
-                }
+                return worldIn.getBlockState(pos.east()).getBlock() != Blocks.AIR;
         }
         return true;
     }

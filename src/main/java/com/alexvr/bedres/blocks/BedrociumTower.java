@@ -61,15 +61,13 @@ public class BedrociumTower extends Block {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof BedrockiumTowerTile) {
             BedrockiumTowerTile bedrockiumTowerTile = (BedrockiumTowerTile)tileentity;
-            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
-                bedrockiumTowerTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                    for (int i =0;i<h.getSlots();i++) {
-                        if (h.getStackInSlot(i) != ItemStack.EMPTY) {
-                            p_220168_2_.accept(h.getStackInSlot(i));
-                        }
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.CONTENTS, (p_220168_1_, p_220168_2_) -> bedrockiumTowerTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                for (int i =0;i<h.getSlots();i++) {
+                    if (h.getStackInSlot(i) != ItemStack.EMPTY) {
+                        p_220168_2_.accept(h.getStackInSlot(i));
                     }
-                });
-            });
+                }
+            }));
         }
 
         return super.getDrops(state, builder);

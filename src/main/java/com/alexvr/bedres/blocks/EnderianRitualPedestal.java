@@ -80,7 +80,7 @@ public class EnderianRitualPedestal extends Block {
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof EnderianRitualPedestalTile) {
             EnderianRitualPedestalTile enderianRitualPedestalTile = (EnderianRitualPedestalTile)tileentity;
-            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b,
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.CONTENTS,
                     (p_220168_1_, p_220168_2_) -> enderianRitualPedestalTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                     p_220168_2_.accept(h.getStackInSlot(0));
@@ -143,6 +143,7 @@ public class EnderianRitualPedestal extends Block {
         if(!worldIn.isRemote){
             TileEntity te = worldIn.getTileEntity(pos);
             if(player.getHeldItemMainhand() != ItemStack.EMPTY){
+                assert te != null;
                 te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     if (player.getHeldItemMainhand().getItem().getRegistryName().equals(ModItems.scrapesKnife.getRegistryName())){
 

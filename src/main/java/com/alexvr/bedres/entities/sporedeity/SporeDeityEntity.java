@@ -3,6 +3,7 @@ package com.alexvr.bedres.entities.sporedeity;
 import com.alexvr.bedres.entities.effectball.EffectBallEntity;
 import com.alexvr.bedres.registry.ModEntities;
 import com.alexvr.bedres.registry.ModSounds;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -31,6 +32,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Objects;
 import java.util.Random;
 
 public class SporeDeityEntity extends MonsterEntity implements IMob {
@@ -46,9 +49,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
         this.experienceValue = 8;
     }
     protected void registerGoals() {
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> {
-            return Math.abs(p_213812_1_.posY - this.posY) <= 4.0D;
-        }));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> Math.abs(p_213812_1_.posY - this.posY) <= 4.0D));
     }
 
 
@@ -110,7 +111,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
         fireballentity.posZ = this.posZ + vec3d.z * 2.0D + (new Random().nextInt(4)-2);
         ItemStack stack = new ItemStack(Items.MAGENTA_DYE);
         stack = getRandomDye(stack);
-        ((EffectBallEntity)ModEntities.effectBallEntityEntityType.spawn(world, null,(PlayerEntity) livingentity, fireballentity.getPosition(), SpawnReason.SPAWN_EGG, true, true)).setDye(stack);
+        ((EffectBallEntity) Objects.requireNonNull(ModEntities.effectBallEntityEntityType.spawn(world, null, (PlayerEntity) livingentity, fireballentity.getPosition(), SpawnReason.SPAWN_EGG, true, true))).setDye(stack);
     }
 
     private ItemStack getRandomDye(ItemStack stack) {
@@ -179,6 +180,19 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
         this.dataManager.register(ATTACKING, false);
     }
 
+    @ParametersAreNonnullByDefault
+    @Override
+    public boolean isInvulnerableTo(DamageSource damageSource) {
+        if (DamageSource.IN_FIRE == damageSource|| DamageSource.LAVA == damageSource ||
+                DamageSource.DROWN == damageSource || DamageSource.HOT_FLOOR == damageSource ||
+                DamageSource.WITHER == damageSource || DamageSource.IN_WALL == damageSource ||
+                DamageSource.FALLING_BLOCK == damageSource || DamageSource.CRAMMING == damageSource || DamageSource.CACTUS == damageSource){
+            return true;
+        }
+        return super.isInvulnerableTo(damageSource);
+    }
+
+    @ParametersAreNonnullByDefault
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
@@ -186,10 +200,6 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
             return super.attackEntityFrom(source, amount);
         }
     }
-
-
-
-
 
     protected void registerAttributes() {
         super.registerAttributes();
@@ -202,6 +212,7 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
         this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
     }
 
+    @MethodsReturnNonnullByDefault
     public SoundCategory getSoundCategory() {
         return SoundCategory.MASTER;
     }
@@ -225,14 +236,10 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
         return 1.0F;
     }
 
-    public static boolean func_223368_b(EntityType<SporeDeityEntity> entityType, IWorld world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        return  func_223315_a(entityType, world, spawnReason, pos, random);
-    }
-
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.ENTITY_ENDER_DRAGON_GROWL,4,3));
+        Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.ENTITY_ENDER_DRAGON_GROWL,8,3));
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

@@ -304,7 +304,7 @@ public class WorldEventHandler {
                     particlePos = player.getPosition();
                 }
                 Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)particlePos.getX()+0.5,(double)particlePos.getY()+.8,(double)particlePos.getZ()+.5,(new Random().nextFloat()-0.7),new Random().nextFloat()-0.7,new Random().nextFloat()-0.7);
-                if (iPlayerAbility.getRitualTimer()%(ticksPerItemRitual+0.0) == 0){
+                if (iPlayerAbility.getRitualTimer()%(ticksPerItemRitual+0.0) == 0&&iPlayerAbility.getListOfPedestals().size()>0){
                     iPlayerAbility.getListOfPedestals().get(0).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                         if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                             if (h.getStackInSlot(0).getItem() == Items.WATER_BUCKET){

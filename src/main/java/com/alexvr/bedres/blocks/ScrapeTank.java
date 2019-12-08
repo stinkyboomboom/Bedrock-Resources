@@ -78,7 +78,7 @@ public class ScrapeTank extends Block{
         TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof ScrapeTankTile) {
             ScrapeTankTile scrapeTankTile = (ScrapeTankTile)tileentity;
-            builder = builder.withDynamicDrop(ShulkerBoxBlock.field_220169_b, (p_220168_1_, p_220168_2_) -> {
+            builder = builder.withDynamicDrop(ShulkerBoxBlock.CONTENTS, (p_220168_1_, p_220168_2_) -> {
                 scrapeTankTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                     if (h.getStackInSlot(0) != ItemStack.EMPTY) {
                         p_220168_2_.accept(h.getStackInSlot(0));
