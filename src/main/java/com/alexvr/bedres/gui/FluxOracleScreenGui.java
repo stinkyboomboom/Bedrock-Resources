@@ -57,6 +57,7 @@ public class FluxOracleScreenGui extends Screen {
     private boolean compressed = false;
     private boolean gravityBubble = false;
     private boolean staff = false;
+    private boolean nebula = false;
 
     double xOffset = 0, yOffset =0;
     double mouseX = 0, mouseY =0;
@@ -80,6 +81,7 @@ public class FluxOracleScreenGui extends Screen {
     public boolean mouseClicked(double p_mouseClicked_1_, double p_mouseClicked_3_, int p_mouseClicked_5_) {
         mouseX = p_mouseClicked_1_;
         mouseY = p_mouseClicked_3_;
+        genButts();
         return super.mouseClicked(p_mouseClicked_1_,p_mouseClicked_3_,p_mouseClicked_5_);
     }
 
@@ -92,7 +94,7 @@ public class FluxOracleScreenGui extends Screen {
             yOffset += (p_mouseDragged_3_ - mouseY) / 32;
         }
 
-
+        genButts();
         return super.mouseDragged(p_mouseDragged_1_,p_mouseDragged_3_,p_mouseDragged_5_,p_mouseDragged_6_,p_mouseDragged_8_);
     }
 
@@ -103,7 +105,7 @@ public class FluxOracleScreenGui extends Screen {
             scaleX += p_mouseScrolled_5_;
             scaleY += p_mouseScrolled_5_;
         }
-
+        genButts();
         return super.mouseScrolled(p_mouseScrolled_1_,p_mouseScrolled_3_,p_mouseScrolled_5_);
     }
 
@@ -149,8 +151,7 @@ public class FluxOracleScreenGui extends Screen {
                 changePage("ritualped7");
             }else if(ritualped9){
                 changePage("ritualped8");
-            }
-            else {
+            }else {
                 changePage("main");
             }
         });
@@ -184,6 +185,11 @@ public class FluxOracleScreenGui extends Screen {
             }
         });
 
+        genButts();
+
+    }
+
+    public void genButts(){
         List<AbstractButton> buttons = new ArrayList<AbstractButton>() {{
 
             add(new ImageButton((int)xOffset+15+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), (int)yOffset+15+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
@@ -312,13 +318,23 @@ public class FluxOracleScreenGui extends Screen {
                 }
             }));
 
+            add(new ImageButton((int)xOffset+255+ (int)scaleX+((Minecraft.getInstance().mainWindow.getScaledWidth()-64)/8), (int)yOffset+203+ (int)scaleY+((Minecraft.getInstance().mainWindow.getScaledHeight()-64)/6),32+ (int)scaleX,32+ (int)scaleY,0,0,0,
+                    new ResourceLocation(BedrockResources.MODID,"textures/gui/widget/nebula.png"),32+ (int)scaleX,32+ (int)scaleY, (button) -> {
+                if(main) {
+                    changePage("nebula");
+                }
+            }));
+
+
             add(next);
             add(back);
 
 
         }};
-
+        this.children.clear();
+        this.buttons.clear();
         buttons.forEach(this::addButton);
+
     }
 
     public void changePage(String name){
@@ -357,6 +373,7 @@ public class FluxOracleScreenGui extends Screen {
         compressed = false;
         gravityBubble = false;
         staff = false;
+        nebula = false;
 
         switch(name){
             case "main":
@@ -451,6 +468,9 @@ public class FluxOracleScreenGui extends Screen {
                 break;
             case "staff":
                 staff=true;
+                break;
+            case "nebula":
+                nebula=true;
                 break;
             default:
                 main = true;
@@ -629,7 +649,7 @@ public class FluxOracleScreenGui extends Screen {
             drawString(minecraft.fontRenderer,"Enderian Rirual Platform:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "Constructing a pillar of enderian bricks and blocks, with gold bars and an item platform results in a Enderian Ritual Platform, they inherit the ability of the item platform and allows it to infuse a person when channeled correctly.";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
-           String sw = "Note: Any empty blocks in the ritual area (7x7) must have an Enderian Brick floor to channel correctly, the rest is up to you";
+            String sw = "Note: Any empty blocks in the ritual area (7x7) must have an Enderian Brick floor to channel correctly, the rest is up to you";
             renderString(sw,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/2),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
             next.renderButton(p_render_1_, p_render_2_, p_render_3_);
 
@@ -755,6 +775,13 @@ public class FluxOracleScreenGui extends Screen {
                     new ResourceLocation("bedres", "textures/gui/widget/fire_staff.png"));
             drawString(minecraft.fontRenderer,"Gravity Staff:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             String s = "By combining Void Tears from the creatures of the fluxed biome with some blazium and a gold block I seem to be able to create a staff that can let me control gravity to a certain degree. When activated it seems to ocacionally infuse some flux into me but it seems to be very small, after using it for a while i get hungry, and week and i cant activate it again until it passes. Regardless when its activated my vertical velocity is suspended and the height i had fallen is reduced by half (damage wise), significantly diminishing the damaged i would have taken. ";
+            renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
+        }else if (nebula){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(5+((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0f)-32, 5+ ((Minecraft.getInstance().mainWindow.getScaledWidth())/8.0), (5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0)) + 32, 5+((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6.0f),
+                    new ResourceLocation("bedres", "textures/gui/widget/nebula.png"));
+            drawString(minecraft.fontRenderer,"Nebula Heart:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            String s = "Legend tells of a creature, a creature like no other, stronger than any dragon and any wither. Capable of launching fireballs, of shooting you with projectiles with many effects, and that can teleport around, a god, a deity if you will. This creature is fortold to only appears to those consumed by flux, consumed to the very core. Others belive this creature is actually a spore creature that when enough of it is inside your body can split from you and take a mind of its own, after which it tries to get rid of its late host. ";
             renderString(s,12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),Minecraft.getInstance().mainWindow.getScaledWidth()-30);
         }
 

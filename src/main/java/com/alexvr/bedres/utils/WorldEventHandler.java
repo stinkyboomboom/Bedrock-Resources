@@ -8,10 +8,12 @@ import com.alexvr.bedres.capability.abilities.IPlayerAbility;
 import com.alexvr.bedres.capability.abilities.PlayerAbilityProvider;
 import com.alexvr.bedres.capability.bedrock_flux.BedrockFluxProvider;
 import com.alexvr.bedres.capability.bedrock_flux.IBedrockFlux;
+import com.alexvr.bedres.entities.sporedeity.SporeDeityEntity;
 import com.alexvr.bedres.gui.FluxOracleScreen;
 import com.alexvr.bedres.gui.FluxOracleScreenGui;
 import com.alexvr.bedres.items.FluxOracle;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModEntities;
 import com.alexvr.bedres.registry.ModSounds;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -360,9 +362,15 @@ public class WorldEventHandler {
                                 }
                                 flux.fill(10);
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("flight")) {
+                                player.addVelocity(0,2,0);
+                                player.velocityChanged=true;
                                 player.abilities.allowFlying=true;
+                                player.abilities.isFlying=true;
+                                player.sendPlayerAbilities();
                                 flux.fill((float)(flux.getMaxBedrockFlux()/2));
                                 flux.fillMin((float)(flux.getMaxBedrockFlux()/2));
+                                player.sendStatusMessage(new StringTextComponent(TextFormatting.GREEN +"You may fly now!"), true);
+
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("nightUpgrade")) {
                                 for(ServerWorld serverworld :  event.player.getServer().getWorlds()) {
                                     serverworld.setDayTime(13000);
@@ -741,37 +749,17 @@ public class WorldEventHandler {
                         }else if (h.getBedrockFlux()>=1800 && h.getBedrockFlux()<h.getMaxBedrockFlux()){
                             int choice =  new Random().nextInt(10);
 
-                            switch (choice){
-                                case 0:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
-                                    break;
-                                case 1:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
-                                    break;
-                                case 2:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfDirt.getDefaultState());
-                                    break;
-                                case 3:
-                                    event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
-                                    break;
-                                case 4:
-                                    transformArea(event.player.world,event.player.getPosition(),20);
-                                    break;
-                                case 5:
-                                    player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,5));
-                                    break;
-                                case 6:
-                                    player.addPotionEffect(new EffectInstance(Effects.WITHER,120,3));
-                                    break;
-                                case 7:
-                                    player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE,120,3));
-                                    break;
-                                case 8:
-                                    player.addPotionEffect(new EffectInstance(Effects.HUNGER,120,4));
-                                    break;
-                                case 9:
-                                    player.addPotionEffect(new EffectInstance(Effects.NAUSEA,120,4));
-                                    break;
+                            badEffects(event, player, choice);
+                        }else if (h.getBedrockFlux()==h.getMaxBedrockFlux()){
+                            if (new Random().nextInt(10)+1==1 ){
+                                SporeDeityEntity boss = new SporeDeityEntity(ModEntities.sporeDeityEntityEntityType,player.world);
+                                BlockPos bossPos = VectorHelper.getLookingAt(player, RayTraceContext.FluidMode.NONE).getPos();
+                                boss.setPosition(bossPos.getX(),bossPos.getY(),bossPos.getZ());
+                                player.world.addEntity(boss);
+                                h.consume((float)(h.getMaxBedrockFlux()/2));
+                            }else{
+                                int choice =  new Random().nextInt(10);
+                                badEffects(event, player, choice);
                             }
                         }
                         String message = ("You dont feel well");
@@ -781,6 +769,41 @@ public class WorldEventHandler {
             }
         });
 
+    }
+
+    private static void badEffects(TickEvent.PlayerTickEvent event, PlayerEntity player, int choice) {
+        switch (choice){
+            case 0:
+                event.player.world.setBlockState(player.getPosition(), ModBlocks.fluxedSpores.getDefaultState());
+                break;
+            case 1:
+                event.player.world.setBlockState(player.getPosition(),ModBlocks.fluxedSpores.getDefaultState());
+                break;
+            case 2:
+                event.player.world.setBlockState(player.getPosition(),ModBlocks.dfDirt.getDefaultState());
+                break;
+            case 3:
+                event.player.world.setBlockState(player.getPosition(),ModBlocks.dfGrass.getDefaultState());
+                break;
+            case 4:
+                transformArea(event.player.world,event.player.getPosition(),20);
+                break;
+            case 5:
+                player.addPotionEffect(new EffectInstance(Effects.BAD_OMEN,999,5));
+                break;
+            case 6:
+                player.addPotionEffect(new EffectInstance(Effects.WITHER,120,3));
+                break;
+            case 7:
+                player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE,120,3));
+                break;
+            case 8:
+                player.addPotionEffect(new EffectInstance(Effects.HUNGER,120,4));
+                break;
+            case 9:
+                player.addPotionEffect(new EffectInstance(Effects.NAUSEA,120,4));
+                break;
+        }
     }
 
     public static void transformArea(World world,BlockPos pos, int radius){
