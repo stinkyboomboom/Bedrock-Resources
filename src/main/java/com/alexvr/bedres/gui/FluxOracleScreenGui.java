@@ -47,6 +47,11 @@ public class FluxOracleScreenGui extends Screen {
     private boolean ritualped2 = false;
     private boolean ritualped3= false;
     private boolean ritualped4 = false;
+    private boolean ritualped5 = false;
+    private boolean ritualped6 = false;
+    private boolean ritualped7 = false;
+    private boolean ritualped8 = false;
+    private boolean ritualped9 = false;
     private boolean shrum = false;
     private boolean cupcake = false;
     private boolean compressed = false;
@@ -134,6 +139,16 @@ public class FluxOracleScreenGui extends Screen {
                 changePage("ritualped2");
             }else if(ritualped4){
                 changePage("ritualped3");
+            }else if(ritualped5){
+                changePage("ritualped4");
+            }else if(ritualped6){
+                changePage("ritualped5");
+            }else if(ritualped7){
+                changePage("ritualped6");
+            }else if(ritualped8){
+                changePage("ritualped7");
+            }else if(ritualped9){
+                changePage("ritualped8");
             }
             else {
                 changePage("main");
@@ -156,6 +171,16 @@ public class FluxOracleScreenGui extends Screen {
                 changePage("ritualped3");
             }else if(ritualped3){
                 changePage("ritualped4");
+            }else if(ritualped4){
+                changePage("ritualped5");
+            }else if(ritualped5){
+                changePage("ritualped6");
+            }else if(ritualped6){
+                changePage("ritualped7");
+            }else if(ritualped7){
+                changePage("ritualped8");
+            }else if(ritualped8){
+                changePage("ritualped9");
             }
         });
 
@@ -322,6 +347,11 @@ public class FluxOracleScreenGui extends Screen {
         ritualped2 = false;
         ritualped3 = false;
         ritualped4 = false;
+        ritualped5 = false;
+        ritualped6 = false;
+        ritualped7 = false;
+        ritualped8 = false;
+        ritualped9 = false;
         shrum = false;
         cupcake = false;
         compressed = false;
@@ -391,6 +421,21 @@ public class FluxOracleScreenGui extends Screen {
                 break;
             case "ritualped4":
                 ritualped4=true;
+                break;
+            case "ritualped5":
+                ritualped5=true;
+                break;
+            case "ritualped6":
+                ritualped6=true;
+                break;
+            case "ritualped7":
+                ritualped7=true;
+                break;
+            case "ritualped8":
+                ritualped8=true;
+                break;
+            case "ritualped9":
+                ritualped9=true;
                 break;
             case "shrum":
                 shrum=true;
@@ -622,6 +667,57 @@ public class FluxOracleScreenGui extends Screen {
             drawString(minecraft.fontRenderer,"Mining Speed Upgrade Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
             renderTitleItem(new ArrayList<Item>(){{add(Items.SUGAR);add(Items.REDSTONE);add(Items.COOKIE);add(ModItems.fluxedCupcake);add(ModItems.enderianIngot);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
             renderString("This pattern also came to be by studying the upgrade pattern. It seems placing sugar on the north and a fluxed cupcake on the south pedestal and cookies and redstone on west and east respectively, will make you mine slightly faster.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
+        }else if (ritualped5){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_day.png"));
+            drawString(minecraft.fontRenderer,"Day Time Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            renderTitleItem(new ArrayList<Item>(){{add(Items.GLOWSTONE);add(Item.getItemFromBlock(ModBlocks.sunDaize));}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern also came to be by studying the upgrade pattern. It seems placing Sun Daize, and Glowstone Blocks in the pedestals, will make it day time.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped6){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_night.png"));
+            drawString(minecraft.fontRenderer,"Night Time Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            renderTitleItem(new ArrayList<Item>(){{add(Items.INK_SAC);add(Item.getItemFromBlock(ModBlocks.dfOakSappling));}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern also came to be by studying the upgrade pattern. It seems placing Decaying Fluxed Sapplings, and ink sacks in the pedestals, will make it night time.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
+
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped7){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_rain.png"));
+            drawString(minecraft.fontRenderer,"Rain Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+
+            renderTitleItem(new ArrayList<Item>(){{add(Items.SUGAR_CANE);add(Items.WATER_BUCKET);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern also came to be by studying the upgrade pattern. It seems placing sugar cane, and water buckets in the pedestals, will make it rain.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 55);
+
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped8){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_clear_rain.png"));
+            drawString(minecraft.fontRenderer,"Clear Rain Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            renderTitleItem(new ArrayList<Item>(){{add(Items.DRIED_KELP);add(Items.BUCKET);}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern also came to be by studying the upgrade pattern. It seems placing dried kelp, and empty buckets in the pedestals, will absorb the rain into the items and stop it.",
+                    12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
+            next.renderButton(p_render_1_, p_render_2_, p_render_3_);
+
+        }else if (ritualped9){
+            drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));
+            drawModalRectWithCustomSizedTexture(Minecraft.getInstance().mainWindow.getScaledWidth()/2.0, Minecraft.getInstance().mainWindow.getScaledWidth()-32, (Minecraft.getInstance().mainWindow.getScaledHeight()-32) , 32,
+                    new ResourceLocation("bedres", "textures/gui/ritual_flight.png"));
+            drawString(minecraft.fontRenderer,"Flight Ritual:",12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6),1111111);
+            renderTitleItem(new ArrayList<Item>(){{add(Items.NETHER_STAR);add(Items.ELYTRA);add(ModItems.nebulaHeart);add(ModItems.enderianIngot);add(Item.getItemFromBlock(ModBlocks.fluxedGravityBubble));}},12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/8), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/6));
+            renderString("This pattern also came to be by studying the upgrade pattern. It seems placing nether star on the north and an elytra on the south pedestal and a nebula heart and a fluxed gravity bubble on west and east respectively, will make you infuse the abilities of these items to you and grant you flight.",
                     12+((Minecraft.getInstance().mainWindow.getScaledWidth()-15)/20), ((Minecraft.getInstance().mainWindow.getScaledHeight()-15)/4),Minecraft.getInstance().mainWindow.getScaledWidth() -(Minecraft.getInstance().mainWindow.getScaledWidth()/4) - 85);
         }else if (shrum){
             drawModalRectWithCustomSizedTexture(15, Minecraft.getInstance().mainWindow.getScaledWidth() - 15, Minecraft.getInstance().mainWindow.getScaledHeight() - 15, 15, new ResourceLocation("bedres", "textures/gui/flux_oracle_book_info_gui.png"));

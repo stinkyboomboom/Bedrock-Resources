@@ -478,5 +478,25 @@
       "b=bedres:sun_daize",
       "s=minecraft:glowstone"
     ]
+  },
+  "flightUpgrade":{
+    "result":  "bedres:flightUpgrade",
+    "pattern": [
+      "  whw  ",
+      " pw wp ",
+      "www www",
+      "n     e",
+      "www www",
+      " pw wp ",
+      "  wbw  "
+    ],
+    "key": [
+      "w=bedres:bedrock_scrapes",
+      "p=bedres:enderian_ingot",
+      "h=bedres:nebula_heart",
+      "n=minecraft:nether_star",
+      "b=bedres:fluxed_gravity_bubble",
+      "e=minecraft:elytra"
+    ]
   }
 }

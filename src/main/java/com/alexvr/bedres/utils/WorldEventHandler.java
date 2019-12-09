@@ -359,6 +359,10 @@ public class WorldEventHandler {
                                     serverworld.setDayTime(1000);
                                 }
                                 flux.fill(10);
+                            }else if (iPlayerAbility.getRitualCraftingResult().contains("flight")) {
+                                player.abilities.allowFlying=true;
+                                flux.fill((float)(flux.getMaxBedrockFlux()/2));
+                                flux.fillMin((float)(flux.getMaxBedrockFlux()/2));
                             }else if (iPlayerAbility.getRitualCraftingResult().contains("nightUpgrade")) {
                                 for(ServerWorld serverworld :  event.player.getServer().getWorlds()) {
                                     serverworld.setDayTime(13000);

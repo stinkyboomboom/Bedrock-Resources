@@ -2,6 +2,7 @@ package com.alexvr.bedres.entities.sporedeity;
 
 import com.alexvr.bedres.entities.effectball.EffectBallEntity;
 import com.alexvr.bedres.registry.ModEntities;
+import com.alexvr.bedres.registry.ModItems;
 import com.alexvr.bedres.registry.ModSounds;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Blocks;
@@ -10,6 +11,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -274,5 +276,14 @@ public class SporeDeityEntity extends MonsterEntity implements IMob {
 
     public boolean isNonBoss() {
         return false;}
+
+    protected void dropSpecialItems(DamageSource source, int looting, boolean recentlyHitIn) {
+        super.dropSpecialItems(source, looting, recentlyHitIn);
+        ItemEntity itementity = this.entityDropItem(ModItems.nebulaHeart);
+        if (itementity != null) {
+            itementity.setNoDespawn();
+        }
+
+    }
 
 }

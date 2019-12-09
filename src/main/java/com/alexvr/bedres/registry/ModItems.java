@@ -30,4 +30,7 @@ public class ModItems {
 
     @ObjectHolder(BedrockResources.MODID+ ":"+References.SPORE_DEITY_EGG_REGNAME)
     public static SporeDeityEggItem sporeDeityEggItem;
+
+    @ObjectHolder(BedrockResources.MODID+ ":"+References.NEBULA_HEART_REGNAME)
+    public static NebulaHeart nebulaHeart;
 }

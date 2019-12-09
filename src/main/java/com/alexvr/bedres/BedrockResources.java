@@ -182,6 +182,7 @@ public class BedrockResources {
             event.getRegistry().register(new FluxOracle());
             event.getRegistry().register(new EnderianIngot());
             event.getRegistry().register(new FluxedCupcake());
+            event.getRegistry().register(new NebulaHeart());
 
 
 
