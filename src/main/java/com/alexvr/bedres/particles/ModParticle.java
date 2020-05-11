@@ -1,6 +1,7 @@
 package com.alexvr.bedres.particles;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.TexturedParticle;
@@ -26,13 +27,16 @@ public abstract class ModParticle extends TexturedParticle implements IParticleR
     abstract ResourceLocation getTexture();
 
     @Override
-    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+    public void renderParticle(IVertexBuilder p_225606_1_, ActiveRenderInfo p_225606_2_, float p_225606_3_) {
         TextureManager textureManager = Minecraft.getInstance().textureManager;
-        beginRender(buffer, textureManager);
-        onPreRender(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        beginRender(bufferbuilder, textureManager);
+        super.renderParticle(p_225606_1_, p_225606_2_, p_225606_3_);
         finishRender(Tessellator.getInstance());
     }
+
+
 
     protected void onPreRender(BufferBuilder buffer, ActiveRenderInfo activeInfo, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {}
 

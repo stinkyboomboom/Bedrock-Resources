@@ -124,10 +124,6 @@ public class ItemPlatform extends DirectionalBlock {
     }
 
 
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 
     @Override
     public boolean hasTileEntity(BlockState state) {
@@ -141,7 +137,7 @@ public class ItemPlatform extends DirectionalBlock {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if(!worldIn.isRemote){
             TileEntity te = worldIn.getTileEntity(pos);
             if(player.getHeldItemMainhand() != ItemStack.EMPTY){
@@ -171,7 +167,7 @@ public class ItemPlatform extends DirectionalBlock {
                         }
                     }
                 });
-                return true;
+                return ActionResultType.PASS;
             }else{
                 for(int i =0 ; i< player.inventory.getSizeInventory(); i ++) {
                     ItemStack stack = player.inventory.getStackInSlot(i);
@@ -190,11 +186,11 @@ public class ItemPlatform extends DirectionalBlock {
                         });
                     }
                 }
-                return true;
+                return ActionResultType.PASS;
             }
         }
 
-        return false;
+        return ActionResultType.FAIL;
     }
 
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
@@ -262,8 +258,9 @@ public class ItemPlatform extends DirectionalBlock {
     }
 
     public BlockState rotate(BlockState state, net.minecraft.world.IWorld world, BlockPos pos, Rotation direction) {
-        return super.rotate(state, world, pos, direction);
+        return state.with(FACING, direction.rotate(state.get(FACING)));
     }
+
 
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
         return state.rotate(mirrorIn.toRotation(state.get(FACING)));

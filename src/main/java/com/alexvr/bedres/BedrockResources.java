@@ -25,6 +25,8 @@ import com.alexvr.bedres.utils.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -46,6 +48,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -69,6 +72,7 @@ public class BedrockResources {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_CONFIG);
         // Register the setup method for modloading
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("bedres-client.toml"));
@@ -77,6 +81,30 @@ public class BedrockResources {
 
         DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> clientStart());
     }
+    private void setupClient(final FMLClientSetupEvent event) {
+        RenderTypeLookup.setRenderLayer(ModBlocks.bedrociumPedestal, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.bedrockScraperControllerBlock, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.bedrockScraperSlaveBlock, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.bedrociumSpike, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.bedrociumTower, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.bedrockWire, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.enderianRitualPedestal, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.fluxedGravityBubble, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.fluxedSpores, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.itemPlatform, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.rangeView, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.motor, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.scrapeTank, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.voidTears, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.dfOakLeave, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.dfOakSappling, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.blazium, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.sunDaize, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.enderHush, RenderType.getCutout());
+
+
+    }
+
 
     private void setup(final FMLCommonSetupEvent event) {
         setup.init();

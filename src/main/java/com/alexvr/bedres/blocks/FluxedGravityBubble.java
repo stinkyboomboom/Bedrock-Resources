@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -58,7 +58,7 @@ public class FluxedGravityBubble extends Block{
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (!worldIn.isRemote() && (worldIn.getTileEntity(pos)) instanceof  FluxedGravityBubbleTile) {
             FluxedGravityBubbleTile tile = (FluxedGravityBubbleTile) worldIn.getTileEntity(pos);
                 switch (hit.getFace()) {
@@ -108,7 +108,7 @@ public class FluxedGravityBubble extends Block{
                 }
                 tile.markDirty();
                 tile.sendUpdates();
-                return true;
+                return ActionResultType.PASS;
             }
         return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
@@ -137,10 +137,6 @@ public class FluxedGravityBubble extends Block{
     }
 
 
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
 
     @Override
     public boolean hasTileEntity(BlockState state) {

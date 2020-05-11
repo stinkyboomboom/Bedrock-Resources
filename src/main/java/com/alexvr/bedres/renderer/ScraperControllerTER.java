@@ -5,18 +5,23 @@ import com.alexvr.bedres.blocks.multiblocks.bedrockscraper.BedrockScrapperContro
 import com.alexvr.bedres.registry.ModBlocks;
 import com.alexvr.bedres.utils.References;
 import com.alexvr.bedres.utils.RendererHelper;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 
 public class ScraperControllerTER extends TileEntityRenderer<BedrockScraperControllerTile> {
 
-    @Override
-    public void render(BedrockScraperControllerTile te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public ScraperControllerTER(TileEntityRendererDispatcher p_i226006_1_) {
+        super(p_i226006_1_);
+    }
 
-         double CentreOffsetX = 0.05;
-         double CentreOffsetY = .18;
-         double CentreOffsetZ = 0.95;
+    @Override
+    public void render(BedrockScraperControllerTile te, float v, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int i, int i1) {
+        double CentreOffsetX = 0.05;
+        double CentreOffsetY = .18;
+        double CentreOffsetZ = 0.95;
         switch (te.getBlockState().get(BedrockScrapperControllerBlock.FACING_HORIZ).toString()){
             case References.NORTH:
 
@@ -41,28 +46,26 @@ public class ScraperControllerTER extends TileEntityRenderer<BedrockScraperContr
         GlStateManager.pushMatrix();
 
         // Translate to the location of our tile entity
-        GlStateManager.translated(x + CentreOffsetX, y + CentreOffsetY, z + CentreOffsetZ);
+        GlStateManager.translated(te.getPos().getX() + CentreOffsetX, te.getPos().getY() + CentreOffsetY, te.getPos().getZ() + CentreOffsetZ);
+
         GlStateManager.disableRescaleNormal();
 
 
-        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        GlStateManager.rotated(45,0,1,0);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.6, 0.5, -0.5, 0.5*scallingMultiplier, (0.5625)*scallingMultiplier, 0.5*scallingMultiplier, false, 0, 0, 0, 35);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, .125-0.5, 1.5, 0.125-0.5, 0.375*scallingMultiplier, (0.125)*scallingMultiplier, 0.375*scallingMultiplier, false, 0, 0, 0, 35);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 0.375-0.7, 0.9, 0.375-0.7, 0.25*scallingMultiplier, (0.125)*scallingMultiplier, 0.25*scallingMultiplier, false, 0, 0, 0, 35);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 1.2-1.4, -0.5, 1.2-1.4, 0.125*scallingMultiplier, (0.25)*scallingMultiplier, 0.125*scallingMultiplier, te.getUpdateTag().getBoolean("multi"), 0, 0, 0, 35);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -0.58, -4.34, -.41, 1.5*scallingMultiplier, (0.03125)*scallingMultiplier, 0.0625*scallingMultiplier, false, 0, 0, 0, 35);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.41, -4.34, -.58, 0.0625*scallingMultiplier, (0.03125)*scallingMultiplier, 1.5*scallingMultiplier, false, 0, 0, 0, 35);
-        RendererHelper.drawAngleCuboidAt(ModBlocks.scrapeTank.getDefaultState(), te, -0.52, -4.52, -0.52, 1.125*scallingMultiplier, (0.025)*scallingMultiplier, 1.125*scallingMultiplier, te.getUpdateTag().getBoolean("multi"), 0, 0, 0, 35);
+        GlStateManager.rotatef(45,0,1,0);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.6, 0.5, -0.5, 0.5*scallingMultiplier, (0.5625)*scallingMultiplier, 0.5*scallingMultiplier, false, 0, 0, 0, 35,matrixStack,i);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, .125-0.5, 1.5, 0.125-0.5, 0.375*scallingMultiplier, (0.125)*scallingMultiplier, 0.375*scallingMultiplier, false, 0, 0, 0, 35,matrixStack,i);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 0.375-0.7, 0.9, 0.375-0.7, 0.25*scallingMultiplier, (0.125)*scallingMultiplier, 0.25*scallingMultiplier, false, 0, 0, 0, 35,matrixStack,i);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, 1.2-1.4, -0.5, 1.2-1.4, 0.125*scallingMultiplier, (0.25)*scallingMultiplier, 0.125*scallingMultiplier, te.getUpdateTag().getBoolean("multi"), 0, 0, 0, 35,matrixStack,i);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -0.58, -4.34, -.41, 1.5*scallingMultiplier, (0.03125)*scallingMultiplier, 0.0625*scallingMultiplier, false, 0, 0, 0, 35,matrixStack,i);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.enderianBlock.getDefaultState(), te, -.41, -4.34, -.58, 0.0625*scallingMultiplier, (0.03125)*scallingMultiplier, 1.5*scallingMultiplier, false, 0, 0, 0, 35,matrixStack,i);
+        RendererHelper.drawAngleCuboidAt(ModBlocks.scrapeTank.getDefaultState(), te, -0.52, -4.52, -0.52, 1.125*scallingMultiplier, (0.025)*scallingMultiplier, 1.125*scallingMultiplier, te.getUpdateTag().getBoolean("multi"), 0, 0, 0, 35,matrixStack,i);
 
 
         GlStateManager.enableRescaleNormal();
 
         GlStateManager.popMatrix();
-
-
-
     }
+
 
     public static double interpolate(double x, double x1, double x2, double y1, double y2){
         if (x1 > x2) {

@@ -14,7 +14,7 @@ public class FluxedCreepRenderer extends MobRenderer<FluxedCreepEntity, FluxedCr
         super(renderManagerIn, new FluxedCreepModel<>(), 0.5F);
     }
 
-    protected ResourceLocation getEntityTexture(FluxedCreepEntity entity) {
+    public ResourceLocation getEntityTexture(FluxedCreepEntity entity) {
         return entity.isAttacking() ? GHAST_SHOOTING_TEXTURES : GHAST_TEXTURES;
     }
 

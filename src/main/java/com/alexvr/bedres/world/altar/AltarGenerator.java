@@ -1,6 +1,5 @@
 package com.alexvr.bedres.world.altar;
 
-import com.alexvr.bedres.registry.ModFeatures;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedSeedRandom;
@@ -8,9 +7,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.MarginedStructureStart;
 import net.minecraft.world.gen.feature.structure.Structure;
@@ -41,26 +40,33 @@ public class AltarGenerator extends Structure<NoFeatureConfig> {
         return new ChunkPos(k1, l1);
     }
 
-    public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkPosX, int chunkPosZ) {
-        ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
-        if (chunkPosX == chunkpos.x && chunkPosZ == chunkpos.z) {
-            Biome biome = chunkGen.getBiomeProvider().getBiome(new BlockPos(chunkPosX * 16 + 9, 0, chunkPosZ * 16 + 9));
-            if (chunkGen.hasStructure(biome, ModFeatures.ALTAR)) {
-                for (int k = chunkPosX - 10; k <= chunkPosX + 10; ++k) {
-                    for (int l = chunkPosZ - 10; l <= chunkPosZ + 10; ++l) {
-                        if (Feature.VILLAGE.hasStartAt(chunkGen, rand, k, l)) {
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
-
+    @Override
+    public boolean func_225558_a_(BiomeManager biomeManager, ChunkGenerator<?> chunkGenerator, Random random, int i, int i1, Biome biome) {
         return false;
-
     }
+
+
+
+//    public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkPosX, int chunkPosZ) {
+//        ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
+//        if (chunkPosX == chunkpos.x && chunkPosZ == chunkpos.z) {
+//            Biome biome = chunkGen.getBiomeProvider().getBiome(new BlockPos(chunkPosX * 16 + 9, 0, chunkPosZ * 16 + 9));
+//            if (chunkGen.hasStructure(biome, ModFeatures.ALTAR)) {
+//                for (int k = chunkPosX - 10; k <= chunkPosX + 10; ++k) {
+//                    for (int l = chunkPosZ - 10; l <= chunkPosZ + 10; ++l) {
+//                        if (Feature.VILLAGE.func_225558_a_(chunkGen, rand, k, l)) {
+//                            return false;
+//                        }
+//                    }
+//                }
+//
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//
+//    }
 
     public String getStructureName() {
         return "altar";
@@ -70,8 +76,13 @@ public class AltarGenerator extends Structure<NoFeatureConfig> {
         return 7;
     }
 
-    public Structure.IStartFactory getStartFactory() {
-        return AltarGenerator.Start::new;
+//    public Structure.IStartFactory getStartFactory() {
+//        return AltarGenerator.Start::new;
+//    }
+
+    @Override
+    public IStartFactory getStartFactory() {
+        return null;
     }
 
     private static int getYPosForStructure(int chunkX, int chunkY, ChunkGenerator<?> generatorIn) {
@@ -111,7 +122,7 @@ public class AltarGenerator extends Structure<NoFeatureConfig> {
 
     public static class Start extends MarginedStructureStart {
         public Start(Structure<?> p_i50460_1_, int p_i50460_2_, int p_i50460_3_, Biome p_i50460_4_, MutableBoundingBox p_i50460_5_, int p_i50460_6_, long p_i50460_7_) {
-            super(p_i50460_1_, p_i50460_2_, p_i50460_3_, p_i50460_4_, p_i50460_5_, p_i50460_6_, p_i50460_7_);
+            super(p_i50460_1_, p_i50460_2_, p_i50460_3_, p_i50460_5_, p_i50460_6_, p_i50460_7_);
         }
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {

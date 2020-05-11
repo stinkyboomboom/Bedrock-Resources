@@ -5,34 +5,28 @@ import com.alexvr.bedres.world.ModFlowerFeature;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftConfig;
 import net.minecraft.world.gen.feature.structure.MineshaftStructure;
-import net.minecraft.world.gen.feature.structure.PillagerOutpostConfig;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
-import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.FrequencyConfig;
-import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 
-import java.util.Random;
+import static net.minecraft.world.gen.feature.IFeatureConfig.NO_FEATURE_CONFIG;
 
 public class DecayingFluxedBiome extends Biome {
 
     public DecayingFluxedBiome() {
         super((new Biome.Builder()).surfaceBuilder(SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(),Blocks.DIRT.getDefaultState(),Blocks.GRAVEL.getDefaultState())).precipitation(RainType.RAIN).category(Category.PLAINS).depth(0.1F).scale(0.2F).temperature(0.9F).downfall(0.3F).waterColor(8348619).waterFogColor(6512843).parent((String)null));
-        this.addStructure(Feature.MINESHAFT, new MineshaftConfig(0.004D, MineshaftStructure.Type.NORMAL));
-        this.addStructure(Feature.VILLAGE, new VillageConfig("village/plains/town_centers", new Random().nextInt(8)+4));
-        this.addStructure(Feature.PILLAGER_OUTPOST, new PillagerOutpostConfig(0.01D));
+        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Feature.MINESHAFT.withConfiguration(new MineshaftConfig(0.004D,MineshaftStructure.Type.NORMAL)).withPlacement(Placement.NOPE.configure(new NoPlacementConfig())));
+        this.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Feature.VILLAGE.withConfiguration(new VillageConfig("village/plains/town_centers",6)).withPlacement(Placement.NOPE.configure(new NoPlacementConfig())));
 
         DefaultBiomeFeatures.addDeadBushes(this);
         DefaultBiomeFeatures.addFossils(this);
@@ -58,20 +52,21 @@ public class DecayingFluxedBiome extends Biome {
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(EntityType.ENDERMAN, 10, 1, 4));
         this.addSpawn(EntityClassification.MONSTER, new Biome.SpawnListEntry(EntityType.WITCH, 5, 1, 1));
 
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{ModFeatures.DFOAK_TREE, Feature.FANCY_TREE}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{0.2F, 0.1F}, Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(4, 0.1F, 1)));
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION,Biome.createDecoratedFeature(new ModFlowerFeature(NoFeatureConfig::deserialize), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(5)));
+        //addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.DFOAK_TREE.withConfiguration( BaseTreeFeatureConfig::deserialize).withPlacement(Placement.NOPE.configure(new NoPlacementConfig())));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, new ModFlowerFeature(NoFeatureConfig::deserialize).withConfiguration(NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(5))));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.ALTAR.withConfiguration(NO_FEATURE_CONFIG).withPlacement(Placement.TOP_SOLID_HEIGHTMAP.configure(new NoPlacementConfig())));
+        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ModFeatures.ALTAR.withConfiguration(NO_FEATURE_CONFIG).withPlacement(Placement.TOP_SOLID_HEIGHTMAP.configure(new NoPlacementConfig())));
 
-        addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, Biome.createDecoratedFeature(ModFeatures.ALTAR, IFeatureConfig.NO_FEATURE_CONFIG, Placement.TOP_SOLID_HEIGHTMAP, IPlacementConfig.NO_PLACEMENT_CONFIG));
-        addStructure(ModFeatures.ALTAR, IFeatureConfig.NO_FEATURE_CONFIG);
     }
 
     @Override
-    public int getGrassColor(BlockPos pos) {
-        return 	5272164;
+    public int getGrassColor(double p_225528_1_, double p_225528_3_) {
+        return 5272164;
     }
 
     @Override
-    public int getSkyColorByTemp(float currentTemperature) {
+    public int getSkyColor() {
         return 6111134;
     }
+
 }

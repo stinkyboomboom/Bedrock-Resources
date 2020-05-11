@@ -69,7 +69,7 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
         this.goalSelector.addGoal(7, new EffectBallEntity.LookAroundGoal(this));
         this.goalSelector.addGoal(7, new EffectBallEntity.AttackGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> {
-            return Math.abs(p_213812_1_.posY - this.posY) <= 4.0D;
+            return Math.abs(p_213812_1_.getPosY() - this.getPosY()) <= 4.0D;
         }));
     }
 
@@ -155,7 +155,7 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
             if (this.action == MovementController.Action.MOVE_TO) {
                 if (this.courseChangeCooldown-- <= 0) {
                     this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
-                    Vec3d vec3d = new Vec3d(this.posX - this.parentEntity.posX, this.posY - this.parentEntity.posY, this.posZ - this.parentEntity.posZ);
+                    Vec3d vec3d = new Vec3d(this.posX - this.parentEntity.getPosX(), this.posY - this.parentEntity.getPosY(), this.posZ - this.parentEntity.getPosZ());
                     double d0 = vec3d.length();
                     vec3d = vec3d.normalize();
                     if (this.func_220673_a(vec3d, MathHelper.ceil(d0))) {
@@ -173,7 +173,7 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
 
             for(int i = 1; i < p_220673_2_; ++i) {
                 axisalignedbb = axisalignedbb.offset(p_220673_1_);
-                if (!this.parentEntity.world.isCollisionBoxesEmpty(this.parentEntity, axisalignedbb)) {
+                if (!this.parentEntity.world.checkNoEntityCollision(this.parentEntity)) {
                     return false;
                 }
             }
@@ -198,9 +198,9 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
             if (!movementcontroller.isUpdating()) {
                 return true;
             } else {
-                double d0 = movementcontroller.getX() - this.parentEntity.posX;
-                double d1 = movementcontroller.getY() - this.parentEntity.posY;
-                double d2 = movementcontroller.getZ() - this.parentEntity.posZ;
+                double d0 = movementcontroller.getX() - this.parentEntity.getPosX();
+                double d1 = movementcontroller.getY() - this.parentEntity.getPosY();
+                double d2 = movementcontroller.getZ() - this.parentEntity.getPosZ();
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 return d3 < 1.0D || d3 > 3600.0D;
             }
@@ -218,9 +218,9 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
          */
         public void startExecuting() {
             Random random = this.parentEntity.getRNG();
-            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 4.0F);
-            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d0 = this.parentEntity.getPosX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d1 = this.parentEntity.getPosY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 4.0F);
+            double d2 = this.parentEntity.getPosZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.4D);
         }
     }
@@ -252,8 +252,8 @@ public class EffectBallEntity extends FlyingEntity implements IMob {
                 LivingEntity livingentity = this.parentEntity.getAttackTarget();
                 double d0 = 64.0D;
                 if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D) {
-                    double d1 = livingentity.posX - this.parentEntity.posX;
-                    double d2 = livingentity.posZ - this.parentEntity.posZ;
+                    double d1 = livingentity.getPosX() - this.parentEntity.getPosX();
+                    double d2 = livingentity.getPosZ() - this.parentEntity.getPosZ();
                     this.parentEntity.rotationYaw = -((float)MathHelper.atan2(d1, d2)) * (180F / (float)Math.PI);
                     this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
                 }

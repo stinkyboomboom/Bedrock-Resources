@@ -1,16 +1,10 @@
 {
-	"forge_marker": 1,
-	"defaults": {
-		"model": "bedres:block/item_platform"
-	},
 	"variants": {
-		"facing": {
-			"up": { "x": 180, "y": 0 },
-			"down": { "transform": { "rotation": {"z": 0}, "post-rotation": {"y": 0}}},
-			"west": { "transform": { "rotation": {"z": 270}, "post-rotation": {"y": 270}}},
-			"east":  { "transform": { "rotation": {"z": 90 }, "post-rotation": {"y": 270}}},
-			"south": { "transform": { "rotation": {"x": 270}, "post-rotation": {"y": 270}}},
-			"north":  { "transform": { "rotation": {"x": 90}, "post-rotation": {"y": 90}}}
-		}
+		"facing=up": { "model" : "bedres:block/item_platform", "x": 180, "y": 0 },
+		"facing=down": {"model" : "bedres:block/item_platform", "transform": { "rotation": {"z": 0}, "post-rotation": {"y": 0}}},
+		"facing=west": {"model" : "bedres:block/item_platform", "transform": { "rotation": {"z": 270}, "post-rotation": {"y": 270}}},
+		"facing=east":  {"model" : "bedres:block/item_platform", "transform": { "rotation": {"z": 90 }, "post-rotation": {"y": 270}}},
+		"facing=south": {"model" : "bedres:block/item_platform", "transform": { "rotation": {"x": 270}, "post-rotation": {"y": 270}}},
+		"facing=north":  {"model" : "bedres:block/item_platform", "transform": { "rotation": {"x": 90}, "post-rotation": {"y": 90}}}
 	}
 }

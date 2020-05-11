@@ -3,11 +3,16 @@ package com.alexvr.bedres.entities.sporedeity;
 import com.alexvr.bedres.entities.sporedeity.layers.body.BodyLayer;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.*;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.layers.ElytraLayer;
+import net.minecraft.client.renderer.entity.layers.HeadLayer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
@@ -31,7 +36,6 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
         super(renderManager,new SporeDeityModel<>(0.0F, false), 0.5F);
         this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(1.0F)));
         this.addLayer(new HeldItemLayer<>(this));
-        this.addLayer(new ArrowLayer<>(this));
         this.addLayer(new HeadLayer<>(this));
         this.addLayer(new ElytraLayer<>(this));
         this.addLayer(new BodyLayer<>(this));
@@ -51,19 +55,15 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
         return resourcelocation;
     }
 
-    @ParametersAreNonnullByDefault
-    public void doRender(SporeDeityEntity entity, double x, double y, double z, float entityYaw, float partialTicks) {
-            double d0 = y;
-            if (entity.shouldRenderSneaking()) {
-                d0 = y - 0.125D;
-            }
 
-            this.setModelVisibilities(entity);
-            GlStateManager.setProfile(GlStateManager.Profile.PLAYER_SKIN);
-            super.doRender(entity, x, d0, z, entityYaw, partialTicks);
-            GlStateManager.unsetProfile(GlStateManager.Profile.PLAYER_SKIN);
-
+    @Override
+    public void render(SporeDeityEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        this.setModelVisibilities(entityIn);
+        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre(entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn))) return;
+        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post(entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn));
     }
+
 
     private void setModelVisibilities(SporeDeityEntity clientPlayer) {
         SporeDeityModel<SporeDeityEntity> playermodel = this.getEntityModel();
@@ -75,7 +75,7 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
             ItemStack itemstack = clientPlayer.getHeldItemMainhand();
             ItemStack itemstack1 = clientPlayer.getHeldItemOffhand();
             playermodel.setVisible(true);
-            playermodel.isSneak = clientPlayer.shouldRenderSneaking();
+            playermodel.isSneak =false;
             BipedModel.ArmPose bipedmodel$armpose = this.func_217766_a(clientPlayer, itemstack, itemstack1, Hand.MAIN_HAND);
             BipedModel.ArmPose bipedmodel$armpose1 = this.func_217766_a(clientPlayer, itemstack, itemstack1, Hand.OFF_HAND);
             if (clientPlayer.getPrimaryHand() == HandSide.RIGHT) {
@@ -129,10 +129,10 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
     }
 
 
-    protected void applyRotations(SporeDeityEntity entityLiving, float ageInTicks, float rotationYaw, float partialTicks) {
+    protected void applyRotations(SporeDeityEntity entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
         float f = entityLiving.getSwimAnimation(partialTicks);
         if (entityLiving.isElytraFlying()) {
-            super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
+            super.applyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
             float f1 = (float)entityLiving.getTicksElytraFlying() + partialTicks;
             float f2 = MathHelper.clamp(f1 * f1 / 100.0F, 0.0F, 1.0F);
             if (!entityLiving.isSpinAttacking()) {
@@ -149,7 +149,7 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
                 GlStateManager.rotatef((float)(Math.signum(d3) * Math.acos(d2)) * 180.0F / (float)Math.PI, 0.0F, 1.0F, 0.0F);
             }
         } else if (f > 0.0F) {
-            super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
+            super.applyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
             float f3 = entityLiving.isInWater() ? -90.0F - entityLiving.rotationPitch : -90.0F;
             float f4 = MathHelper.lerp(f, 0.0F, f3);
             GlStateManager.rotatef(f4, 1.0F, 0.0F, 0.0F);
@@ -157,7 +157,7 @@ public class SporeDeityRenderer extends MobRenderer<SporeDeityEntity, SporeDeity
                 GlStateManager.translatef(0.0F, -1.0F, 0.3F);
             }
         } else {
-            super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
+            super.applyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
         }
 
     }

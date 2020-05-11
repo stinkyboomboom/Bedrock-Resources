@@ -1,13 +1,11 @@
 package com.alexvr.bedres.utils;
 
 import com.alexvr.bedres.BedrockResources;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -25,24 +23,24 @@ public class RendererHelper {
     public static void drawModalRectWithCustomSizedTexture(double leftSideX, double rightSideX, double bottomY, double topY, ResourceLocation texture) {
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA.param, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.param, GlStateManager.SourceFactor.ONE.param, GlStateManager.DestFactor.ZERO.param);
+        net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
 
         BedrockResources.proxy.getMinecraft().getTextureManager().bindTexture(texture);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
 //botl    bufferbuilder.pos(0.0D, (double)BedrockResources.proxy.getMinecraft().mainWindow.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-        bufferbuilder.pos(leftSideX, bottomY, -90.0D).tex(0.0D, 1.0D).endVertex();
+        bufferbuilder.pos(leftSideX, bottomY, -90.0D).tex(0.0f, 1.0f).endVertex();
 
 //botr    bufferbuilder.pos((double)BedrockResources.proxy.getMinecraft().mainWindow.getScaledWidth(), (double)BedrockResources.proxy.getMinecraft().mainWindow.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-        bufferbuilder.pos(rightSideX, bottomY, -90.0D).tex(1.0D, 1.0D).endVertex();
+        bufferbuilder.pos(rightSideX, bottomY, -90.0D).tex(1.0f, 1.0f).endVertex();
 
 //topr      bufferbuilder.pos((double)BedrockResources.proxy.getMinecraft().mainWindow.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
-        bufferbuilder.pos(rightSideX, topY, -90.0D).tex(1.0D, 0.0D).endVertex();
+        bufferbuilder.pos(rightSideX, topY, -90.0D).tex(1.0f, 0.0f).endVertex();
 
 //topl    bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
-        bufferbuilder.pos(leftSideX, topY, -90.0D).tex(0.0D, 0.0D).endVertex();
+        bufferbuilder.pos(leftSideX, topY, -90.0D).tex(0.0f, 0.0f).endVertex();
 
         tessellator.draw();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
@@ -50,7 +48,7 @@ public class RendererHelper {
         GlStateManager.disableBlend();
     }
 
-    public static void drawCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,double xrotation,double yrotation, double zrotation, int rotationSpeed) {
+    public static void drawCuboidAt(BlockState blockTexture, TileEntity te, double xtranslate, double ytranslate, double ztranslate, double xScale, double yScale, double zScale, boolean rotate, float xrotation, float yrotation, float zrotation, int rotationSpeed, MatrixStack mx,int light) {
 
         GlStateManager.pushMatrix();
         GlStateManager.translated(xtranslate,ytranslate,ztranslate);
@@ -58,7 +56,7 @@ public class RendererHelper {
         if(rotate) {
 
             long angle = (System.currentTimeMillis() / rotationSpeed) %360;
-            GlStateManager.rotated(angle, xrotation, yrotation, zrotation);
+            GlStateManager.rotatef(angle, xrotation, yrotation, zrotation);
         }
         GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
 
@@ -72,9 +70,9 @@ public class RendererHelper {
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IBakedModel model = dispatcher.getModelForState(blockTexture);
-        net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
+        net.minecraft.world.ILightReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
         long i = blockTexture.getPositionRandom(te.getPos());
-        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(), bufferBuilder, true,new Random(),i);
+        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(),mx, bufferBuilder.getVertexBuilder(), true,new Random(),i,light);
         tessellator.draw();
 
         GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
@@ -82,7 +80,7 @@ public class RendererHelper {
         GlStateManager.popMatrix();
     }
 
-    public static void drawCubeAt(BlockState blockTexture, World world, LivingEntity entity, double xtranslate, double ytranslate, double ztranslate, double xScale, double yScale, double zScale, boolean rotate, double xrotation, double yrotation, double zrotation, int rotationSpeed) {
+    public static void drawCubeAt(BlockState blockTexture, World world, LivingEntity entity, double xtranslate, double ytranslate, double ztranslate, double xScale, double yScale, double zScale, boolean rotate, float xrotation, float yrotation, float zrotation, int rotationSpeed, MatrixStack mx,int light) {
 
         GlStateManager.pushMatrix();
         GlStateManager.translated(xtranslate,ytranslate,ztranslate);
@@ -90,7 +88,7 @@ public class RendererHelper {
         if(rotate) {
 
             long angle = (System.currentTimeMillis() / rotationSpeed) %360;
-            GlStateManager.rotated(angle, xrotation, yrotation, zrotation);
+            GlStateManager.rotatef(angle, xrotation, yrotation, zrotation);
         }
         GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
 
@@ -103,9 +101,9 @@ public class RendererHelper {
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IBakedModel model = dispatcher.getModelForState(blockTexture);
-        net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(world, entity.getPosition());
+        net.minecraft.world.ILightReader worldreader = MinecraftForgeClient.getRegionRenderCache(world, entity.getPosition());
         long i = blockTexture.getPositionRandom(entity.getPosition());
-        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, entity.getPosition(), bufferBuilder, true,new Random(),i);
+        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, entity.getPosition(),mx, bufferBuilder.getVertexBuilder(), true,new Random(),i,light);
         tessellator.draw();
 
         GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
@@ -115,14 +113,14 @@ public class RendererHelper {
 
 
 
-        public static void drawAngleCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,double xrotation,double yrotation, double zrotation, int rotationSpeed) {
+        public static void drawAngleCuboidAt(BlockState blockTexture,TileEntity te,double xtranslate,double ytranslate, double ztranslate,double xScale,double yScale,double zScale,boolean rotate,float xrotation,float yrotation, float zrotation, int rotationSpeed, MatrixStack mx,int light) {
 
         GlStateManager.pushMatrix();
         GlStateManager.scaled(xScale,yScale,zScale);
         if(rotate) {
 
-            double angle = ((System.currentTimeMillis() / rotationSpeed) %720 )*(2*Math.PI);
-            GlStateManager.rotated(angle, xrotation, 1, zrotation);
+            float angle = (float) (((System.currentTimeMillis() / rotationSpeed) %720 )*(2*Math.PI));
+            GlStateManager.rotatef(angle, xrotation, 1, zrotation);
 
 
         }
@@ -141,9 +139,9 @@ public class RendererHelper {
 
         BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IBakedModel model = dispatcher.getModelForState(blockTexture);
-        net.minecraft.world.IEnviromentBlockReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
+        net.minecraft.world.ILightReader worldreader = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), te.getPos());
         long i = blockTexture.getPositionRandom(te.getPos());
-        dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(), bufferBuilder, true,new Random(),i);
+            dispatcher.getBlockModelRenderer().renderModel(worldreader, model, blockTexture, te.getPos(),mx, bufferBuilder.getVertexBuilder(), true,new Random(),i,light);
         tessellator.draw();
 
         GL11.glEnable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
@@ -151,7 +149,7 @@ public class RendererHelper {
         GlStateManager.popMatrix();
     }
 
-    public static void renderItem(TileEntity te,ItemStack itemStack,double xTranslate,double yTranslate,double zTranslate,double xScalee,double yScale,double zScale,double xRotate,double yRotate,double zRotate,double angle){
+    public static void renderItem(TileEntity te,ItemStack itemStack,double xTranslate,double yTranslate,double zTranslate,double xScalee,double yScale,double zScale,float xRotate,float yRotate,float zRotate,float angle, MatrixStack mx,int light, IRenderTypeBuffer bufferIn){
 
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableLighting();
@@ -161,11 +159,11 @@ public class RendererHelper {
 
         GlStateManager.translated(xTranslate,yTranslate,zTranslate);
         GlStateManager.scaled(xScalee,yScale,zScale);
-        GlStateManager.rotated(angle,xRotate,yRotate,zRotate);
+        GlStateManager.rotatef(angle,xRotate,yRotate,zRotate);
 
 
 
-        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+        Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE,0,0,mx,bufferIn);
         RenderHelper.disableStandardItemLighting();
         GlStateManager.popMatrix();
 

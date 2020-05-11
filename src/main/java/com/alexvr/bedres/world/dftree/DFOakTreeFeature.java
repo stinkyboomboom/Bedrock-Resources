@@ -6,29 +6,44 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraftforge.common.IPlantable;
 
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class DFOakTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
+public class DFOakTreeFeature extends TreeFeature {
     private static final BlockState LOG = ModBlocks.dfOakLog.getDefaultState();
     private static final BlockState LEAF = ModBlocks.dfOakLeave.getDefaultState();
     private final boolean useExtraRandomHeight;
+    IPlantable sapling ;
 
-    public DFOakTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, boolean doBlockNotifyIn, boolean extraRandomHeightIn) {
-        super(configIn, doBlockNotifyIn);
+    public DFOakTreeFeature(Function<Dynamic<?>, ? extends TreeFeatureConfig> configIn, boolean doBlockNotifyIn, boolean extraRandomHeightIn) {
+        super(configIn);
         this.useExtraRandomHeight = extraRandomHeightIn;
         this.setSapling(ModBlocks.dfOakSappling);
     }
 
-    public boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader worldIn, Random rand, BlockPos position, MutableBoundingBox p_208519_5_) {
+    private void setSapling(IPlantable dfOakSappling) {
+        sapling = dfOakSappling;
+    }
+
+
+
+    private IPlantable getSapling() {
+        return sapling;
+    }
+
+
+    @Override
+    public boolean place(IWorldGenerationReader worldIn, Random rand, BlockPos position, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox boundingBoxIn, TreeFeatureConfig configIn) {
         int i = rand.nextInt(3) + 5;
         if (this.useExtraRandomHeight) {
             i += rand.nextInt(7);
         }
+
 
         boolean flag = true;
         if (position.getY() >= 1 && position.getY() + i + 1 <= worldIn.getMaxHeight()) {
@@ -42,12 +57,11 @@ public class DFOakTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
                     k = 2;
                 }
 
-                BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
                 for(int l = position.getX() - k; l <= position.getX() + k && flag; ++l) {
                     for(int i1 = position.getZ() - k; i1 <= position.getZ() + k && flag; ++i1) {
                         if (j >= 0 && j < worldIn.getMaxHeight()) {
-                            if (!func_214587_a(worldIn, blockpos$mutableblockpos.setPos(l, j, i1))) {
+                            if (!canBeReplacedByLogs(worldIn, position)) {
                                 flag = false;
                             }
                         } else {
@@ -74,7 +88,7 @@ public class DFOakTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
                             if (Math.abs(i3) != k2 || Math.abs(k1) != k2 || rand.nextInt(2) != 0 && j2 != 0) {
                                 BlockPos blockpos = new BlockPos(l2, l1, j1);
                                 if (isAirOrLeaves(worldIn, blockpos)) {
-                                    this.setLogState(changedBlocks, worldIn, blockpos, LEAF, p_208519_5_);
+                                    this.setBlockState( worldIn, blockpos, LEAF);
                                 }
                             }
                         }
@@ -83,7 +97,7 @@ public class DFOakTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 
                 for(int i2 = 0; i2 < i; ++i2) {
                     if (isAirOrLeaves(worldIn, position.up(i2))) {
-                        this.setLogState(changedBlocks, worldIn, position.up(i2), LOG, p_208519_5_);
+                        this.setBlockState(worldIn, position.up(i2), LOG);
                     }
                 }
 
@@ -93,6 +107,5 @@ public class DFOakTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
             }
         } else {
             return false;
-        }
-    }
+        }    }
 }

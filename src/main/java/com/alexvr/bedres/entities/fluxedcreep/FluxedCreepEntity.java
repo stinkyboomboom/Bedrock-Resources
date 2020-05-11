@@ -46,7 +46,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
         this.goalSelector.addGoal(7, new FluxedCreepEntity.LookAroundGoal(this));
         this.goalSelector.addGoal(7, new FluxedCreepEntity.FireballAttackGoal(this));
         this.goalSelector.addGoal(7, new FluxedCreepEntity.AttackGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> Math.abs(p_213812_1_.posY - this.posY) <= 4.0D));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (p_213812_1_) -> Math.abs(p_213812_1_.getPosY() - this.getPosY()) <= 4.0D));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -156,7 +156,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
             if (this.action == MovementController.Action.MOVE_TO) {
                 if (this.courseChangeCooldown-- <= 0) {
                     this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
-                    Vec3d vec3d = new Vec3d(this.posX - this.parentEntity.posX, this.posY - this.parentEntity.posY, this.posZ - this.parentEntity.posZ);
+                    Vec3d vec3d = new Vec3d(this.posX - this.parentEntity.getPosX(), this.posY - this.parentEntity.getPosY(), this.posZ - this.parentEntity.getPosZ());
                     double d0 = vec3d.length();
                     vec3d = vec3d.normalize();
                     if (this.func_220673_a(vec3d, MathHelper.ceil(d0))) {
@@ -173,7 +173,7 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
 
             for(int i = 1; i < p_220673_2_; ++i) {
                 axisalignedbb = axisalignedbb.offset(p_220673_1_);
-                if (!this.parentEntity.world.isCollisionBoxesEmpty(this.parentEntity, axisalignedbb)) {
+                if (!this.parentEntity.world.checkNoEntityCollision(this.parentEntity)) {
                     return false;
                 }
             }
@@ -198,9 +198,9 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
             if (!movementcontroller.isUpdating()) {
                 return true;
             } else {
-                double d0 = movementcontroller.getX() - this.parentEntity.posX;
-                double d1 = movementcontroller.getY() - this.parentEntity.posY;
-                double d2 = movementcontroller.getZ() - this.parentEntity.posZ;
+                double d0 = movementcontroller.getX() - this.parentEntity.getPosX();
+                double d1 = movementcontroller.getY() - this.parentEntity.getPosY();
+                double d2 = movementcontroller.getZ() - this.parentEntity.getPosZ();
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 return d3 < 1.0D || d3 > 3600.0D;
             }
@@ -218,9 +218,9 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
          */
         public void startExecuting() {
             Random random = this.parentEntity.getRNG();
-            double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-            double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 4.0F);
-            double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d0 = this.parentEntity.getPosX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+            double d1 = this.parentEntity.getPosY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 4.0F);
+            double d2 = this.parentEntity.getPosZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
             this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.4D);
         }
     }
@@ -252,8 +252,8 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
                 LivingEntity livingentity = this.parentEntity.getAttackTarget();
                 double d0 = 64.0D;
                 if (livingentity.getDistanceSq(this.parentEntity) < 4096.0D) {
-                    double d1 = livingentity.posX - this.parentEntity.posX;
-                    double d2 = livingentity.posZ - this.parentEntity.posZ;
+                    double d1 = livingentity.getPosX() - this.parentEntity.getPosX();
+                    double d2 = livingentity.getPosZ() - this.parentEntity.getPosZ();
                     this.parentEntity.rotationYaw = -((float)MathHelper.atan2(d1, d2)) * (180F / (float)Math.PI);
                     this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
                 }
@@ -350,15 +350,13 @@ public class FluxedCreepEntity extends FlyingEntity implements IMob {
 
                 if (this.attackTimer == 20) {
                     Vec3d vec3d = this.parentEntity.getLook(1.0F);
-                    double d2 = livingentity.posX - (this.parentEntity.posX + vec3d.x * 4.0D);
-                    double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight() / 2.0F) - (0.5D + this.parentEntity.posY + (double)(this.parentEntity.getHeight() / 2.0F));
-                    double d4 = livingentity.posZ - (this.parentEntity.posZ + vec3d.z * 4.0D);
+                    double d2 = livingentity.getPosX() - (this.parentEntity.getPosX() + vec3d.x * 4.0D);
+                    double d3 = livingentity.getBoundingBox().minY + (double)(livingentity.getHeight() / 2.0F) - (0.5D + this.parentEntity.getPosY() + (double)(this.parentEntity.getHeight() / 2.0F));
+                    double d4 = livingentity.getPosZ() - (this.parentEntity.getPosZ() + vec3d.z * 4.0D);
                     world.playEvent(null, 1016, new BlockPos(this.parentEntity), 0);
                     FireballEntity fireballentity = new FireballEntity(world, this.parentEntity, d2, d3, d4);
                     fireballentity.explosionPower = 1;
-                    fireballentity.posX = this.parentEntity.posX + vec3d.x * 4.0D;
-                    fireballentity.posY = this.parentEntity.posY + (double)(this.parentEntity.getHeight() / 2.0F) + 0.5D;
-                    fireballentity.posZ = this.parentEntity.posZ + vec3d.z * 4.0D;
+                    fireballentity.moveToBlockPosAndAngles(new BlockPos( this.parentEntity.getPosX() + vec3d.x * 4.0D,this.parentEntity.getPosY() + (double)(this.parentEntity.getHeight() / 2.0F) + 0.5D,this.parentEntity.getPosZ() + vec3d.z * 4.0D),0,0);
                     world.addEntity(fireballentity);
                     this.attackTimer = -40;
                 }

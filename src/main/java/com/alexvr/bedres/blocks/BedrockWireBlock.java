@@ -14,7 +14,6 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RedstoneSide;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -101,24 +100,24 @@ public class BedrockWireBlock extends Block {
 
 
     public void updateDiagonalNeighbors(BlockState state, IWorld worldIn, BlockPos pos, int flags) {
-        try (BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain()) {
+        try (BlockPos.PooledMutable blockpos$pooledmutable = BlockPos.PooledMutable.retain()) {
             for(Direction direction : Direction.Plane.HORIZONTAL) {
                 RedstoneSide redstoneside = state.get(FACING_PROPERTY_MAP.get(direction));
-                if (redstoneside != RedstoneSide.NONE && worldIn.getBlockState(blockpos$pooledmutableblockpos.setPos(pos).move(direction)).getBlock() != this) {
-                    blockpos$pooledmutableblockpos.move(Direction.DOWN);
-                    BlockState blockstate = worldIn.getBlockState(blockpos$pooledmutableblockpos);
+                if (redstoneside != RedstoneSide.NONE && worldIn.getBlockState(blockpos$pooledmutable.setPos(pos).move(direction)).getBlock() != this) {
+                    blockpos$pooledmutable.move(Direction.DOWN);
+                    BlockState blockstate = worldIn.getBlockState(blockpos$pooledmutable);
                     if (blockstate.getBlock() != Blocks.OBSERVER) {
-                        BlockPos blockpos = blockpos$pooledmutableblockpos.offset(direction.getOpposite());
-                        BlockState blockstate1 = blockstate.updatePostPlacement(direction.getOpposite(), worldIn.getBlockState(blockpos), worldIn, blockpos$pooledmutableblockpos, blockpos);
-                        replaceBlock(blockstate, blockstate1, worldIn, blockpos$pooledmutableblockpos, flags);
+                        BlockPos blockpos = blockpos$pooledmutable.offset(direction.getOpposite());
+                        BlockState blockstate1 = blockstate.updatePostPlacement(direction.getOpposite(), worldIn.getBlockState(blockpos), worldIn, blockpos$pooledmutable, blockpos);
+                        replaceBlock(blockstate, blockstate1, worldIn, blockpos$pooledmutable, flags);
                     }
 
-                    blockpos$pooledmutableblockpos.setPos(pos).move(direction).move(Direction.UP);
-                    BlockState blockstate3 = worldIn.getBlockState(blockpos$pooledmutableblockpos);
+                    blockpos$pooledmutable.setPos(pos).move(direction).move(Direction.UP);
+                    BlockState blockstate3 = worldIn.getBlockState(blockpos$pooledmutable);
                     if (blockstate3.getBlock() != Blocks.OBSERVER) {
-                        BlockPos blockpos1 = blockpos$pooledmutableblockpos.offset(direction.getOpposite());
-                        BlockState blockstate2 = blockstate3.updatePostPlacement(direction.getOpposite(), worldIn.getBlockState(blockpos1), worldIn, blockpos$pooledmutableblockpos, blockpos1);
-                        replaceBlock(blockstate3, blockstate2, worldIn, blockpos$pooledmutableblockpos, flags);
+                        BlockPos blockpos1 = blockpos$pooledmutable.offset(direction.getOpposite());
+                        BlockState blockstate2 = blockstate3.updatePostPlacement(direction.getOpposite(), worldIn.getBlockState(blockpos1), worldIn, blockpos$pooledmutable, blockpos1);
+                        replaceBlock(blockstate3, blockstate2, worldIn, blockpos$pooledmutable, flags);
                     }
                 }
             }
@@ -132,9 +131,9 @@ public class BedrockWireBlock extends Block {
         BlockPos blockpos1 = pos.up();
         BlockState blockstate1 = worldIn.getBlockState(blockpos1);
         if (!blockstate1.isNormalCube(worldIn, blockpos1)) {
-            boolean flag = blockstate.func_224755_d(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
+            boolean flag = blockstate.canBeConnectedTo(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
             if (flag && canConnectTo(worldIn.getBlockState(blockpos.up()), worldIn, blockpos.up(), null)) {
-                if (blockstate.func_224756_o(worldIn, blockpos)) {
+                if (blockstate.isAir(worldIn, blockpos)) {
                     return RedstoneSide.UP;
                 }
 
@@ -272,13 +271,6 @@ public class BedrockWireBlock extends Block {
         worldIn.addParticle(new RedstoneParticleData(f1, f2, f3, 1.0F), d0, d1, d2, 0.0D, 0.0D, 0.0D);
     }
 
-    /**
-     * Gets the render layer this block will render on. SOLID for solid blocks, CUTOUT or CUTOUT_MIPPED for on-off
-     * transparency (glass, reeds), TRANSLUCENT for fully blended transparency (stained glass)
-     */
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 
 
     public BlockState rotate(BlockState state, Rotation rot) {

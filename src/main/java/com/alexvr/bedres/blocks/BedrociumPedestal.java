@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -77,10 +77,7 @@ public class BedrociumPedestal extends Block {
         return super.getDrops(state, builder);
     }
 
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
+
 
     @Override
     public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
@@ -89,7 +86,7 @@ public class BedrociumPedestal extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
         if(!worldIn.isRemote){
             TileEntity te = worldIn.getTileEntity(pos);
@@ -119,7 +116,7 @@ public class BedrociumPedestal extends Block {
                         }
                     }
                 });
-                return true;
+                return ActionResultType.PASS;
             }else{
                 for(int i =0 ; i< player.inventory.getSizeInventory(); i ++) {
                     ItemStack stack = player.inventory.getStackInSlot(i);
@@ -135,11 +132,11 @@ public class BedrociumPedestal extends Block {
                     }
                 }
 
-                return true;
+                return ActionResultType.PASS;
             }
         }
 
-        return false;
+        return ActionResultType.FAIL;
     }
     public void addParticleRandom( World world, BlockPos pos){
         switch (new Random().nextInt(3)){
@@ -220,4 +217,6 @@ public class BedrociumPedestal extends Block {
 
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
+
+    //TODO add transparency
 }

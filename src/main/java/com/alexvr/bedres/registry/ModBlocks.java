@@ -138,13 +138,13 @@ public class ModBlocks {
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(event -> {
-           ClientRegistry.bindTileEntitySpecialRenderer(ScrapeTankTile.class, new ScrapeTankTER());
-            ClientRegistry.bindTileEntitySpecialRenderer(BedrockScraperControllerTile.class, new ScraperControllerTER());
-            ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumTowerTile.class, new BedrockiumTowerTER());
-            ClientRegistry.bindTileEntitySpecialRenderer(BedrockiumPedestalTile.class, new BedrockiumPedestalTER());
-            ClientRegistry.bindTileEntitySpecialRenderer(EnderianRitualPedestalTile.class, new EnderianRitualPedestalTER());
-            ClientRegistry.bindTileEntitySpecialRenderer(ItemPlatformTile.class, new ItemPlatformTER());
-            ClientRegistry.bindTileEntitySpecialRenderer(FluxedGravityBubbleTile.class, new FluxedGravityBubbleTER());
+           ClientRegistry.bindTileEntityRenderer(scrapeTankType,  ScrapeTankTER::new);
+            ClientRegistry.bindTileEntityRenderer(bedrockScraperControllerTile, ScraperControllerTER::new);
+            ClientRegistry.bindTileEntityRenderer(bedrockiumTowerType,  BedrockiumTowerTER::new);
+            ClientRegistry.bindTileEntityRenderer(bedrockiumPedestalType,  BedrockiumPedestalTER::new);
+            ClientRegistry.bindTileEntityRenderer(enderianRitualPedestalTileTileEntityType,  EnderianRitualPedestalTER::new);
+            ClientRegistry.bindTileEntityRenderer(itemPlatformTileTileEntityType,  ItemPlatformTER::new);
+            ClientRegistry.bindTileEntityRenderer(fluxedGravityBubbleTileTileEntityType,  FluxedGravityBubbleTER::new);
         });
     }
 }

@@ -17,9 +17,4 @@ public class ClientRegistration {
         event.getItemColors().register((stack, i) -> 0xf11209, new SporeDeityEggItem());
     }
 
-
-
-
-
-
-    }
+}

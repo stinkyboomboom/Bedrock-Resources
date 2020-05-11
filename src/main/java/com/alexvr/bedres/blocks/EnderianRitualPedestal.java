@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -122,10 +122,6 @@ public class EnderianRitualPedestal extends Block {
     }
 
 
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 
     @Override
     public boolean hasTileEntity(BlockState state) {
@@ -139,7 +135,7 @@ public class EnderianRitualPedestal extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if(!worldIn.isRemote){
             TileEntity te = worldIn.getTileEntity(pos);
             if(player.getHeldItemMainhand() != ItemStack.EMPTY){
@@ -159,7 +155,7 @@ public class EnderianRitualPedestal extends Block {
                         }
                     }
                 });
-                return true;
+                return ActionResultType.PASS;
             }else{
                 for(int i =0 ; i< player.inventory.getSizeInventory(); i ++) {
                     ItemStack stack = player.inventory.getStackInSlot(i);
@@ -176,11 +172,11 @@ public class EnderianRitualPedestal extends Block {
                     }
                 }
 
-                return true;
+                return ActionResultType.PASS;
             }
         }
 
-        return false;
+        return ActionResultType.FAIL;
     }
 
 

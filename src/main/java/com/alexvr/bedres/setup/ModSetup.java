@@ -1,17 +1,13 @@
 package com.alexvr.bedres.setup;
 
-import com.alexvr.bedres.entities.effectball.EffectBallEntity;
 import com.alexvr.bedres.entities.effectball.EffectBallRenderer;
-import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepEntity;
 import com.alexvr.bedres.entities.fluxedcreep.FluxedCreepRenderer;
-import com.alexvr.bedres.entities.sporedeity.SporeDeityEntity;
 import com.alexvr.bedres.entities.sporedeity.SporeDeityRenderer;
 import com.alexvr.bedres.network.Networking;
 import com.alexvr.bedres.registry.ModBlocks;
+import com.alexvr.bedres.registry.ModEntities;
 import com.alexvr.bedres.utils.RenderFactory;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,22 +25,22 @@ public class ModSetup {
     public void init() {
         MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
         Networking.registerMessages();
-        RenderingRegistry.registerEntityRenderingHandler(VillagerEntity.class, new RenderFactory("villager"));
-        RenderingRegistry.registerEntityRenderingHandler(CowEntity.class, new RenderFactory("cow"));
-        RenderingRegistry.registerEntityRenderingHandler(CatEntity.class, new RenderFactory("cat"));
-        RenderingRegistry.registerEntityRenderingHandler(CreeperEntity.class, new RenderFactory("creeper"));
-        RenderingRegistry.registerEntityRenderingHandler(PigEntity.class, new RenderFactory("pig"));
-        RenderingRegistry.registerEntityRenderingHandler(SheepEntity.class, new RenderFactory("sheep"));
-        RenderingRegistry.registerEntityRenderingHandler(SkeletonEntity.class, new RenderFactory("skeleton"));
-        RenderingRegistry.registerEntityRenderingHandler(SpiderEntity.class, new RenderFactory("spider"));
-        RenderingRegistry.registerEntityRenderingHandler(ZombieEntity.class, new RenderFactory("zombie"));
-        RenderingRegistry.registerEntityRenderingHandler(ChickenEntity.class, new RenderFactory("chicken"));
-        RenderingRegistry.registerEntityRenderingHandler(IronGolemEntity.class, new RenderFactory("iron_golem"));
-        RenderingRegistry.registerEntityRenderingHandler(SquidEntity.class, new RenderFactory("squid"));
-        RenderingRegistry.registerEntityRenderingHandler(WitchEntity.class, new RenderFactory("witch"));
-        RenderingRegistry.registerEntityRenderingHandler(FluxedCreepEntity.class, FluxedCreepRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SporeDeityEntity.class, SporeDeityRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EffectBallEntity.class, EffectBallRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.VILLAGER, new RenderFactory("villager"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.COW, new RenderFactory("cow"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.CAT, new RenderFactory("cat"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.CREEPER, new RenderFactory("creeper"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.PIG, new RenderFactory("pig"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.SHEEP, new RenderFactory("sheep"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.SKELETON, new RenderFactory("skeleton"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.SPIDER, new RenderFactory("spider"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.ZOMBIE, new RenderFactory("zombie"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.CHICKEN, new RenderFactory("chicken"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.IRON_GOLEM, new RenderFactory("iron_golem"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.SQUID, new RenderFactory("squid"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityType.WITCH, new RenderFactory("witch"));
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.FLUXED_CREEP, FluxedCreepRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.sporeDeityEntityEntityType, SporeDeityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.effectBallEntityEntityType, EffectBallRenderer::new);
 
     }
 

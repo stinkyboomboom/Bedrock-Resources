@@ -79,7 +79,7 @@ public class WorldEventHandler {
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
         bedrockFlux.ifPresent(flux -> {
             if (flux.getCrafterFlux()){
-                BedrockResources.proxy.getMinecraft().ingameGUI=flux.getScreen();
+                BedrockResources.proxy.getMinecraft().displayGuiScreen(flux.getScreen());
             }
         });
     }
@@ -88,7 +88,7 @@ public class WorldEventHandler {
 
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent event){
-        BlockPos playerPos = new BlockPos(event.getEntityLiving().posX,event.getEntityLiving().posY,event.getEntityLiving().posZ);
+        BlockPos playerPos = new BlockPos(event.getEntityLiving().getPosX(),event.getEntityLiving().getPosY(),event.getEntityLiving().getPosZ());
         LazyOptional<IPlayerAbility> abilities = event.getEntityLiving().getCapability(PlayerAbilityProvider.PLAYER_ABILITY_CAPABILITY, null);
         abilities.ifPresent(iPlayerAbility -> {
             if (!iPlayerAbility.getChecking() && !iPlayerAbility.getInRitual()){
@@ -331,7 +331,7 @@ public class WorldEventHandler {
                     iPlayerAbility.getListOfPedestals().remove(0);
                 }
                 if (iPlayerAbility.getRitualTimer()>=iPlayerAbility.getRitualTotalTimer()){
-                    BlockPos playerPos = new BlockPos(event.player.posX,event.player.posY,event.player.posZ);
+                    BlockPos playerPos = new BlockPos(event.player.getPosX(),event.player.getPosY(),event.player.getPosZ());
 
                     for (int x = -3; x < 4; x++) {
 
@@ -341,12 +341,12 @@ public class WorldEventHandler {
                             }
                         }
                     }
-                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
-                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
-                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.posX,(double)player.posY+3,(double)player.posZ,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.getPosX(),(double)player.getPosY()+3,(double)player.getPosZ(),new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.getPosX(),(double)player.getPosY()+3,(double)player.getPosZ(),new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
+                    Minecraft.getInstance().worldRenderer.addParticle(ParticleTypes.PORTAL,false,(double)player.getPosX(),(double)player.getPosY()+3,(double)player.getPosZ(),new Random().nextFloat()-0.5,new Random().nextFloat()-0.5,new Random().nextFloat()-0.5);
                     iPlayerAbility.flipRitual();
                     Minecraft.getInstance().gameSettings.mouseSensitivity = 0.5D;
-                    event.player.world.addEntity(new LightningBoltEntity(event.player.world,player.posX,player.posY,player.posZ,true));
+                    event.player.world.addEntity(new LightningBoltEntity(event.player.world,player.getPosX(),player.getPosY(),player.getPosZ(),true));
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                     Minecraft.getInstance().gameSettings.hideGUI = false;
                     Minecraft.getInstance().gameSettings.fov = iPlayerAbility.getFOV();
@@ -611,7 +611,7 @@ public class WorldEventHandler {
                             player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Jump", iPlayerAbility.getJumpBoost())), false);
                             player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.AQUA + " %s" + TextFormatting.DARK_RED + " Flux", flux.getBedrockFluxString())), false);
                         } else {
-                            InventoryHelper.spawnItemStack(event.player.world, player.posX, player.posY, player.posZ, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(iPlayerAbility.getRitualCraftingResult()))));
+                            InventoryHelper.spawnItemStack(event.player.world, player.getPosX(), player.getPosY(), player.getPosZ(), new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(iPlayerAbility.getRitualCraftingResult()))));
                         }
                     });
 
@@ -877,7 +877,7 @@ public class WorldEventHandler {
             h.setCrafterFlux();
             fx.flux = h;
             h.setScreen(fx);
-            BedrockResources.proxy.getMinecraft().ingameGUI=fx;
+            BedrockResources.proxy.getMinecraft().displayGuiScreen(fx);
             String message = ("You out of nowhere understand flux and can sense the amount of flux on you");
             player.sendStatusMessage(new StringTextComponent(message),true);
         });
@@ -1127,7 +1127,7 @@ public class WorldEventHandler {
      */
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        PlayerEntity player = event.getEntityPlayer();
+        PlayerEntity player = event.getPlayer();
 
         LazyOptional<IBedrockFlux> bedrockFlux = player.getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);
         LazyOptional<IBedrockFlux> oldbedrockFlux =  event.getOriginal().getCapability(BedrockFluxProvider.BEDROCK_FLUX_CAPABILITY, null);

@@ -16,7 +16,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -117,7 +117,7 @@ public class BedrockScrapperControllerBlock extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if(!worldIn.isRemote) {
             if (worldIn.getTileEntity(pos) instanceof BedrockScraperControllerTile) {
                 BlockPos pos1 = ((BedrockScraperControllerTile) worldIn.getTileEntity(pos)).pos1;
@@ -127,7 +127,7 @@ public class BedrockScrapperControllerBlock extends Block {
                     TileEntity tileEntity = worldIn.getTileEntity(pos);
                     if (tileEntity instanceof INamedContainerProvider) {
                         NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
-                        return true;
+                        return ActionResultType.PASS;
                     }
                 } else {
                     if (!worldIn.getBlockState(pos1).getBlock().getRegistryName().equals(ModBlocks.bedrockScraperSlaveBlock.getRegistryName())) {
@@ -168,12 +168,6 @@ public class BedrockScrapperControllerBlock extends Block {
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return this.getDefaultState().with(FACING_HORIZ, context.getPlayer().getHorizontalFacing().getOpposite());
     }
-
-
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
-
 
 
     @Override

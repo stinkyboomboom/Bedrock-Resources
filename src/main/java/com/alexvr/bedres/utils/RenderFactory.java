@@ -67,8 +67,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(VillagerEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(VillagerEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return VILLAGER_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -87,8 +87,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(CowEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(CowEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -118,8 +118,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(CatEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(CatEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return field_213425_bD.get(entity.getCatType());
             }else{
                 return super.getEntityTexture(entity);
@@ -138,8 +138,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(CreeperEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(CreeperEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return CREEPER_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -158,8 +158,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(PigEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(PigEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return PIG_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -178,8 +178,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(SheepEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(SheepEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -198,8 +198,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(AbstractSkeletonEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(AbstractSkeletonEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -218,8 +218,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(SpiderEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(SpiderEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -238,8 +238,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(ZombieEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(ZombieEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -258,8 +258,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(ChickenEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(ChickenEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -278,8 +278,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(IronGolemEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(IronGolemEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -298,8 +298,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(SquidEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(SquidEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);
@@ -318,8 +318,8 @@ public class RenderFactory implements IRenderFactory {
         /**
          * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
          */
-        protected ResourceLocation getEntityTexture(WitchEntity entity) {
-            if (entity.world.getBiome(new BlockPos(entity.posX,entity.posY,entity.posZ)) instanceof DecayingFluxedBiome) {
+        public ResourceLocation getEntityTexture(WitchEntity entity) {
+            if (entity.world.getBiome(new BlockPos(entity.getPosX(),entity.getPosY(),entity.getPosZ())) instanceof DecayingFluxedBiome) {
                 return COW_TEXTURES;
             }else{
                 return super.getEntityTexture(entity);

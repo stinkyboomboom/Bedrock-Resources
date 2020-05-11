@@ -7,7 +7,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 
 import javax.annotation.Nullable;
@@ -27,11 +26,6 @@ public class BedrockScrapperSlaveBlock extends Block {
         setDefaultState(getStateContainer().getBaseState().with(FACING_HORIZ, Direction.NORTH));
 
 
-    }
-
-
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
     }
 
 

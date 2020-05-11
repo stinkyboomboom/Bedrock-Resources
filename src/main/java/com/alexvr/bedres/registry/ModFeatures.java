@@ -3,7 +3,6 @@ package com.alexvr.bedres.registry;
 import com.alexvr.bedres.BedrockResources;
 import com.alexvr.bedres.world.altar.AltarGenerator;
 import com.alexvr.bedres.world.altar.AltarPieces;
-import com.alexvr.bedres.world.dftree.DFOakTreeFeature;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
@@ -24,20 +23,20 @@ public class ModFeatures
 
     public static final IStructurePieceType ALTAR_STRUCTURE = IStructurePieceType.register(AltarPieces.Piece::new, "altar_piece");
 
-    public static final Feature<NoFeatureConfig> DFOAK_TREE = (new DFOakTreeFeature(NoFeatureConfig::deserialize, false, false));
+//    public static final Feature<BaseTreeFeatureConfig> DFOAK_TREE = (new DFOakTreeFeature(BaseTreeFeatureConfig::deserialize, false, false));
 
 
     public static void registerFeatures(IForgeRegistry<Feature<?>> event)
     {
 
         generic(event).add(new ResourceLocation(BedrockResources.MODID, "altar"), ALTAR);
-        generic(event).add(new ResourceLocation(BedrockResources.MODID, "df_tree"), DFOAK_TREE);
+        //generic(event).add(new ResourceLocation(BedrockResources.MODID, "df_tree"), DFOAK_TREE);
 
         Registry.register(Registry.STRUCTURE_FEATURE,"altar".toLowerCase(Locale.ROOT), ALTAR);
         Registry.register(Registry.STRUCTURE_PIECE,"altar_piece".toLowerCase(Locale.ROOT), ALTAR_STRUCTURE);
         Feature.STRUCTURES.put("altar".toLowerCase(Locale.ROOT), ALTAR);
 
-        Registry.register(Registry.FEATURE,"df_tree".toLowerCase(Locale.ROOT), DFOAK_TREE);
+        //Registry.register(Registry.FEATURE,"df_tree".toLowerCase(Locale.ROOT), DFOAK_TREE);
 
     }
 

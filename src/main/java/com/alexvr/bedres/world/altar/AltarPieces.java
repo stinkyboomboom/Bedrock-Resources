@@ -8,10 +8,8 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
@@ -76,20 +74,20 @@ public class AltarPieces {
 
         }
 
-        /**2327361080726365775
-         * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-         * the end, it adds Fences...
-         */
-        public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_) {
-            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.field_207616_e).setMirror(Mirror.NONE).setCenterOffset(AltarPieces.structurePos.get(this.field_207615_d)).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
-            BlockPos blockpos = AltarPieces.structurePos.get(this.field_207615_d);
-            BlockPos blockpos1 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(3 - blockpos.getX(), 0, 0 - blockpos.getZ())));
-            int i = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, blockpos1.getX(), blockpos1.getZ());
-            BlockPos blockpos2 = this.templatePosition;
-            this.templatePosition = this.templatePosition.add(0, i - 90 - 1, 0);
-            boolean flag = super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn, p_74875_4_);
-            this.templatePosition = blockpos2;
-            return flag;
-        }
+//        /**2327361080726365775
+//         * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
+//         * the end, it adds Fences...
+//         */
+//        public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos p_74875_4_) {
+//            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.field_207616_e).setMirror(Mirror.NONE).setCenterOffset(AltarPieces.structurePos.get(this.field_207615_d)).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
+//            BlockPos blockpos = AltarPieces.structurePos.get(this.field_207615_d);
+//            BlockPos blockpos1 = this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(3 - blockpos.getX(), 0, 0 - blockpos.getZ())));
+//            int i = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, blockpos1.getX(), blockpos1.getZ());
+//            BlockPos blockpos2 = this.templatePosition;
+//            this.templatePosition = this.templatePosition.add(0, i - 90 - 1, 0);
+//            boolean flag = super.(worldIn, randomIn, structureBoundingBoxIn, p_74875_4_);
+//            this.templatePosition = blockpos2;
+//            return flag;
+//        }
     }
 }
