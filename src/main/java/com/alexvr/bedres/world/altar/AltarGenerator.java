@@ -41,7 +41,7 @@ public class AltarGenerator extends Structure<NoFeatureConfig> {
     }
 
     @Override
-    public boolean func_225558_a_(BiomeManager biomeManager, ChunkGenerator<?> chunkGenerator, Random random, int i, int i1, Biome biome) {
+    public boolean canBeGenerated(BiomeManager biomeManager, ChunkGenerator<?> chunkGenerator, Random random, int i, int i1, Biome biome) {
         return false;
     }
 
